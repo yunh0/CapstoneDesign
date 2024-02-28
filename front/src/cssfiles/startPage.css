@@ -1,0 +1,93 @@
+/* startPage.css */
+.start-page {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background: white;
+}
+
+.background-top {
+    width: 100%;
+    height: 25%;
+    position: absolute;
+    background: #F0F0F0;
+}
+
+.project-name {
+    width: 57%;
+    height: 15%;
+    left: 2%;
+    top: 20%;
+    position: absolute;
+    color: black;
+    font-size: 6vw;
+    font-family: Ibarra Real Nova;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.login-link {
+    width: 13.8%;
+    height: 8.5%;
+    left: 62%;
+    top: 47%;
+    position: absolute;
+    background: #FFFDFD;
+    border-radius: 2.5vw;
+    border: 0.2vw black solid;
+}
+
+.signup-link {
+    width: 13.8%;
+    height: 8.5%;
+    left: 82%;
+    top: 47%;
+    position: absolute;
+    background: #FFFDFD;
+    border-radius: 2.5vw;
+    border: 0.2vw black solid;
+}
+
+.login-button, .signup-button {
+    width: 11.4%;
+    height: 7%;
+    position: absolute;
+    color: black;
+    font-size: 3.5vw;
+    font-family: Ibarra Real Nova;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.signup-button {
+    left: 62%;
+    top: 47%;
+}
+
+.title {
+    left: 0;
+    top: 0;
+    position: absolute;
+    color: black;
+    font-size: 3vw;
+    font-family: East Sea Dokdo;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.divider {
+    width: 5.3%;
+    height: 0.07%;
+    left: 95%;
+    top: 0;
+    position: absolute;
+}
+
+.background-bottom {
+    width: 100%;
+    height: 9%;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    background: #191970;
+}
