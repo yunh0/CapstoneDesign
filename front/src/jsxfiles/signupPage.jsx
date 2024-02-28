@@ -1,9 +1,10 @@
 import React from 'react';
+import '../cssfiles/signupPage.css';
 
 class SignupPage extends React.Component {
     render() {
         return (
-            <div className="container">
+            <div className="signup-container">
                 <h2>Sign Up</h2>
                 <form action="signup_process.php" method="post">
                     <input type="text" name="username" placeholder="Username" required />
