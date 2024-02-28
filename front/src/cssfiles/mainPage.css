@@ -3,55 +3,25 @@
     height: 100vh;
 }
 
-.left-panel, .middle-panel, .right-panel {
-    height: 100%;
-    overflow: auto;
-}
-
 .left-panel {
-    width: 20%;
-    background-color: #f0f0f0;
-    transition: width 0.3s ease;
+    width: 15%;
+    border: 1px solid black;
+    box-sizing: border-box;
 }
 
-.left-panel.collapsed {
-    width: 0;
-    overflow: hidden;
+.panel {
+    flex-grow: 1;
+    border: 1px solid black;
+    box-sizing: border-box;
 }
 
-.middle-panel {
-    width: calc(40% - 10px); /* 10px은 toggle-button의 너비 */
-    background-color: #e0e0e0;
-    position: relative; /* 상대적 위치 지정 추가 */
+.divider {
+    cursor: ew-resize;
+    width: 1px;
+    background-color: #ccc;
 }
 
 .toggle-button {
-    width: 20px;
-    height: 20px;
     background-color: #ccc;
-    position: absolute;
-    top: 10px;
-    left: -10px;
     cursor: pointer;
-}
-
-.right-panel {
-    width: 40%;
-    background-color: #d0d0d0;
-}
-
-/* 경계선 스타일 */
-.middle-panel::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 1px; /* 경계선의 너비 */
-    background-color: #888; /* 경계선의 색상 */
-}
-
-/* 호버링 시 마우스 커서 형태 변경 */
-.middle-panel:hover::after {
-    cursor: ew-resize; /* 가로 크기 조절 커서 */
 }
