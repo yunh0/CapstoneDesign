@@ -1,61 +1,35 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import '../cssfiles/mainPage.css';
+import MyPage from './myPage'; // MyPage 컴포넌트 추가
 
-const App = () => {
-    const [dragging, setDragging] = useState(false);
-    const [positionX, setPositionX] = useState(null);
-    const [leftPanelVisible, setleftPanelVisible] = useState(true);
+const MainPage = () => {
+    const [showModal, setShowModal] = useState(false); // 모달 표시 여부 상태 추가
 
-    const handleMouseDown = (e) => {
-        setDragging(true);
-        setPositionX(e.clientX);
+    const toggleModal = () => {
+        setShowModal(!showModal); // 모달 표시 여부 토글
     };
 
-    const handleMouseUp = () => {
-        setDragging(false);
-    };
-
-    const handleMouseMove = (e) => {
-        if (dragging) {
-            const dx = e.clientX - positionX;
-            setPositionX(e.clientX);
-
-            const middlePanel = document.getElementById('middlePanel');
-            const rightPanel = document.getElementById('rightPanel');
-
-            const middlePanelWidth = parseInt(window.getComputedStyle(middlePanel).width, 10);
-            const rightPanelWidth = parseInt(window.getComputedStyle(rightPanel).width, 10);
-
-            middlePanel.style.width = `${middlePanelWidth + dx}px`;
-            rightPanel.style.width = `${rightPanelWidth - dx}px`;
-
-            // 숨겨진 요소들을 숨김
-            middlePanel.style.overflow = 'hidden';
-            rightPanel.style.overflow = 'hidden';
-        }
-    };
-
-    const toggleleftPanel = () => {
-        setleftPanelVisible(!leftPanelVisible);
+    const handleLogout = () => {
+        // 로그아웃 로직 추가
     };
 
     return (
-        <div className="container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
-            <div className="left-panel" style={{ display: leftPanelVisible ? 'block' : 'none' }}>
-                left Panel
+        <div className="container">
+            <div className="left-panel">
+                <button onClick={toggleModal}>마이페이지</button> {/* 마이페이지 버튼 추가 */}
+                <button onClick={handleLogout}>로그아웃</button> {/* 로그아웃 버튼 추가 */}
             </div>
             <div id="middlePanel" className="panel">
-                <button className="toggle-button" onClick={toggleleftPanel}>
-                    {leftPanelVisible ? 'Hide' : 'Show'}
-                </button>
                 middle Panel
             </div>
-            <div id="divider" className="divider" onMouseDown={handleMouseDown}></div>
+            <div id="divider" className="divider"></div>
             <div id="rightPanel" className="panel">
                 Right Panel
             </div>
+            {showModal && <MyPage onClose={toggleModal} />} {/* 모달 렌더링 */}
         </div>
     );
 };
 
-export default App;
+export default MainPage;
