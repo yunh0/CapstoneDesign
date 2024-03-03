@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import StartPage from './jsxfiles/startPage';
-import LoginPage from './jsxfiles/loginPage';
-import SignupPage from './jsxfiles/signupPage';
+import MainPage from './jsxfiles/mainPage';
+import ChatPage from './jsxfiles/chatPage';
+import RloginPage from './jsxfiles/rloginPage';
+
 import axios from "axios";
 
 function App() {
     const [hello, setHello] = useState('');
-    const [showText, setShowText] = useState(false);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setShowText(true);
-        }, 1000);
-
-        setTimeout(() => {
-            setShowText(false);
-        }, 4000);
-    }, []);
 /*
     useEffect(() => {
         axios.get('/api/test')
@@ -30,8 +22,9 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<StartPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/rlogin" element={<RloginPage />} />
+                <Route path="/main" element={<MainPage />} />
+                <Route path="/chat" element={<ChatPage />} />
             </Routes>
         </Router>
     );

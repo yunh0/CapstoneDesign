@@ -7,7 +7,7 @@ import Ap from './jsxfiles/mainPage';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Ap />
+        <App />
     </React.StrictMode>,
     document.getElementById('root')
 );

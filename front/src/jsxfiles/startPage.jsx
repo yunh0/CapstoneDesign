@@ -8,8 +8,8 @@ class StartPage extends React.Component {
             <div className="start-page-container">
                 <div className="background-overlay" />
                 <div className="project-name">PROJECT<br/>NAME</div>
-                <Link to="/login" className="login-button">Log in</Link>
-                <Link to="/signup" className="signup-button">Sign up</Link>
+                <Link to="/rlogin" className="login-button">Log in</Link>
+                <button className="signup-button">Sign up</button>
                 <div className="vertical-line" />
                 <div className="footer" />
             </div>
