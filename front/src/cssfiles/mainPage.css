@@ -1,106 +1,27 @@
-/* 모든 요소 기본 스타일 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .container {
     display: flex;
     height: 100vh;
-    background-color: #f5f5f5;
 }
-
 
 .left-panel {
     width: 15%;
-    background-color: #f5f5f5;
-    border-right: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    border: 1px solid black;
+    box-sizing: border-box;
 }
 
-.spare-panel {
+.panel {
     flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #383535;
-    padding: 20px;
-    border-left: 1px solid #ddd;
+    border: 1px solid black;
+    box-sizing: border-box;
 }
 
+.divider {
+    cursor: ew-resize;
+    width: 1px;
+    background-color: #ccc;
+}
 
-.left-panel button {
-    margin-bottom: 10px;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    background: none;
+.toggle-button {
+    background-color: #ccc;
     cursor: pointer;
-    color: #333;
-    transition: all 0.3s ease;
-}
-
-.left-panel button:hover {
-    background-color: #ddd;
-    border-radius: 5px;
-}
-
-
-.logout-btn {
-    margin-top: auto;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: #333;
-    transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-    background-color: #ddd;
-    border-radius: 5px;
-}
-
-.home-btn::before {
-    content: '\1F3E0'; /* 집 이모티콘 */
-}
-
-.find-btn::before {
-    content: '\1F50D'; /* 돋보기 이모티콘 */
-}
-
-.mypage-btn::before {
-    content: '\1F464'; /* 남자 상체 실루엣 이모티콘 */
-}
-
-.pinpage-btn::before {
-    content: '\1F4CC'; /* 압정 이모티콘 */
-}
-
-.chat-btn::before {
-    content: '\1F4AC'; /* 채팅 이모티콘 */
-}
-
- a {
-     margin-bottom: 10px;
-     font-size: 16px;
-     padding: 10px;
-     border: none;
-     background: none;
-     cursor: pointer;
-     transition: all 0.3s ease;
-    text-decoration: none;
-    color: #333;
-}
-a:hover {
-    background-color: #ddd;
-    border-radius: 5px;
-}
-.spare-panel a{
-    color: #F0F0F0;
 }
