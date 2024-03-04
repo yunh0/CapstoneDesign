@@ -1,0 +1,29 @@
+.chat-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.chat-left-panel {
+    width: 15%;
+    background-color: #f5f5f5;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.chat-panel {
+    color: #F0F0F0;
+    flex-grow: 1;
+    box-sizing: border-box;
+    background-color: #383535;
+    border-left: 1px solid #ddd;
+}
+
+.divider {
+    cursor: ew-resize;
+    width:1px;
+    background-color: #ddd;
+}
