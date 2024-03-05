@@ -39,7 +39,6 @@ const ChatPage = () => {
             middlePanelRef.current.style.width = `${middlePanelWidth + dx}px`;
             rightPanelRef.current.style.width = `${rightPanelWidth - dx}px`;
 
-            // 숨겨진 요소들을 숨김
             middlePanelRef.current.style.overflow = 'hidden';
             rightPanelRef.current.style.overflow = 'hidden';
         }

@@ -6,10 +6,7 @@ import ChatPage from './jsxfiles/chatPage';
 import RloginPage from './jsxfiles/rloginPage';
 import { getUserInfo } from './api/getUserInfo';
 
-import axios from "axios";
-
 function App() {
-    const [hello, setHello] = useState('');
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
@@ -20,19 +17,11 @@ function App() {
         initLogin();
     }, []);
 
-    /*
-        useEffect(() => {
-            axios.get('/api/test')
-                .then((res) => {
-                    setHello(res.data);
-                })
-        }, []);
-    */
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<StartPage />} />
-                <Route path="/rlogin" element={<RloginPage isLogin={isLogin} setIsLogin={setIsLogin}/>} />
+                <Route path="/rlogin" element={<RloginPage />} />
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/chat" element={<ChatPage />} />
             </Routes>

@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {postLoginToken} from "../api/postLoginToken";
-import Nav from "../components/Nav";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { postLoginToken } from "../api/postLoginToken";
 import GoogleLogin from "../components/GoogleLogin";
 
 const RloginPage = () => {
@@ -11,13 +10,10 @@ const RloginPage = () => {
         const { credential } = res;
         const result = await postLoginToken(credential, setIsLogin);
         setIsLogin(result);
+        if (result) {
+            navigate('/main');
+        }
     };
-
-    useEffect(() => {
-        if (!isLogin) return;
-        navigate('/main');
-    }, [isLogin]);
-
 
     return (
         <div className="container">
