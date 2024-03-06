@@ -1,9 +1,6 @@
 package com.hansung.InsuranceProject.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,6 +28,7 @@ public class Account extends BaseTimeEntity{
 
     private String roles;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "account")
     private List<ChatRoom> chatRooms = new ArrayList<>();
 

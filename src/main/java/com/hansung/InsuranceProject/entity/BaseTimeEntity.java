@@ -15,12 +15,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
 
-    @Column(nullable = false, insertable = false, updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
 
-
-    @Column(nullable = false, insertable = false, updatable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 }

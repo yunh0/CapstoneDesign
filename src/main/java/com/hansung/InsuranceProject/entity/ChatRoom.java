@@ -21,11 +21,17 @@ public class ChatRoom extends BaseTimeEntity{
 
     private String chatRoomName;
 
-    @ManyToOne
-    @JoinColumn(name= "account_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id")
     private Account account;
 
-    public ChatRoom(String chatRoomName) {
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "file_id")
+    private FileInformation fileInformation;
+
+    public ChatRoom(String chatRoomName, Account account, FileInformation fileInformation) {
         this.chatRoomName = chatRoomName;
+        this.account = account;
+        this.fileInformation = fileInformation;
     }
 }
