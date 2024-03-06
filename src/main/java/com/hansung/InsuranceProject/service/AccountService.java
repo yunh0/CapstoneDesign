@@ -8,7 +8,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.hansung.InsuranceProject.config.JWTUtils;
 import com.hansung.InsuranceProject.repository.AccountRepository;
 import com.hansung.InsuranceProject.dto.IdTokenRequestDto;
-import com.hansung.InsuranceProject.user.Account;
+import com.hansung.InsuranceProject.entity.Account;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

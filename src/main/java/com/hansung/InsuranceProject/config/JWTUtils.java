@@ -1,6 +1,6 @@
 package com.hansung.InsuranceProject.config;
 
-import com.hansung.InsuranceProject.user.Account;
+import com.hansung.InsuranceProject.entity.Account;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

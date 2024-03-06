@@ -1,7 +1,7 @@
 package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.service.AccountService;
-import com.hansung.InsuranceProject.user.Account;
+import com.hansung.InsuranceProject.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
