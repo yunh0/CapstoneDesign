@@ -12,7 +12,17 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    position: relative; /* 추가 */
 }
+.chatchat{
+    height:10%;
+}
+.chat-left-panel button {
+    width: 100%; /* 추가 */
+    margin-bottom: 10px; /* 추가 */
+
+}
+
 
 .chat-panel {
     color: #F0F0F0;
@@ -21,7 +31,19 @@
     background-color: #383535;
     border-left: 1px solid #ddd;
 }
+.button-wrapper{
+    height: 80%;
+    width: 98%;
+    border: 2px solid black;
+    padding: 10px;
+    overflow: auto;
 
+}
+.newchat-btn{
+    margin: 10px;
+    height: 10%;
+    padding: 10px;
+}
 .divider {
     cursor: ew-resize;
     width:1px;
