@@ -32,7 +32,7 @@ const NewChatModal = ({ onClose, setChatList }) => {
         if (title.trim() === '') {
             document.getElementById("newchat-input").setAttribute("placeholder", "!!내용을 입력하세요!!");
         } else {
-            const newChat = { title, insuranceType, insuranceCompany, insuranceTerms };
+            const newChat = { insuranceTerms };
             setChatList(prevChatList => [...prevChatList, newChat]);
             onClose();
 
