@@ -1,0 +1,76 @@
+.start-page-container {
+    width: 100vw;
+    height: 100vh;
+    min-width: 600px;
+    min-height: 400px;
+    position: relative;
+    background: white;
+}
+
+.background-overlay {
+    width: 100%;
+    height: 40%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    background: #F0F0F0;
+}
+
+.project-name {
+    width: 57%;
+    height: 15%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-85%, -200%);
+    position: absolute;
+    color: black;
+    font-size: 6vw;
+    font-family: Ibarra Real Nova;
+    font-weight: 300;
+    word-wrap: break-word;
+}
+
+.login-button, .signup-button {
+    width: 10%;
+    height: 8.5%;
+    position: absolute;
+    background: #FFFDFD;
+    border-radius: 1.5vw;
+    border: 0.2vw black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-size: 2.5vw;
+    font-family: Ibarra Real Nova;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.login-button {
+    left: 62%;
+    top: 47%;
+}
+
+.signup-button {
+    left: 82%;
+    top: 47%;
+}
+
+.vertical-line {
+    width: 5.3%;
+    height: 0.07%;
+    left: 95%;
+    top: 0;
+    position: absolute;
+}
+
+.footer {
+    width: 100%;
+    height: 9%;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    background: #191970;
+}
