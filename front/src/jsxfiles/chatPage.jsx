@@ -63,12 +63,10 @@ const ChatPage = () => {
                 <Link to="/main" className="home-btn">홈</Link>
                 <div className="button-wrapper">
                     {chatList.map((chat, index) => (
-                        <button key={index}>{chat.title}</button>
+                        <button className="chatchat" key={index}>{chat.title}</button>
                     ))}
                     <button onClick={handlePdfViewer} className="chatchat">보험회사 PDF</button>
-                    {newChatButtons.map((button, index) => (
-                        <button key={index}>{button.title}</button>
-                    ))}
+
                 </div>
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn">로그아웃</button>

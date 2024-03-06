@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../cssfiles/newchatModal.css';
+import { postInsuranceTerms } from '../api/postInsuranceTerms';
 
 const NewChatModal = ({ onClose, setChatList }) => {
     const [title, setTitle] = useState('');
@@ -13,23 +14,35 @@ const NewChatModal = ({ onClose, setChatList }) => {
 
     const handleInsuranceTypeChange = (e) => {
         setInsuranceType(e.target.value);
+        setInsuranceCompany('');
+        setInsuranceTerms('');
     };
 
     const handleInsuranceCompanyChange = (e) => {
         setInsuranceCompany(e.target.value);
+        const terms = `${e.target.value}${insuranceType}`;
+        setInsuranceTerms(terms);
     };
 
     const handleInsuranceTermsChange = (e) => {
         setInsuranceTerms(e.target.value);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (title.trim() === '') {
             document.getElementById("newchat-input").setAttribute("placeholder", "!!내용을 입력하세요!!");
         } else {
             const newChat = { title, insuranceType, insuranceCompany, insuranceTerms };
             setChatList(prevChatList => [...prevChatList, newChat]);
             onClose();
+
+            // Post insurance terms to the backend
+            const success = await postInsuranceTerms(newChat);
+            if (success) {
+                console.log('Insurance terms posted successfully.');
+            } else {
+                console.error('Failed to post insurance terms.');
+            }
         }
     };
 
@@ -55,29 +68,36 @@ const NewChatModal = ({ onClose, setChatList }) => {
                     <label>연금</label>
                 </div>
 
-                <label>보험사</label>
-                <div>
-                    <input type="radio" name="insuranceCompany" value="A" checked={insuranceCompany === "A"} onChange={handleInsuranceCompanyChange} />
-                    <label>A</label>
-                    <input type="radio" name="insuranceCompany" value="B" checked={insuranceCompany === "B"} onChange={handleInsuranceCompanyChange} />
-                    <label>B</label>
-                    <input type="radio" name="insuranceCompany" value="C" checked={insuranceCompany === "C"} onChange={handleInsuranceCompanyChange} />
-                    <label>C</label>
-                </div>
+                {insuranceType && (
+                    <div>
+                        <label>보험사</label>
+                        <div>
+                            <input type="radio" name="insuranceCompany" value="A" checked={insuranceCompany === "A"} onChange={handleInsuranceCompanyChange} />
+                            <label>A</label>
+                            <input type="radio" name="insuranceCompany" value="B" checked={insuranceCompany === "B"} onChange={handleInsuranceCompanyChange} />
+                            <label>B</label>
+                            <input type="radio" name="insuranceCompany" value="C" checked={insuranceCompany === "C"} onChange={handleInsuranceCompanyChange} />
+                            <label>C</label>
+                        </div>
 
-                <label>보험약관</label>
-                <div>
-                    <input type="radio" name="insuranceTerms" value="가" checked={insuranceTerms === "가"} onChange={handleInsuranceTermsChange} />
-                    <label>가</label>
-                    <input type="radio" name="insuranceTerms" value="나" checked={insuranceTerms === "나"} onChange={handleInsuranceTermsChange} />
-                    <label>나</label>
-                    <input type="radio" name="insuranceTerms" value="다" checked={insuranceTerms === "다"} onChange={handleInsuranceTermsChange} />
-                    <label>다</label>
-                    <input type="radio" name="insuranceTerms" value="라" checked={insuranceTerms === "라"} onChange={handleInsuranceTermsChange} />
-                    <label>라</label>
-                    <input type="radio" name="insuranceTerms" value="마" checked={insuranceTerms === "마"} onChange={handleInsuranceTermsChange} />
-                    <label>마</label>
-                </div>
+                        {insuranceCompany && (
+                            <div>
+                                <label>보험약관</label>
+                                <div>
+                                    {Array.from({ length: 5 }, (_, i) => {
+                                        const term = `${insuranceCompany}${insuranceType}${i + 1}`;
+                                        return (
+                                            <div key={i}>
+                                                <input type="radio" name="insuranceTerms" value={term} checked={insuranceTerms === term} onChange={handleInsuranceTermsChange} />
+                                                <label>{term}</label>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 <button className="newchat-ok" onClick={handleSubmit}>확인</button>
             </div>
