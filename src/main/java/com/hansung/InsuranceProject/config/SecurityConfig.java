@@ -23,11 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers("/api/oauth/login")
-                        .ignoringAntMatchers("/api/insurance/terms");
+                .ignoringAntMatchers("/api/insurance/terms");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers("/api/oauth/login").permitAll()
+                .antMatchers("api/insurance/terms").permitAll()
                 .anyRequest().authenticated();
     }
 }
