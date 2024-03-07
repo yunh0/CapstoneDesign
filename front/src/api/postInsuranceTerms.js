@@ -10,7 +10,7 @@ export const postInsuranceTerms = async (newChat) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ newChat }),
+            body: JSON.stringify( newChat ),
         });
         if (!response.ok) throw new Error('bad server condition');
         console.log(newChat)

@@ -8,6 +8,8 @@ import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.FileInformationRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
@@ -20,9 +22,10 @@ public class ChatRoomService {
         this.fileInformationRepository = fileInformationRepository;
     }
 
-    public ChatRoom createChatRoom(Long accountId, String chatRoomName, Long fileId) {
+    @Transactional
+    public ChatRoom createChatRoom(Long accountId, String chatRoomName, String fileName) {
         Account creator = accountRepository.findById(accountId).orElse(null);
-        FileInformation file = fileInformationRepository.findById(fileId).orElse(null);
+        FileInformation file = fileInformationRepository.findByFileName(fileName).orElse(null);
         if (creator != null) {
             ChatRoom chatRoom = new ChatRoom(chatRoomName, creator, file);
             creator.getChatRooms().add(chatRoom);

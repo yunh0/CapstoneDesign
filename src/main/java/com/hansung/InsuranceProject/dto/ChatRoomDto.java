@@ -9,12 +9,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomDto {
-
     private String chatRoomName;
 
-    private static final ChatRoomDto convertToDto(ChatRoom chatRoom){
+    private String filePath;
+
+    public static final ChatRoomDto convertToDto(ChatRoom chatRoom){
         return ChatRoomDto.builder()
                 .chatRoomName(chatRoom.getChatRoomName())
+                .filePath(chatRoom.getFileInformation().getFilePath())
                 .build();
     }
 }
