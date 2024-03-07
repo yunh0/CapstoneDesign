@@ -3,104 +3,120 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 폰트 변경 */
 }
 
 .container {
     display: flex;
     height: 100vh;
-    background-color: #f5f5f5;
+    background-color: #EFF0F1; /* 배경색 변경 */
+}
+.content-container {
+    font-size: 100px;
+}
+@keyframes colorShift {
+    0% {
+        background: linear-gradient(135deg, #FFFFFF, #E0E0E0);
+        color: black; /* 초기 텍스트 색상 */
+    }
+    50% {
+        background: linear-gradient(135deg, #9E9E9E, #BDBDBD);
+        color: white; /* 중간 텍스트 색상 */
+    }
+    100% {
+        background: linear-gradient(135deg, #FFFFFF, #E0E0E0);
+        color: black; /* 끝 텍스트 색상 */
+    }
 }
 
+.chat-link {
+    font-size: 40px;
+    right: 5%; /* 왼쪽으로부터 50% 위치에 배치 */
+    bottom: 9%;
+    position: fixed;
+    font-family: 'Roboto Condensed', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 30px 40px;
+    color: white;
+    border-radius: 30px;
+    display: inline-block; /* Add this to make it inline-block */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+    animation: colorShift 2s infinite; /* 애니메이션 적용 */
+}
+
+.chat-link:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #5a4daa, #783CBD);
+}
 
 .left-panel {
-    width: 15%;
-    background-color: #f5f5f5;
-    border-right: 1px solid #ddd;
+    width: 20%;
+    background-color: #F7F7F7;
+    border-right: 2px solid #E1E1E1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0; /* 상단 및 하단 패딩 조정 */
+    color: #333;
+    justify-content: space-between; /* 버튼 간 동일 간격 유지 */
 }
-
 .spare-panel {
+    height:100%;
     flex-grow: 1;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: #383535;
-    padding: 20px;
-    border-left: 1px solid #ddd;
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+    color: #ECF0F1; /* 텍스트 색상 변경, 밝은 색상 유지 */
+    padding: 0px;
+    border-left: 2px solid #2C3E50; /* 테두리 색상 및 두께 변경, 어두운 색상 유지 */
 }
 
-
-.left-panel button {
-    margin-bottom: 10px;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    background: none;
+.left-panel button, .left-panel a, .logout-btn {
+    margin-bottom: 15px; /* 마진 변경 */
+    font-size: 50px; /* 폰트 크기 변경 */
+    padding: 12px 20px; /* 패딩 변경 */
+    border: 1px solid transparent; /* 테두리 변경 */
+    background-color: #F7F7F7; /* 버튼 배경색 변경, 밝은 아이보리/화이트 계열로 변경 */
     cursor: pointer;
-    color: #333;
+    color: #333; /* 텍스트 색상 변경, 어두운 색상으로 변경 */
+    border-radius: 4px; /* 버튼 모서리 둥글게 */
     transition: all 0.3s ease;
 }
 
-.left-panel button:hover {
-    background-color: #ddd;
-    border-radius: 5px;
+.home-btn {
+    display: inline-block; /* 이미지를 포함할 수 있도록 display 속성 변경 */
+    width: 250px; /* 로고 이미지의 너비, 필요에 따라 조정 */
+    height: 70px; /* 로고 이미지의 높이, 필요에 따라 조정 */
+    background-image: url('../assets/images/logo.png'); /* 로고 이미지 URL */
+    background-size: cover; /* 이미지가 버튼 크기에 맞게 조정 */
+    background-position: center; /* 이미지가 버튼 중앙에 위치 */
+    background-repeat: no-repeat; /* 이미지가 반복되지 않음 */
+    border: none; /* 버튼의 테두리 제거, 필요에 따라 조정 */
+    padding: 0; /* 내부 패딩 제거 */
 }
 
+/* 아이콘 스타일 변경 유지 */
+.home-btn::before { content: none; }
+.find-btn::before { content: '\1F50D'; }
+.mypage-btn::before { content: '\1F464'; }
+.pinpage-btn::before { content: '\1F4CC'; }
+.chat-btn::before { content: '\1F4AC'; }
+.logout-btn::before { content: '\1F6AA'}
 
-.logout-btn {
-    margin-top: auto;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: #333;
-    transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-    background-color: #ddd;
-    border-radius: 5px;
+.chat-btn {
+    text-decoration: none; /* 밑줄 없애기 */
 }
 
-.home-btn::before {
-    content: '\1F3E0'; /* 집 이모티콘 */
-}
-
-.find-btn::before {
-    content: '\1F50D'; /* 돋보기 이모티콘 */
-}
-
-.mypage-btn::before {
-    content: '\1F464'; /* 남자 상체 실루엣 이모티콘 */
-}
-
-.pinpage-btn::before {
-    content: '\1F4CC'; /* 압정 이모티콘 */
-}
-
-.chat-btn::before {
-    content: '\1F4AC'; /* 채팅 이모티콘 */
-}
-
-a {
-    margin-bottom: 10px;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    color: #333;
-}
-a:hover {
-    background-color: #ddd;
-    border-radius: 5px;
-}
-.spare-panel a{
-    color: #F0F0F0;
+.welcome-message p {
+    font-family: 'Impact', sans-serif; /* 글씨체 변경 */
+    margin: 30px 0; /* 줄 간격 조정 */
+    text-align: left; /* 텍스트 중앙 정렬 */
+    font-size: 120px; /* 글씨 크기 */
+    margin-left:200px;
+    margin-top:100px;
+    margin-bottom:130px;
+    letter-spacing: 11px; /* 자간 조정 */
 }

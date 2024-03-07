@@ -1,17 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .chat-container {
     display: flex;
     height: 100vh;
-    background-color: #f5f5f5;
+    background-color: #f5f5f5; /* 메인 페이지 배경색과 동일하게 조정 */
 }
 
 .chat-left-panel {
-    width: 15%;
-    background-color: #f5f5f5;
-    border-right: 1px solid #ddd;
+    width: 20%; /* 메인 페이지와 동일한 비율 */
+    background-color: #F7F7F7;
+    border-right: 2px solid #E1E1E1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0; /* 상단 및 하단 패딩 유지 */
+    color: #333;
+    justify-content: space-between; /* 버튼 간 동일 간격 유지, 메인 페이지 스타일 적용 */
 }
 
 .chat-panel {
@@ -22,8 +31,120 @@
     border-left: 1px solid #ddd;
 }
 
+.chat-room-list {
+    margin-top: 20px;
+    overflow-y: auto;
+    width: 100%; /* 채팅방 목록 너비 조정 */
+}
+
+.chat-room {
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #FFFFFF; /* 배경색을 밝게 설정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 입체감을 주는 그림자 추가 */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-room:hover {
+    transform: translateY(-3px); /* 호버 시 약간 위로 움직이는 효과 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강조 */
+}
+
+.chat-panel.right {
+    background-color: #f0f0f0; /* 밝은 회색으로 배경 설정 */
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: white; /* 입력 창 배경색 조정 */
+}
+
+.chat-input-container {
+    display: flex;
+    border-top: 2px solid #E1E1E1;
+    padding: 10px;
+    background-color: #F8F9FA; /* 입력 창 배경색 조정 */
+}
+.chat-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 2px solid #E1E1E1;
+    margin-right: 10px; /* 입력 필드와 전송 버튼 사이의 간격 */
+    font-size: 16px; /* 입력 텍스트 크기 */
+    outline: none; /* 포커스 시 테두리 제거 */
+}
+
+.chat-submit-button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #FFFFFF;
+    border-radius: 50%; /* 원형 버튼으로 만들기 */
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* 아이콘 크기 조정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-submit-button:hover {
+    background-color: #0056b3;
+}
+
+
+.chat-message {
+    padding: 12px 20px;
+    border-radius: 25px;
+    margin-bottom: 10px;
+    max-width: 100%;
+    word-wrap: break-word; /* 긴 텍스트 처리 */
+}
+
+.chat-message.sent {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+
+.chat-message.received {
+    align-self: flex-start;
+    background-color: aliceblue;
+    color: #000;
+}
+
 .divider {
     cursor: ew-resize;
     width:1px;
     background-color: #ddd;
+}
+
+/* 메인 페이지와 동일한 버튼 스타일 적용 */
+.chat-left-panel button:not(.logout-btn), .chat-left-panel a {
+    margin-bottom: 20px; /* 조금 더 여유 있는 간격 */
+    font-size: 18px; /* 텍스트 크기를 적절히 조정 */
+    padding: 15px 25px; /* 내부 여백 조정 */
+    border: 2px solid transparent; /* 테두리 더 명확하게 */
+    cursor: pointer;
+    color: #333; /* 텍스트 색상 유지 */
+    border-radius: 20px; /* 모서리 더 둥글게 */
+    transition: all 0.3s ease;
+}
+
+.logout-btn {
+    margin-bottom: 20px; /* 조금 더 여유 있는 간격 */
+    font-size: 30px; /* 텍스트 크기를 적절히 조정 */
+    padding: 15px 25px; /* 내부 여백 조정 */
+    border: 2px solid transparent; /* 테두리 더 명확하게 */
+    cursor: pointer;
+    color: #333; /* 텍스트 색상 유지 */
+    border-radius: 20px; /* 모서리 더 둥글게 */
+    transition: all 0.3s ease;
 }

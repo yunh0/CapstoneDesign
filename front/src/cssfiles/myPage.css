@@ -1,0 +1,88 @@
+
+.mypage-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+    height: 100vh;
+    box-sizing: border-box;
+    font-size: 36px; /* Large font size for greeting */
+    width:100%;
+    padding:70px;
+}
+
+.mypage-header {
+    width: 80%; /* Adjust the width as necessary */
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+    color: white;
+    box-sizing: border-box;
+    border-radius: 10px; /* Rounded corners */
+    font-size: 36px; /* Large font size for greeting */
+    padding:0;
+}
+.mypage-content {
+    width:100%;
+    font-size: 70px; /* Large font size for greeting */
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+}
+
+.mypage-greeting {
+    font-family: 'Helvetica', sans-serif; /* 글씨체 변경 */
+    font-size: 100px; /* Large font size for greeting */
+    margin-bottom: 90px; /* Spacing below greeting */
+}
+
+.mypage-details {
+    display: flex;
+    width: 100%;
+    font-family: 'Impact', sans-serif; /* 글씨체 변경 */
+    justify-content: space-between; /* Aligns children with space between */
+    align-items: center; /* Centers children vertically */
+    border-bottom: 3px solid #ddd; /* Separator line */
+    padding-bottom: 50px; /* Spacing below details */
+    margin-bottom: 50px; /* Spacing below the details section */
+    font-size: 30px; /* Large font size for greeting *
+    /* Other styling properties */
+}
+.mypage-info-wrapper {
+    flex-grow: 1; /* Ensures it takes up the available space */
+    display: flex;
+    justify-content: space-between; /* Pushes the button to the far right */
+    align-items: center; /* Aligns children vertically */
+}
+
+
+.mypage-update-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    display: inline-block; /* Align button next to text */
+    margin-top: 20px; /* Spacing above the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: all 0.3s ease;
+    font-size: 30px;
+}
+
+.mypage-update-btn:hover {
+    background: white;
+    color: #383535;
+}
+
+.mypage-search {
+    width: 100%; /* Take the full width of the header */
+}
+.mypage-search-title {
+    font-size: 50px;
+    font-family: 'YuGothic', sans-serif; /* 글씨체 변경 */
+    font-weight: 500; /* 중간체로 설정 */
+}
+
+.mypage-search-box {
+    background: #fff;
+    height: 500px; /* Adjust the height as necessary */
+    width: 100%; /* Take the full width of the search section */
+    margin-top: 50px; /* Spacing above the search box */
+    border-radius: 10px; /* Rounded corners for the search box */
+}

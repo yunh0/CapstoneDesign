@@ -18,14 +18,12 @@ function App() {
     }, []);
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<StartPage />} />
-                <Route path="/rlogin" element={<RloginPage />} />
-                <Route path="/main" element={<MainPage />} />
-                <Route path="/chat" element={<ChatPage />} />
-            </Routes>
-        </Router>
+        <Routes> {/* BrowserRouter 대신 Routes */}
+            <Route path="/" element={<StartPage />} />
+            <Route path="/rlogin" element={<RloginPage />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+        </Routes>
     );
 }
 
