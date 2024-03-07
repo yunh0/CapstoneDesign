@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-panel {
+    width: 15%;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+.panel {
+    flex-grow: 1;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
