@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
 import NewChatModal from '../jsxfiles/newchatModal';
 
 const ChatPage = () => {
+    const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [chatList, setChatList] = useState([]);
@@ -20,7 +22,8 @@ const ChatPage = () => {
     ]);
 
     const handleLogout = () => {
-        // 로그아웃 로직 추가
+        setIsLogin(false);
+        navigate('/rlogin');
     };
 
     const handleNewChat = () => {

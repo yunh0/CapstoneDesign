@@ -1,16 +1,19 @@
 // MainPage.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import MyPage from '../jsxfiles/myPage';
 import FindPage from '../jsxfiles/findPage';
 import PinPage from '../jsxfiles/pinPage';
 import '../cssfiles/mainPage.css'
 
 const MainPage = () => {
+    const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
 
     const handleLogout = () => {
-        // 로그아웃 로직 추가
+        setIsLogin(false);
+        navigate('/rlogin');
     };
 
     const handlePageChange = (pageName) => {

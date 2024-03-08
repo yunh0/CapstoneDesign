@@ -7,7 +7,7 @@ import RloginPage from './jsxfiles/rloginPage';
 import { getUserInfo } from './api/getUserInfo';
 
 function App() {
-    const [isLogin, setIsLogin] = useState(false);
+     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
         const initLogin = async () => {
