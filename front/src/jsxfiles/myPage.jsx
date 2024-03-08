@@ -25,7 +25,7 @@ export default function MyPage({ isLogin })  {
     return (
         <div className="mypage-wrapper">
             <div className="mypage-header">
-                <h1 className="mypage-greeting">HI DA YOUNG</h1>
+                <h1 className="mypage-greeting">HI USER!</h1>
             </div>
             <div className = "mypage-content">
                 <div className="mypage-details">

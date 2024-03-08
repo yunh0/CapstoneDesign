@@ -78,12 +78,14 @@ const ChatPage = () => {
                 <Link to="/main" className="home-btn"></Link>
                 <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
                     <div className="chat-room">
-                        <button className="chat-message" onClick={handlePdfViewer} style={{marginTop: "20px"}}>PDF 보기
+                        <button className="chat-message" onClick={handlePdfViewer} style={{marginTop: "20px",width: '100%'}}>PDF 보기
                         </button>
-                        {chatList.map((chat, index) => (
-                            <button className="chat-message" key={index}>{chat.title}</button>
-                        ))}
                     </div>
+                    {chatList.map((chat, index) => (
+                        <div className="chat-room">
+                            <button style={{width: '100%'}} className="chat-message" key={index}>{chat.title}</button>
+                        </div>
+                    ))}
                 </div>
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
@@ -111,8 +113,7 @@ const ChatPage = () => {
                 </form>
 
             </div>
-            {showNewChatModal && <NewChatModal onClose={() => setShowNewChatModal(false)} setChatList={setChatList}
-                                               onNewChatButton={handleNewChatButton}/>}
+            {showNewChatModal && <NewChatModal onClose={() => setShowNewChatModal(false)} setChatList={setChatList} onNewChatButton={handleNewChatButton} />}
         </div>
     );
 };
