@@ -1,7 +1,28 @@
 import React from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import { useState } from 'react';
+import { getUserInfo } from '../api/getUserInfo';
 import '../cssfiles/myPage.css'; // Ensure this is the correct path to your CSS file
 
-const MyPage = () => {
+export default function MyPage({ isLogin })  {
+    const navigate = useNavigate();
+    const [info, setInfo] = useState({
+        email: '',
+        firstName: '',
+        lastName: '',
+    });
+
+    useEffect(() => {
+        if (!isLogin) navigate('/');
+
+        const initUserinfo = async () => {
+            const newinfo = await getUserInfo();
+            setInfo(newinfo);
+        };
+        initUserinfo();
+    }, [isLogin]);
+
+
     return (
         <div className="mypage-wrapper">
             <div className="mypage-header">
@@ -11,8 +32,8 @@ const MyPage = () => {
                 <div className="mypage-details">
                     <div className="mypage-info-wrapper">
                         <div className="mypage-info">
-                            <p>NAME: LEE DA YOUNG</p>
-                            <p>EMAIL: dayung5520@gmail.com</p>
+                            <p>NAME: {`${info.lastName} ${info.firstName}`}</p>
+                            <p>EMAIL: {info.email}</p>
                         </div>
                         <div className="mypage-update-btn-wrapper">
                             <button className="mypage-update-btn">UPDATE ACCOUNT</button>
