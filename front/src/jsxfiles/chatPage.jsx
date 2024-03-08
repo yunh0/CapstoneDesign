@@ -86,8 +86,10 @@ const ChatPage = () => {
 
     const handleNewChatButton = (title) => {
         const newButton = { title };
-        setNewChatButtons(prevButtons => [ newButton,...prevButtons]);
+        // 버튼을 맨 앞에 추가하기 위해 기존 버튼 배열 앞에 새로운 버튼을 추가합니다.
+        setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
     };
+
 
     const pdfUrl = `https://www.kwdi.re.kr/flexer/view.jsp?FileDir=/CM005&SystemFileName=CM0009_66_1&ftype=pdf&FileName=%EC%97%AC%EC%84%B1%EC%97%B0%EA%B5%AC%EB%85%BC%EB%AC%B8_89-2_(0107_%ED%95%A9%EB%B3%B8%EC%B5%9C%EC%A2%85).pdf`;
 
@@ -96,15 +98,18 @@ const ChatPage = () => {
             <div className="chat-left-panel">
                 <Link to="/main" className="home-btn"></Link>
                 <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
+
+                    {chatList.slice(0).reverse().map((chat, index) => (
+                        <div className="chat-room">
+                            <button style={{width: '100%', height: '70px'}} className="chat-message"
+                                    key={index}>{chat.title}</button>
+                        </div>
+                    ))}
+
                     <div className="chat-room">
                         <button className="chat-message" onClick={handlePdfViewer} style={{width: '100%'}}>PDF 보기
                         </button>
                     </div>
-                    {chatList.map((chat, index) => (
-                        <div className="chat-room">
-                            <button style={{width: '100%', height: '70px'}} className="chat-message" key={index}>{chat.title}</button>
-                        </div>
-                    ))}
                 </div>
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
