@@ -3,6 +3,9 @@ import {Link, useNavigate} from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
 import NewChatModal from '../jsxfiles/newchatModal';
+import { getChatResponse } from '../api/getChatResponse';
+import { postChatContent} from "../api/postChatContent";
+
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -42,16 +45,32 @@ const ChatPage = () => {
     const handleMouseUp = () => {
         setDragging(false);
     };
-    const handleSendMessage = (event) => {
+    const handleSendMessage = async (event) => {
         event.preventDefault();
         const messageText = event.target.elements.message.value;
         if (messageText.trim()) {
             const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
             setMessages([...messages, newMessage]);
-            event.target.elements.message.value = ''; // 입력 필드 초기화
+
+            // 백엔드로 채팅 내용 전송
+            const success = await postChatContent(messageText);
+            if (!success) {
+               ;
+                console.error('Failed to send message to the backend');
+            } else {
+                // 백엔드로부터 대답 받아오기
+                const response = await getChatResponse(messageText);
+                if (response) {
+                    const newResponse = { id: messages.length + 2, text: response, sender: "received" };
+                    setMessages([...messages, newResponse]);
+                } else {
+                    console.error('Failed to get chat response from the backend');
+                }
+            }
+
+            event.target.elements.message.value = '';
         }
     };
-
     const handleMouseMove = (e) => {
         if (dragging) {
             const dx = e.clientX - positionX;
@@ -78,12 +97,12 @@ const ChatPage = () => {
                 <Link to="/main" className="home-btn"></Link>
                 <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
                     <div className="chat-room">
-                        <button className="chat-message" onClick={handlePdfViewer} style={{marginTop: "20px",width: '100%'}}>PDF 보기
+                        <button className="chat-message" onClick={handlePdfViewer} style={{width: '100%'}}>PDF 보기
                         </button>
                     </div>
                     {chatList.map((chat, index) => (
                         <div className="chat-room">
-                            <button style={{width: '100%'}} className="chat-message" key={index}>{chat.title}</button>
+                            <button style={{width: '100%', height: '70px'}} className="chat-message" key={index}>{chat.title}</button>
                         </div>
                     ))}
                 </div>
@@ -106,7 +125,7 @@ const ChatPage = () => {
                     ))}
                 </div>
                 <form className="chat-input-container" onSubmit={handleSendMessage}>
-                    <input className="chat-input" name="message" type="text" placeholder="메시지 입력..."/>
+                    <textarea className="chat-input" name="message" type="text" placeholder="메시지 입력..."/>
                     <button className="chat-submit-button">
                         <i className="fas fa-paper-plane"></i>
                     </button>
