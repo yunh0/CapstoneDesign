@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postLoginToken } from "../api/postLoginToken";
 import GoogleLogin from "../components/GoogleLogin";
+import { Link } from 'react-router-dom';
 
 const RloginPage = () => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const RloginPage = () => {
                 <button className="mypage-btn">마이페이지</button>
                 <button className="pinpage-btn">핀페이지</button>
                 <button className="find-btn">찾기</button>
-                <button className="chat-btn">챗페이지</button>
+                <Link to="/chat" className="chat-btn">챗페이지</Link>
             </div>
             <div>
                 <h1>Login Page</h1>
