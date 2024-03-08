@@ -1,11 +1,11 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { getUserInfo } from '../api/getUserInfo';
-import '../cssfiles/myPage.css'; // Ensure this is the correct path to your CSS file
+import '../cssfiles/myPage.css';
 
 export default function MyPage({ isLogin })  {
-    const navigate = useNavigate();
     const [info, setInfo] = useState({
         email: '',
         firstName: '',
@@ -13,7 +13,6 @@ export default function MyPage({ isLogin })  {
     });
 
     useEffect(() => {
-        if (!isLogin) navigate('/');
 
         const initUserinfo = async () => {
             const newinfo = await getUserInfo();
@@ -49,5 +48,3 @@ export default function MyPage({ isLogin })  {
         </div>
     );
 };
-
-export default MyPage;

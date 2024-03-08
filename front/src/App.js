@@ -21,7 +21,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<StartPage />} />
-                <Route path="/rlogin" element={<RloginPage />} />
+                <Route path="/rlogin" element={<RloginPage isLogin={isLogin} setIsLogin={setIsLogin} />} />
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/chat" element={<ChatPage />} />
             </Routes>
