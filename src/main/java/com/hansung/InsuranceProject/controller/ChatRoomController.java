@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,9 +30,24 @@ public class ChatRoomController {
         ChatRoom chatRoom = chatRoomService.createChatRoom(Long.valueOf(principal.getName()), request.getTitle(), request.getInsuranceTerms());
         ChatRoomDto chatRoomDto = ChatRoomDto.convertToDto(chatRoom);
 
+        List<ChatRoomDto> chatRooms = chatRoomService.getUserChatRooms(Long.valueOf(principal.getName()));
+        System.out.println("User's Chat Rooms:");
+        for (ChatRoomDto chatRoom2 : chatRooms) {
+            System.out.println("Chat Room Name: " + chatRoom2.getChatRoomName());
+            System.out.println("File Path: " + chatRoom2.getFilePath());
+            System.out.println("--------");
+        }
+
+
         sendFilePathToFlask(chatRoomDto.getFilePath());
 
         return ResponseEntity.ok().body(chatRoomDto);
+    }
+
+    @GetMapping("/user/chatrooms")
+    public ResponseEntity<List<ChatRoomDto>> giveUserChatRooms(Principal principal){
+        List<ChatRoomDto> chatRooms = chatRoomService.getUserChatRooms(Long.valueOf(principal.getName()));
+        return ResponseEntity.ok().body(chatRooms);
     }
 
     private void sendFilePathToFlask(String filePath) {
