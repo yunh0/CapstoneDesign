@@ -22,15 +22,6 @@
     color: #333;
     justify-content: space-between; /* 버튼 간 동일 간격 유지, 메인 페이지 스타일 적용 */
 }
-.chatchat{
-    height:10%;
-}
-.chat-left-panel button {
-    width: 100%; /* 추가 */
-    margin-bottom: 10px; /* 추가 */
-
-}
-
 
 .chat-panel {
     color: #F0F0F0;
@@ -39,12 +30,6 @@
     background-color: #383535;
     border-left: 1px solid #ddd;
 }
-.button-wrapper{
-    height: 80%;
-    width: 98%;
-    border: 2px solid black;
-    padding: 10px;
-    overflow: auto;
 
 .chat-room-list {
     margin-top: 20px;

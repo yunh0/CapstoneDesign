@@ -2,16 +2,11 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
-import NewChatModal from '../jsxfiles/newchatModal';
 
 const ChatPage = () => {
     const [showPdfViewer, setShowPdfViewer] = useState(false);
-    const [showNewChatModal, setShowNewChatModal] = useState(false);
-    const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
-    const [newChatButtons, setNewChatButtons] = useState([]);
-
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
@@ -26,10 +21,6 @@ const ChatPage = () => {
 
     const handleLogout = () => {
         // 로그아웃 로직 추가
-    };
-
-    const handleNewChat = () => {
-        setShowNewChatModal(true);
     };
 
     const handlePdfViewer = () => {
@@ -49,10 +40,13 @@ const ChatPage = () => {
         if (dragging) {
             const dx = e.clientX - positionX;
             setPositionX(e.clientX);
+
             const middlePanelWidth = middlePanelRef.current.offsetWidth;
             const rightPanelWidth = rightPanelRef.current.offsetWidth;
+
             middlePanelRef.current.style.width = `${middlePanelWidth + dx}px`;
             rightPanelRef.current.style.width = `${rightPanelWidth - dx}px`;
+
             middlePanelRef.current.style.overflow = 'hidden';
             rightPanelRef.current.style.overflow = 'hidden';
         }
@@ -91,7 +85,7 @@ const ChatPage = () => {
                 <div className="chat-middle-content">
                     <span>Middle Panel</span>
                 </div>
-                {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{width: '100%', height: '96%'}}/>}
+                {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }}/>}
             </div>
             <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
             <div ref={rightPanelRef} className="chat-panel right">

@@ -19,7 +19,7 @@ function App() {
 
     return (
         <Routes> {/* BrowserRouter 대신 Routes */}
-            <Route path="/" element={<MainPage />} />
+            <Route path="/" element={<StartPage />} />
             <Route path="/rlogin" element={<RloginPage />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/chat" element={<ChatPage />} />
