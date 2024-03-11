@@ -7,7 +7,7 @@ import RloginPage from './jsxfiles/rloginPage';
 import { getUserInfo } from './api/getUserInfo';
 
 function App() {
-    const [isLogin, setIsLogin] = useState(false);
+     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
         const initLogin = async () => {
@@ -18,12 +18,14 @@ function App() {
     }, []);
 
     return (
-        <Routes> {/* BrowserRouter 대신 Routes */}
-            <Route path="/" element={<StartPage />} />
-            <Route path="/rlogin" element={<RloginPage />} />
-            <Route path="/main" element={<MainPage />} />
-            <Route path="/chat" element={<ChatPage />} />
-        </Routes>
+        <Router>
+            <Routes>
+                <Route path="/" element={<StartPage />} />
+                <Route path="/rlogin" element={<RloginPage isLogin={isLogin} setIsLogin={setIsLogin} />} />
+                <Route path="/main" element={<MainPage />} />
+                <Route path="/chat" element={<ChatPage />} />
+            </Routes>
+        </Router>
     );
 }
 
