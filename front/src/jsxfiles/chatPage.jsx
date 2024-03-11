@@ -32,7 +32,7 @@ const ChatPage = () => {
     const handleNewChat = () => {
         setShowNewChatModal(true);
     };
-    
+
     const handlePdfViewer = () => {
         setShowPdfViewer(true);
     };
@@ -55,7 +55,7 @@ const ChatPage = () => {
             // 백엔드로 채팅 내용 전송
             const success = await postChatContent(messageText);
             if (!success) {
-               ;
+                ;
                 console.error('Failed to send message to the backend');
             } else {
                 // 백엔드로부터 대답 받아오기
@@ -118,7 +118,7 @@ const ChatPage = () => {
                 <div className="chat-middle-content">
                     <span>Middle Panel</span>
                 </div>
-                {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }}/>}
+                {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{width: '100%', height: '96%'}}/>}
             </div>
             <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
             <div ref={rightPanelRef} className="chat-panel right">
