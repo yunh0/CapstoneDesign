@@ -12,12 +12,15 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomDto {
+    private Long chatRoomId;
+
     private String chatRoomName;
 
     private String filePath;
 
     public static final ChatRoomDto convertToDto(ChatRoom chatRoom){
         return ChatRoomDto.builder()
+                .chatRoomId(chatRoom.getChatRoomId())
                 .chatRoomName(chatRoom.getChatRoomName())
                 .filePath(chatRoom.getFileInformation().getFilePath())
                 .build();
