@@ -1,9 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+
 
 .chat-container {
     display: flex;
@@ -35,6 +30,7 @@
     margin-top: 20px;
     overflow-y: auto;
     width: 100%; /* 채팅방 목록 너비 조정 */
+    background-color: #F7F7F7;
 }
 
 .chat-room {
@@ -79,6 +75,7 @@
     margin-right: 10px; /* 입력 필드와 전송 버튼 사이의 간격 */
     font-size: 16px; /* 입력 텍스트 크기 */
     outline: none; /* 포커스 시 테두리 제거 */
+    background-color: #F7F7F7;
 }
 
 .chat-submit-button {

@@ -19,6 +19,7 @@
     padding-bottom: 20px; /* Spacing below details */
     margin-bottom: 40px; /* 간격 조정 */
     text-align: left; /* 중앙 정렬 */
+    background-color: #F7F7F7;
 }
 
 .contracts {
@@ -27,6 +28,7 @@
     flex-wrap: wrap;
     justify-content: flex-start; /* 왼쪽 정렬로 변경 */
     margin-bottom:50px;
+    background-color: #F7F7F7;
 }
 
 .contract-button {

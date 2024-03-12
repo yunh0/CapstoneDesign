@@ -60,12 +60,19 @@ const PinPage = () => {
                 ))}
             </div>
             <div className="gallery-view">
-                {activeContract && activeContract.map((answer, index) => (
-                    <div key={index} className="pinned-answer" onClick={() => handleAnswerClick(answer)}>
-                        {answer}
+                {activeContract ? (
+                    activeContract.map((answer, index) => (
+                        <div key={index} className="pinned-answer" onClick={() => handleAnswerClick(answer)}>
+                            {answer}
+                        </div>
+                    ))
+                ) : (
+                    <div className="pinned-answer" style={{ textAlign: 'center', fontSize: '24px', color: '#7f8c8d', padding: '20px' }}>
+                        계약서를 선택해주세요!
                     </div>
-                ))}
+                )}
             </div>
+
             {isModalOpen && (
                 <div className="modal" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
