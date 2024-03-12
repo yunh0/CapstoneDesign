@@ -22,10 +22,8 @@ import java.util.Map;
 @Component
 public class JWTUtils {
 
-    //private static final long TOKEN_VALIDITY = 86400000L;
-    private static final long TOKEN_VALIDITY = 60000L;
-    private static final long TOKEN_VALIDITY_REMEMBER = 60000L;
-    //private static final long TOKEN_VALIDITY_REMEMBER = 2592000000L;
+    private static final long TOKEN_VALIDITY = 86400000L;
+    private static final long TOKEN_VALIDITY_REMEMBER = 2592000000L;
     private final Key key;
 
     public JWTUtils(@Value("${app.jwtSecret}") String secret) {

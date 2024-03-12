@@ -1,16 +1,19 @@
 // MainPage.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import MyPage from '../jsxfiles/myPage';
 import FindPage from '../jsxfiles/findPage';
 import PinPage from '../jsxfiles/pinPage';
 import '../cssfiles/mainPage.css'
 
 const MainPage = () => {
+    const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
 
     const handleLogout = () => {
-        // 로그아웃 로직 추가
+        setIsLogin(false);
+        navigate('/rlogin');
     };
 
     const handlePageChange = (pageName) => {
@@ -29,23 +32,33 @@ const MainPage = () => {
             content = <MyPage />;
             break;
         default:
-            content = 'WELCOME!';
+            content = (
+                <div className="welcome-message">
+                    <p>WELCOME</p>
+                    <p>TO</p>
+                    <p>INSURANCE</p>
+                    <p>COUNSELING</p>
+                </div>
+            );
             break;
     }
 
     return (
         <div className="container">
             <div className="left-panel">
-                <button className="home-btn" onClick={() => handlePageChange('welcome')}>홈</button>
-                <button className="pinpage-btn" onClick={() => handlePageChange('pinpage')}>핀페이지</button>
-                <button className="find-btn" onClick={() => handlePageChange('find')}>찾기</button>
-                <button className="mypage-btn" onClick={() => handlePageChange('mypage')}>마이페이지</button>
-                <Link to="/chat" className="chat-btn">챗페이지</Link>
-                <button onClick={handleLogout} className="logout-btn">로그아웃</button>
+                <button className="home-btn" onClick={() => handlePageChange('welcome')}></button>
+                <button className="pinpage-btn" onClick={() => handlePageChange('pinpage')}></button>
+                <button className="find-btn" onClick={() => handlePageChange('find')}></button>
+                <button className="mypage-btn" onClick={() => handlePageChange('mypage')}></button>
+                <Link to="/chat" className="chat-btn"></Link>
+
+                <button onClick={handleLogout} className="logout-btn"></button>
             </div>
             <div className="spare-panel">
-                {content}
-                {currentPage === 'welcome' && <Link to="/chat">챗페이지</Link>}
+                <div className="content-container">
+                    <div className="content-style">{content}</div>
+                </div>
+                {currentPage === 'welcome' && <Link to="/chat" className="chat-link">SELECT INSURANCE</Link>}
             </div>
         </div>
     );

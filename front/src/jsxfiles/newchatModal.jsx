@@ -30,7 +30,9 @@ const NewChatModal = ({ onClose, setChatList }) => {
 
     const handleSubmit = async () => {
         if (title.trim() === '') {
-            document.getElementById("newchat-input").setAttribute("placeholder", "!!내용을 입력하세요!!");
+            alert('제목을 입력해 주세요!');
+        } else if (insuranceTerms === '') {
+            alert('옵션을 선택해 주세요!');
         } else {
             const newChat = { title, insuranceTerms };
             setChatList(prevChatList => [...prevChatList, newChat]);
@@ -46,9 +48,10 @@ const NewChatModal = ({ onClose, setChatList }) => {
         }
     };
 
+
     return (
-        <div className="modal">
-            <div className="modal-content">
+        <div className="newchat-modal">
+            <div className="newchat-modal-content">
                 <span className="newchat-close" onClick={onClose}>&times;</span>
                 <h2>새 채팅 만들기</h2>
                 <label htmlFor="newchat-input">제목</label>

@@ -1,7 +1,7 @@
 package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.dto.ChatRoomDto;
-import com.hansung.InsuranceProject.dto.ChatRoomRequest;
+import com.hansung.InsuranceProject.request.ChatRoomRequest;
 import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,15 +24,43 @@ public class ChatRoomController {
     @Autowired
     private ChatRoomService chatRoomService;
 
+    // 채팅방 새로 생성 시 반영하여 내 채팅방 목록 반환
     @PostMapping("/insurance/terms")
     public ResponseEntity createChatRoom(@RequestBody ChatRoomRequest request, Principal principal) {
 
         ChatRoom chatRoom = chatRoomService.createChatRoom(Long.valueOf(principal.getName()), request.getTitle(), request.getInsuranceTerms());
         ChatRoomDto chatRoomDto = ChatRoomDto.convertToDto(chatRoom);
 
+        List<ChatRoomDto> chatRooms = chatRoomService.getUserChatRooms(Long.valueOf(principal.getName()));
+
+        //아래 5줄은 테스트 코드임. 완성되면 지울 것
+        System.out.println("User's Chat Rooms:");
+        for (ChatRoomDto chatRoom2 : chatRooms) {
+            System.out.println("Chat Room id : " + chatRoom2.getChatRoomId());
+            System.out.println("Chat Room Name: " + chatRoom2.getChatRoomName());
+            System.out.println("File Path: " + chatRoom2.getFilePath());
+            System.out.println("--------");
+        }
+
         sendFilePathToFlask(chatRoomDto.getFilePath());
 
-        return ResponseEntity.ok().body(chatRoomDto);
+        return ResponseEntity.ok().body(chatRooms);
+    }
+
+    // 내 채팅방 목록 반환
+    @GetMapping("/user/chatrooms")
+    public ResponseEntity<List<ChatRoomDto>> giveUserChatRooms(Principal principal){
+        List<ChatRoomDto> chatRooms = chatRoomService.getUserChatRooms(Long.valueOf(principal.getName()));
+        return ResponseEntity.ok().body(chatRooms);
+    }
+
+    // 채팅방 하나 선택 시 통신할 로직 짜야함
+    // chatroomId를 받아서 그 채팅방 내역을 보내줘야 함
+    // 플라스크 서버로 보내는 로직 여기로 옮겨서 구현하면 됨
+    @GetMapping("/user/chatroom/{chatroomId}")
+    public ResponseEntity<ChatRoomDto> getChatRoomInformation(@PathVariable Long chatroomId, Principal principal){
+
+        return null;
     }
 
     private void sendFilePathToFlask(String filePath) {

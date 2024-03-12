@@ -1,5 +1,6 @@
 package com.hansung.InsuranceProject.service;
 
+import com.hansung.InsuranceProject.dto.ChatRoomDto;
 import com.hansung.InsuranceProject.entity.Account;
 import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.entity.FileInformation;
@@ -9,6 +10,7 @@ import com.hansung.InsuranceProject.repository.FileInformationRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class ChatRoomService {
@@ -37,5 +39,10 @@ public class ChatRoomService {
 
     public ChatRoom getChatRoom(Long id){
         return chatRoomRepository.findById(id).orElse(null);
+    }
+
+    public List<ChatRoomDto> getUserChatRooms(Long accountId){
+        List<ChatRoom> chatRooms = chatRoomRepository.findByAccount_Id(accountId);
+        return ChatRoomDto.convertToDtoList(chatRooms);
     }
 }

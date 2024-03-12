@@ -1,4 +1,4 @@
-package com.hansung.InsuranceProject.dto;
+package com.hansung.InsuranceProject.request;
 
 import lombok.Data;
 

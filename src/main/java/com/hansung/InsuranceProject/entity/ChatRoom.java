@@ -1,11 +1,10 @@
 package com.hansung.InsuranceProject.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,6 +27,10 @@ public class ChatRoom extends BaseTimeEntity{
     @ManyToOne(optional = false)
     @JoinColumn(name = "file_id")
     private FileInformation fileInformation;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "chatRoom")
+    private List<Message> messages = new ArrayList<>();
 
     public ChatRoom(String chatRoomName, Account account, FileInformation fileInformation) {
         this.chatRoomName = chatRoomName;

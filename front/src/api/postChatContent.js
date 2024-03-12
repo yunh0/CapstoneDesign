@@ -1,6 +1,6 @@
-export const postLoginToken = async idToken => {
+export const postChatContent = async (content) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = '/api/oauth/login';
+    const path = '/api/chat';
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
@@ -10,12 +10,13 @@ export const postLoginToken = async idToken => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(idToken), // body의 데이터 유형은 반드시 "Content-Type" 헤더와 일치해야 함
+            body: JSON.stringify({ content }),
         });
-        if (!response.ok) throw new Error('bad server condition');
+        if (!response.ok) throw new Error('Failed to send message to the backend');
+
         return true;
-    } catch (e) {
-        console.error('postLoginToken Error: ', e.message);
+    } catch (error) {
+        console.error('postChatContent Error: ', error.message);
         return false;
     }
 };

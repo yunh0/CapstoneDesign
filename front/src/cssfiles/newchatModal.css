@@ -1,5 +1,4 @@
-
-.modal {
+.newchat-modal {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +10,7 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.newchat-modal-content {
     position: relative;
     background-color: #fefefe;
     padding: 20px;
@@ -24,6 +23,7 @@
     justify-content: center;
     align-items: center;
 }
+
 
 
 .newchat-close {
@@ -54,7 +54,7 @@
 }
 
 .newchat-ok {
-margin-top: 20px;
+    margin-top: 20px;
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
