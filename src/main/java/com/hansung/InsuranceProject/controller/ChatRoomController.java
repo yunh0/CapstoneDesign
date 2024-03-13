@@ -1,9 +1,11 @@
 package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.dto.ChatRoomDto;
+import com.hansung.InsuranceProject.dto.MessageDto;
 import com.hansung.InsuranceProject.request.ChatRoomRequest;
 import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.service.ChatRoomService;
+import com.hansung.InsuranceProject.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +26,9 @@ public class ChatRoomController {
     @Autowired
     private ChatRoomService chatRoomService;
 
+    @Autowired
+    private MessageService messageService;
+
     // 채팅방 새로 생성 시 반영하여 내 채팅방 목록 반환
     @PostMapping("/insurance/terms")
     public ResponseEntity createChatRoom(@RequestBody ChatRoomRequest request, Principal principal) {
@@ -42,8 +47,6 @@ public class ChatRoomController {
             System.out.println("--------");
         }
 
-        sendFilePathToFlask(chatRoomDto.getFilePath());
-
         return ResponseEntity.ok().body(chatRooms);
     }
 
@@ -54,13 +57,16 @@ public class ChatRoomController {
         return ResponseEntity.ok().body(chatRooms);
     }
 
-    // 채팅방 하나 선택 시 통신할 로직 짜야함
-    // chatroomId를 받아서 그 채팅방 내역을 보내줘야 함
-    // 플라스크 서버로 보내는 로직 여기로 옮겨서 구현하면 됨
+    // 채팅방 하나 선택 시 통신
     @GetMapping("/user/chatroom/{chatroomId}")
-    public ResponseEntity<ChatRoomDto> getChatRoomInformation(@PathVariable Long chatroomId, Principal principal){
+    public ResponseEntity<List<MessageDto>> getChatRoomInformation(@PathVariable Long chatroomId, Principal principal){
+        ChatRoom chatRoom = chatRoomService.getChatRoom(chatroomId);
+        ChatRoomDto chatRoomDto = ChatRoomDto.convertToDto(chatRoom);
 
-        return null;
+        sendFilePathToFlask(chatRoomDto.getFilePath());
+
+        List<MessageDto> messages = messageService.getChatRoomMessages(chatroomId);
+        return ResponseEntity.ok().body(messages);
     }
 
     private void sendFilePathToFlask(String filePath) {

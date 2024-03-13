@@ -20,9 +20,9 @@ def receive_data():
         # 오류가 발생하면 오류 응답을 반환합니다.
         error_data = {"status": "error", "message": str(e)}
         return jsonify(error_data), 500
-@app.route('/api/message/receive', methods=['POST'])
-def receive_message():
-# 여기에 메시지 받는 코드 작성하면 됨
+# @app.route('/api/message/receive', methods=['POST'])
+# def receive_message():
+# # 여기에 메시지 받는 코드 작성하면 됨
 
 
 if __name__ == '__main__':
