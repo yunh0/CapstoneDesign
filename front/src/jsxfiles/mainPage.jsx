@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import MyPage from '../jsxfiles/myPage';
 import FindPage from '../jsxfiles/findPage';
 import PinPage from '../jsxfiles/pinPage';
+import SelectPage from "./selectPage";
 import '../cssfiles/mainPage.css'
 
 const MainPage = () => {
@@ -27,6 +28,9 @@ const MainPage = () => {
             break;
         case 'mypage':
             content = <MyPage />;
+            break;
+        case 'select': // 'select' 케이스를 추가합니다
+            content = <SelectPage />;
             break;
         default:
             content = (
@@ -55,7 +59,11 @@ const MainPage = () => {
                 <div className="main-content-container">
                     <div className="main-content-style">{content}</div>
                 </div>
-                {currentPage === 'welcome' && <Link to="/chat" className="chat-link">SELECT INSURANCE</Link>}
+                {currentPage === 'welcome' && (
+                    <button onClick={() => handlePageChange('select')} className="chat-link">
+                        SELECT INSURANCE
+                    </button>
+                )}
             </div>
         </div>
     );

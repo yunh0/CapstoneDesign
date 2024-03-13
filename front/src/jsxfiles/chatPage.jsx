@@ -15,7 +15,7 @@ const ChatPage = () => {
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
         { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
     ]);
-    const pdfUrl = `https://www.kwdi.re.kr/flexer/view.jsp?FileDir=/CM005&SystemFileName=CM0009_66_1&ftype=pdf&FileName=%EC%97%AC%EC%84%B1%EC%97%B0%EA%B5%AC%EB%85%BC%EB%AC%B8_89-2_(0107_%ED%95%A9%EB%B3%B8%EC%B5%9C%EC%A2%85).pdf`;
+    const pdfUrl = 'https://direct.kbinsure.co.kr/home/dwlddoc/KB_MagiccarDirect_Private_202304.pdf';
 
 
 
