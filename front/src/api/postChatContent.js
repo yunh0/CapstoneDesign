@@ -1,6 +1,6 @@
 export const postChatContent = async (content) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = '/api/chat';
+    const path = '/api/user/message';
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
