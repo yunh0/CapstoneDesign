@@ -1,29 +1,63 @@
+import base64
 from flask import Flask, request, jsonify
+import requests
 
 app = Flask(__name__)
 
+API_KEY = "sec_U8gkLvCfx4KOIyX3RwhdafCi2VoVIgJa"
 
-@app.route('/api/receive', methods=['POST'])
-def receive_data():
-    try:
-        data = request.get_json()
-        file_path = data.get('filePath')
+def get_pdf_source_id(pdf_file_path):
+    endpoint = 'https://api.chatpdf.com/v1/sources/add-file'
+    headers = {'x-api-key': API_KEY}
 
-        # 여기서 필요한 작업을 수행하고 응답을 반환할 수 있습니다.
-        # 예를 들어, 받은 파일 경로를 출력하고 성공적인 응답을 반환합니다.
-        print("Received file path:", file_path)
+    with open(pdf_file_path, 'rb') as file:
+        files = {'file': ('file', file, 'application/octet-stream')}
+        response = requests.post(endpoint, headers=headers, files=files)
 
-        # 여기서 작업을 수행하고 필요에 따라 응답을 구성합니다.
-        response_data = {"status": "success", "message": "Data received successfully"}
-        return jsonify(response_data), 200
-    except Exception as e:
-        # 오류가 발생하면 오류 응답을 반환합니다.
-        error_data = {"status": "error", "message": str(e)}
-        return jsonify(error_data), 500
-# @app.route('/api/message/receive', methods=['POST'])
-# def receive_message():
-# # 여기에 메시지 받는 코드 작성하면 됨
+    if response.status_code == 200:
+        return response.json().get('sourceId')
+    else:
+        return None
 
+def chat_with_pdf_bot(source_id, question):
+    endpoint = 'https://api.chatpdf.com/v1/chats/message'
+    headers = {
+        'x-api-key': API_KEY,
+        'Content-Type': 'application/json'
+    }
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    messages = [
+        {'role': 'user', 'content': question},
+        {'role': 'assistant', 'content': ''}
+    ]
+
+    response = requests.post(endpoint, headers=headers, json={'sourceId': source_id, 'messages': messages})
+
+    if response.status_code == 200:
+        return response.json().get('content')
+    else:
+        return "ChatPDF API로부터 응답을 받는 데 실패했습니다."
+
+@app.route("/api/chatpdf", methods=["POST"])
+def chatpdf_interaction():
+    request_data = request.get_json()
+
+    pdf_file_path = request_data.get("pdf_file_path")
+    question = request_data.get("question")
+
+    if not pdf_file_path:
+        return jsonify({"error": "PDF 파일 경로가 없습니다."}), 400
+    if not question:
+        return jsonify({"error": "질문이 없습니다."}), 400
+
+    source_id = get_pdf_source_id(pdf_file_path)
+
+    if source_id is None:
+        return jsonify({"error": "소스 ID를 가져오는 데 실패했습니다. 파일 경로를 확인하세요."}), 500
+
+    chatpdf_result = chat_with_pdf_bot(source_id, question)
+
+    return jsonify({"result": chatpdf_result})
+
+if __name__ == "__main__":
+    app.run(debug=True)
