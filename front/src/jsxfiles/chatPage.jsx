@@ -39,7 +39,6 @@ const ChatPage = () => {
                     pdfUrl: chatRoom.filePath
                 }));
                 setChatList(updatedChatList);
-                console.log(JSON.stringify(updatedChatList));
             } else {
                 // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
             }
@@ -159,7 +158,7 @@ const ChatPage = () => {
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
-            <Fragment className="insur_chat">
+            <Fragment>
                 <div ref={middlePanelRef} className="chat-panel">
                     <div className="chat-middle-content">
                         <span>Middle Panel</span>
