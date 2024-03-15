@@ -1,4 +1,3 @@
-import base64
 from flask import Flask, request, jsonify
 import requests
 
@@ -38,7 +37,7 @@ def chat_with_pdf_bot(source_id, question):
     else:
         return "ChatPDF API로부터 응답을 받는 데 실패했습니다."
 
-@app.route("/api/chatpdf", methods=["POST"])
+@app.route("/api/text", methods=["POST"])  # 다른 올바른 엔드포인트로 변경
 def chatpdf_interaction():
     request_data = request.get_json()
 
