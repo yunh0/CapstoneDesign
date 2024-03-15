@@ -27,7 +27,7 @@
 }
 
 .chat-room-list {
-    margin-top: 20px;
+   height: 150px;
     overflow-y: auto;
     width: 100%; /* 채팅방 목록 너비 조정 */
     background-color: #F7F7F7;

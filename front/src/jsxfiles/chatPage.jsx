@@ -11,6 +11,7 @@ const ChatPage = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
+    const [pdfUrl, setPdfUrl] = useState("");
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
@@ -24,25 +25,31 @@ const ChatPage = () => {
         { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
     ]);
 
+////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
+
     const fetchChatRooms = async () => {
         try {
             const token = localStorage.getItem('token');
             const chatRooms = await getUserChatRooms(token);
             if (chatRooms && chatRooms.length > 0) {
-                setChatList(chatRooms);
-                alert(JSON.stringify(chatRooms));
+                // 각 채팅방 객체에 필요한 속성 할당
+                const updatedChatList = chatRooms.map(chatRoom => ({
+                    id: chatRoom.chatRoomId,
+                    title: chatRoom.chatRoomName,
+                    pdfUrl: chatRoom.filePath
+                }));
+                setChatList(updatedChatList);
+                console.log(JSON.stringify(updatedChatList));
             } else {
-                alert('채팅방 목록이 비어 있습니다.');
+                // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
             }
         } catch (error) {
             console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
             alert('채팅방 목록을 불러오는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         }
     };
-
     useEffect(() => {
-
-        fetchChatRooms();
+        fetchChatRooms()
     }, []);
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
@@ -82,6 +89,8 @@ const ChatPage = () => {
         }
     };
 
+    ///////////////////////////////메세지 보내기//////////////////////////////////////////////
+
     const handleSendMessage = async (event) => {
         event.preventDefault();
         const messageText = event.target.elements.message.value;
@@ -118,31 +127,34 @@ const ChatPage = () => {
         const newButton = { title, id, pdfUrl };
         // 버튼을 맨 앞에 추가하기 위해 기존 버튼 배열 앞에 새로운 버튼을 추가합니다.
         setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
-        fetchChatRooms();
     };
 
-    const handleButtonClicked = (id, pdfUrl) => {
+    ////////////////////////////PDF 관련 부분///////////////////////////////////////////
+
+    useEffect(() => {
+        if (showPdfViewer) {
+            setPdfUrl(null);
+        }
+    }, [showPdfViewer]);
+
+    const handleButtonClicked = (pdfUrl) => {
+        setPdfUrl(pdfUrl);
         setShowPdfViewer(true);
-        // 이제 pdfUrl을 이용하여 PDF를 보여줄 수 있습니다.
     };
-
-    const pdfUrl = `https://www.kwdi.re.kr/flexer/view.jsp?FileDir=/CM005&SystemFileName=CM0009_66_1&ftype=pdf&FileName=%EC%97%AC%EC%84%B1%EC%97%B0%EA%B5%AC%EB%85%BC%EB%AC%B8_89-2_(0107_%ED%95%A9%EB%B3%B8%EC%B5%9C%EC%A2%85).pdf`;
 
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
+
     return (
-        <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+        <div className="chat-container">
             <div className="chat-left-panel">
                 <Link to="/main" className="home-btn"></Link>
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button style={{ width: '100%', height: '70px' }} className="chat-message" onClick={() => handleButtonClicked(chat.id, chat.pdfUrl)}>{chat.title}</button>
+                            <button style={{ width: '100%', height: '70px' }} className="chat-message" onClick={() => handleButtonClicked(chat.pdfUrl)}>{chat.title}</button>
                         </div>
                     ))}
-                    <div className="chat-room">
-                        <button className="chat-message" onClick={handleButtonClicked} style={{ width: '100%' }}>PDF 보기</button>
-                    </div>
                 </div>
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
