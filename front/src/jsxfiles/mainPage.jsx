@@ -44,7 +44,7 @@ const MainPage = () => {
     }
 
     return (
-        <div className="container">
+        <div className="main-container">
             <div className="left-panel">
                 <button className="home-btn" onClick={() => handlePageChange('welcome')}></button>
                 <button className="pinpage-btn" onClick={() => handlePageChange('pinpage')}></button>
@@ -55,8 +55,8 @@ const MainPage = () => {
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
             <div className="spare-panel">
-                <div className="content-container">
-                    <div className="content-style">{content}</div>
+                <div className="main-content-container">
+                    <div className="main-content-style">{content}</div>
                 </div>
                 {currentPage === 'welcome' && <Link to="/chat" className="chat-link">SELECT INSURANCE</Link>}
             </div>

@@ -1,76 +1,92 @@
-.start-page-container {
-    width: 100vw;
-    height: 100vh;
-    min-width: 600px;
-    min-height: 400px;
-    position: relative;
-    background: white;
+@keyframes typing {
+    0% { width: 0; }
+    50% { width: 100%; }
+    100% { width: 100%; }
 }
 
-.background-overlay {
-    width: 100%;
-    height: 40%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -80%);
-    background: #F0F0F0;
+@keyframes blinkCursor {
+    from { border-right-color: #0FF; }
+    to { border-right-color: transparent; }
+}
+
+.start-page-container {
+    background-color: black;
+    display: flex;
+    flex-direction: column; /* 요소들을 세로로 나열 */
+    justify-content: center; /* 요소들을 세로 중앙에 배치 */
+    align-items: center; /* 요소들을 가로 중앙에 배치 */
+    height: 100%;
+    padding: 200px 40px;
+}
+
+.project-name-container {
+    margin-left: 100px;
+    display: flex;
+    background-color: black;
+    flex-grow: 1;
+    align-items: center;
+    margin-bottom:400px;
+}
+
+.auth-buttons-container {
+    display: flex;
+    gap: 40px;
+    padding: 0;
+    margin-bottom:50px;
 }
 
 .project-name {
-    width: 57%;
-    height: 15%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-85%, -200%);
-    position: absolute;
-    color: black;
+    color: #0FF;
     font-size: 6vw;
-    font-family: Ibarra Real Nova;
-    font-weight: 300;
-    word-wrap: break-word;
+    font-family: 'Impact', sans-serif;
+    letter-spacing: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #0FF;
+    animation: typing 6s steps(40, end) infinite, blinkCursor .75s step-end infinite;
+    margin-top:50px;
+}
+
+@keyframes neonFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 0 0 10px #0FF, 0 0 20px #0FF, 0 0 30px #0FF, 0 0 40px #0FF, 0 0 50px #0FF, 0 0 60px #0FF, 0 0 70px #0FF;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+    }
 }
 
 .login-button, .signup-button {
-    width: 10%;
-    height: 8.5%;
-    position: absolute;
-    background: #FFFDFD;
-    border-radius: 1.5vw;
-    border: 0.2vw black solid;
+    width: 250px;
+    height: 100px;
+    color: #FFFFFF;
+    border: 2px solid #0FF;
+    font-family: 'Roboto Condensed', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    font-size: 2rem;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    color: black;
-    font-size: 2.5vw;
-    font-family: Ibarra Real Nova;
-    font-weight: 400;
-    word-wrap: break-word;
+    text-align: left;
+    text-decoration: none;
+}
+.login-button:hover {
+    background-color: #0FF;
+    color: #000;
+    transform: scale(1.1);
+}
+.signup-button:hover {
+    background-color: #0FF;
+    color: #000;
+    transform: scale(1.1);
 }
 
-.login-button {
-    left: 62%;
-    top: 47%;
-}
-
-.signup-button {
-    left: 82%;
-    top: 47%;
-}
-
-.vertical-line {
-    width: 5.3%;
-    height: 0.07%;
-    left: 95%;
-    top: 0;
-    position: absolute;
-}
-
-.footer {
-    width: 100%;
-    height: 9%;
-    left: 0;
-    bottom: 0;
-    position: absolute;
-    background: #191970;
+.get-started {
+    color: #FFFFFF;
+    font-size: 2.5rem; /* 예시로 2rem 설정, 필요에 따라 조정 가능 */
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 20px 0 40px; /* "Get Started"와 버튼 사이의 간격 조정 */
+    text-align: center; /* 중앙 정렬 */
 }

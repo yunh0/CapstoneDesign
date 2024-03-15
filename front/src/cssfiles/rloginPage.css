@@ -1,16 +1,36 @@
-.container {
+.rlogin-container {
     display: flex;
-    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: black;
+    padding:100px;
 }
 
-.left-panel {
-    width: 15%;
-    border: 1px solid black;
-    box-sizing: border-box;
+.rlogin-panel {
+    display: flex;
+    width: 50%;
+    min-height: 30%; /* 고정된 높이 대신 최소 높이 설정 */
+    max-height:40%;
+    flex-direction: column;
+    justify-content: center; /* 요소들을 세로 중앙에 배치 */
+    align-items: center;
+    padding-top:50px;
+    padding-bottom: 200px;
+    background: #111; /* 약간의 배경색 차이를 주어 패널을 강조 */
+    border: 2px solid #0FF; /* 테두리에 형광 효과 */
+    box-shadow: 0 0 10px #0FF, 0 0 20px #0FF, 0 0 30px #0FF; /* 네온 효과 */
 }
 
-.panel {
-    flex-grow: 1;
-    border: 1px solid black;
-    box-sizing: border-box;
+.rlogin-title {
+    background: transparent;
+    font-size: 4rem;
+    letter-spacing: 17px;
+    color: #0FF;
+    font-family: Bebas Neue, sans-serif;
+    text-shadow: 0 0 10px #0FF, 0 0 20px #0FF, 0 0 30px #0FF;
+}
+.google-login {
+    padding-top:100px;
+    background:transparent;
 }
