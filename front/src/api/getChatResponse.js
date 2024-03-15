@@ -1,6 +1,6 @@
-export const getChatResponse = async (question) => {
+export const getChatResponse = async (question, chatroomId) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = '/api/chat/response';
+    const path = `/api/chat/response/${chatroomId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
@@ -15,7 +15,7 @@ export const getChatResponse = async (question) => {
         if (!response.ok) throw new Error('Failed to get chat response from the backend');
 
         const responseData = await response.json();
-        return { id: responseData.id, text: responseData.text, sender: "received" };
+        return { text: responseData.text, messageType: responseData.messageType };
     } catch (error) {
         console.error('getChatResponse Error: ', error.message);
         return false;
