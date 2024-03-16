@@ -1,5 +1,7 @@
 package com.hansung.InsuranceProject.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hansung.InsuranceProject.constant.MessageType;
 import com.hansung.InsuranceProject.dto.MessageDto;
 import com.hansung.InsuranceProject.entity.ChatRoom;
@@ -8,13 +10,12 @@ import com.hansung.InsuranceProject.request.MessageRequest;
 import com.hansung.InsuranceProject.service.ChatRoomService;
 import com.hansung.InsuranceProject.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +34,20 @@ public class MessageController {
 
         // 플라스크에 메세지 보내고 받아온 ai 대답 저장하고 보내는 코드 작성해야함
         String flaskResponse = sendQuestionToFlask(request.getContent());
-        System.out.println("Flask server response: " + flaskResponse);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            JsonNode jsonResponse = objectMapper.readTree(flaskResponse);
+            String messageReceived = jsonResponse.get("message").asText();
+            System.out.println("Flask server response: " + messageReceived);
 
-        Message aiMessage = messageService.saveMessage(chatroomId, MessageType.AI, flaskResponse);
-        MessageDto messageDto = MessageDto.convertToDto(aiMessage);
-        return ResponseEntity.ok().body(messageDto);
+            Message aiMessage = messageService.saveMessage(chatroomId, MessageType.AI, messageReceived);
+            MessageDto messageDto = MessageDto.convertToDto(aiMessage);
+            return ResponseEntity.ok().body(messageDto);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     private String sendQuestionToFlask(String content){
