@@ -20,10 +20,12 @@ const ChatPage = () => {
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
+    const [selectedChatId, setSelectedChatId] = useState(null);
     const [messages, setMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
         { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
     ]);
+
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -93,7 +95,7 @@ const ChatPage = () => {
     const handleSendMessage = async (event) => {
         event.preventDefault();
         const messageText = event.target.elements.message.value;
-        const chatroomId = 123; // 여기에 채팅방 ID를 설정하세요.
+        const chatroomId = selectedChatId;
         if (messageText.trim()) {
             const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
             setMessages([...messages, newMessage]);
@@ -136,10 +138,12 @@ const ChatPage = () => {
         }
     }, [showPdfViewer]);
 
-    const handleButtonClicked = (pdfUrl) => {
+    const handleButtonClicked = (pdfUrl, chatId) => {
         setPdfUrl(pdfUrl);
         setShowPdfViewer(true);
+        setSelectedChatId(chatId);
     };
+
 
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
@@ -151,7 +155,7 @@ const ChatPage = () => {
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button style={{ width: '100%', height: '70px' }} className="chat-message" onClick={() => handleButtonClicked(chat.pdfUrl)}>{chat.title}</button>
+                            <button style={{ width: '100%', height: '70px' }} className="chat-message" onClick={() => { handleButtonClicked(chat.pdfUrl, chat.id); }}>{chat.title}</button>
                         </div>
                     ))}
                 </div>
