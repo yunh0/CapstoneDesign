@@ -7,6 +7,7 @@ import { getChatResponse } from '../api/getChatResponse';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+import { getMessages } from '../api/getMessages';
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -22,10 +23,12 @@ const ChatPage = () => {
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
-    const [messages, setMessages] = useState([
+    const [defaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
         { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
     ]);
+    const [messages, setMessages] = useState(defaultMessages);
+
 
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
@@ -147,12 +150,29 @@ const ChatPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const success = await sendChatRoomClick('Button Clicked', chatId, token); // 클릭된 버튼의 정보를 백엔드로 전송합니다.
+            const success = await sendChatRoomClick(chatId, token); // 클릭된 버튼의 정보를 백엔드로 전송합니다.
             if (!success) {
                 console.error('Failed to send button click to the backend');
             }
+            await fetchMessages(selectedChatId);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
+        }
+    };
+
+    const fetchMessages = async (chatroomId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const messages = await getMessages(token, chatroomId); // 백엔드에서 해당 채팅방의 메시지 가져오기
+            if (messages) {
+                // 가져온 메시지를 상태에 설정
+                setMessages([...defaultMessages, ...messages]);
+                console.log(messages); // 메시지를 콘솔에 출력
+            } else {
+                console.error('Failed to get messages from the backend');
+            }
+        } catch (error) {
+            console.error('Error fetching messages from the backend:', error.message);
         }
     };
 

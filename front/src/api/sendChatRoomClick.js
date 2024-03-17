@@ -1,17 +1,22 @@
-export const sendChatRoomClick = async (message, chatroomId, token) => {
+export const sendChatRoomClick = async (chatroomId, token) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/user/message/${chatroomId}`;
+    const path = `/api/user/chatroom/${chatroomId}/`; // URL 끝에 / 추가
 
     try {
-        const response = await fetch('${API_URL}${path}', {
+        let headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        };
+
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`${API_URL}${path}`, {
             method: 'POST',
             credentials: 'include',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // 토큰이 필요한 경우에만 추가
-            },
-            body: JSON.stringify({ message, chatroomId })
+            headers: headers, // 조건부로 설정된 헤더
+            body: JSON.stringify({chatroomId })
         });
 
         if (!response.ok) {
