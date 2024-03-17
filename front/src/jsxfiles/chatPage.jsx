@@ -6,6 +6,7 @@ import NewChatModal from '../jsxfiles/newchatModal';
 import { getChatResponse } from '../api/getChatResponse';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
+import { sendChatRoomClick } from '../api/sendChatRoomClick';
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -128,6 +129,7 @@ const ChatPage = () => {
         const newButton = { title, id, pdfUrl };
         // 버튼을 맨 앞에 추가하기 위해 기존 버튼 배열 앞에 새로운 버튼을 추가합니다.
         setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
+
     };
 
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
@@ -138,10 +140,20 @@ const ChatPage = () => {
         }
     }, [showPdfViewer]);
 
-    const handleButtonClicked = (pdfUrl, chatId) => {
+    const handleButtonClicked = async (pdfUrl, chatId) => {
         setPdfUrl(pdfUrl);
         setShowPdfViewer(true);
         setSelectedChatId(chatId);
+
+        try {
+            const token = localStorage.getItem('token');
+            const success = await sendChatRoomClick('Button Clicked', chatId, token); // 클릭된 버튼의 정보를 백엔드로 전송합니다.
+            if (!success) {
+                console.error('Failed to send button click to the backend');
+            }
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
     };
 
 
