@@ -21,10 +21,11 @@ const ChatPage = () => {
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
-    const [messages, setMessages] = useState([
+    const [defaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
         { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
     ]);
+    const [messages, setMessages] = useState(defaultMessages);
 
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
@@ -134,13 +135,10 @@ const ChatPage = () => {
 
 
     //////////////////////////////////////새 채팅/////////////////////////////
-    const handleNewChatButton = (title, id, pdfUrl) => {
+    const handleNewChatButton = async (title, id, pdfUrl) => {
         const newButton = { title, id, pdfUrl };
-        // 버튼을 맨 앞에 추가하기 위해 기존 버튼 배열 앞에 새로운 버튼을 추가합니다.
         setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
-        fetchChatRooms();
     };
-
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
     useEffect(() => {
@@ -149,20 +147,29 @@ const ChatPage = () => {
         }
     }, [showPdfViewer]);
 
-    const handleButtonClicked = async (pdfUrl, chatId) => {
-        setPdfUrl(pdfUrl);
-        setShowPdfViewer(true);
-        setSelectedChatId(chatId);
+    const handleButtonClicked = async (chat) => {
+        const { id, pdfUrl } = chat;
+        setSelectedChatId(id);
 
-        try {
+        if (selectedChatId !== id) {
+            setShowPdfViewer(true);
+            setPdfUrl(pdfUrl);
+            setMessages(defaultMessages);
 
-            const result = await sendChatRoomClick(selectedChatId);
-            console.log(result);
-        } catch (error) {
-            console.error('Error sending button click to the backend:', error.message);
+            try {
+                const results = await sendChatRoomClick(id);
+
+                results.forEach(result => {
+                    let senderValue = result.messageType === "PERSON" ? "sent" : "received";
+                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue };
+
+                    setMessages(prevMessages => [...prevMessages, newResponse]);
+                });
+            } catch (error) {
+                console.error('Error sending button click to the backend:', error.message);
+            }
         }
     };
-
 
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
@@ -174,7 +181,10 @@ const ChatPage = () => {
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button style={{ width: '100%', height: '70px' }} className="chat-message" onClick={() => { handleButtonClicked(chat.pdfUrl, chat.id); }}>{chat.title}</button>
+                            <button style={{width: '100%', height: '70px'}} className="chat-message" onClick={() => {
+                                handleButtonClicked(chat);
+                            }}>{chat.title}</button>
+
                         </div>
                     ))}
                 </div>
@@ -191,8 +201,8 @@ const ChatPage = () => {
                 <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
                 <div ref={rightPanelRef} className="chat-panel right">
                     <div className="chat-messages">
-                        {messages.map((msg) => (
-                            <div key={msg.id} className={`chat-message ${msg.sender}`}>
+                        {messages.map((msg, index) => (
+                            <div key={index} className={`chat-message ${msg.sender}`}>
                                 {msg.text}
                             </div>
                         ))}
