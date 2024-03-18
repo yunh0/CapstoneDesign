@@ -1,4 +1,4 @@
-export const postChatContent = async (content, chatroomId, token) => {
+export const postChatContent = async (content, chatroomId) => {
     const API_URL = process.env.REACT_APP_API_URL;
     const path = `/api/user/message/${chatroomId}`;
 
@@ -9,7 +9,6 @@ export const postChatContent = async (content, chatroomId, token) => {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({ content }),
         });
