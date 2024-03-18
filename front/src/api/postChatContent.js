@@ -12,8 +12,9 @@ export const postChatContent = async (content, chatroomId) => {
             },
             body: JSON.stringify({ content }),
         });
+        console.log("gogo", new Date())
         if (!response.ok) throw new Error('Failed to send message to the backend');
-        return true;
+        return response.json();
     } catch (error) {
         console.error('postChatContent Error: ', error.message);
         return false;

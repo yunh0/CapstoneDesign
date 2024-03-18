@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
 import NewChatModal from '../jsxfiles/newchatModal';
-import { getChatResponse } from '../api/getChatResponse';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
@@ -53,9 +52,6 @@ const ChatPage = () => {
     useEffect(() => {
         fetchChatRooms()
     }, []);
-    useEffect(() => {
-        fetchChatRooms();
-    }, [chatList]);
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
@@ -100,32 +96,42 @@ const ChatPage = () => {
         event.preventDefault();
         const messageText = event.target.elements.message.value;
         const chatroomId = selectedChatId;
-        if (messageText.trim()) {
-            const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
-            setMessages([...messages, newMessage]);
 
-            // 백엔드로 채팅 내용 전송
-            const success = await postChatContent(messageText, chatroomId);
-            if (!success) {
-                console.error('Failed to send message to the backend');
-            } else {
-                // 백엔드로부터 대답 받아오기
-                const response = await getChatResponse(messageText, chatroomId);
-                if (response) {
-                    let senderValue = "received";
-                    if (response.messageType === "PERSON") {
-                        senderValue = "sent";
-                    }
-                    const newResponse = { id: messages.length + 2, text: response.text, sender: senderValue };
-                    setMessages([...messages, newResponse]);
-                } else {
-                    console.error('Failed to get chat response from the backend');
-                }
-            }
+        // 메시지가 비어 있는지 확인
+        if (!messageText.trim()) {
+            return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
+        }
 
+        // 입력 필드를 비우기 전에 채팅 메시지를 추가합니다.
+        const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+
+        // 백엔드로 채팅 내용 전송
+        const success = await postChatContent(messageText, chatroomId);
+        console.log(messageText)
+        if (!success) {
+            console.error('Failed to send message to the backend');
+        } else {
+            // 입력 필드를 비웁니다.
             event.target.elements.message.value = '';
+            // 백엔드로부터 대답 받아오기
+            if (success) {
+                let senderValue = "received";
+                if (success.messageType === "PERSON") {
+                    senderValue = "sent";
+                }
+                console.log(success.content)
+                const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue };
+
+                // 상태 업데이트 시 함수형 업데이트 사용
+                setMessages(prevMessages => [...prevMessages, newResponse]);
+                console.log(messages)
+            } else {
+                console.error('Failed to get chat response from the backend');
+            }
         }
     };
+
 
     //////////////////////////////////////새 채팅/////////////////////////////
     const handleNewChatButton = (title, id, pdfUrl) => {
