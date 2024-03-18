@@ -25,6 +25,7 @@ const ChatPage = () => {
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
         { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
     ]);
+    const pdfUrl = 'https://direct.kbinsure.co.kr/home/dwlddoc/KB_MagiccarDirect_Private_202304.pdf';
 
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
