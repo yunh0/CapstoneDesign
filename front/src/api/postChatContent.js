@@ -1,6 +1,6 @@
-export const postChatContent = async (content) => {
+export const postChatContent = async (content, chatroomId) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = '/api/chat';
+    const path = `/api/user/message/${chatroomId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
@@ -13,7 +13,6 @@ export const postChatContent = async (content) => {
             body: JSON.stringify({ content }),
         });
         if (!response.ok) throw new Error('Failed to send message to the backend');
-
         return true;
     } catch (error) {
         console.error('postChatContent Error: ', error.message);

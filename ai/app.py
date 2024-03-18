@@ -14,6 +14,8 @@ def receive_file_path():
         global source_id
         # PDF 파일에 대한 소스 ID를 가져옵니다.
         source_id = get_pdf_source_id(file_path)
+        print(file_path)
+        print(source_id)
 
         if source_id is None:
             return jsonify({"error": "소스 ID를 가져오는 데 실패했습니다. 파일 경로를 확인하세요."}), 500
@@ -29,12 +31,15 @@ def receive_file_path():
 def receive_question():
     try:
         data = request.get_json()
-        question = data.get('question')
+        question = data.get('content')
 
+        print(source_id)
+        print(question)
         # chatpdf API를 통해 질문과 소스 ID에 대한 응답을 처리합니다.
         chatpdf_response = chat_with_pdf_bot(question, source_id)
-
-        return jsonify({"response": chatpdf_response}), 200
+        print(chatpdf_response)
+        response_data = {"status": "success", "message": chatpdf_response}
+        return jsonify(response_data), 200
 
     except Exception as e:
         # 오류가 발생하면 오류 응답을 반환합니다.

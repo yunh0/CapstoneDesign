@@ -27,12 +27,14 @@
 }
 
 .mypage-greeting {
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
     font-family: 'Helvetica', sans-serif; /* 글씨체 변경 */
     font-size: 100px; /* Large font size for greeting */
     margin-bottom: 90px; /* Spacing below greeting */
 }
 
 .mypage-details {
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
     display: flex;
     width: 100%;
     font-family: 'Impact', sans-serif; /* 글씨체 변경 */
@@ -45,21 +47,24 @@
     /* Other styling properties */
 }
 .mypage-info-wrapper {
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
     flex-grow: 1; /* Ensures it takes up the available space */
     display: flex;
     justify-content: space-between; /* Pushes the button to the far right */
     align-items: center; /* Aligns children vertically */
 }
+.mypage-info p{
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+}
 
 
 .mypage-update-btn {
-    background: transparent;
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
     border: 2px solid white;
     color: white;
     padding: 15px 30px;
     text-align: center;
     display: inline-block; /* Align button next to text */
-    margin-top: 20px; /* Spacing above the button */
     cursor: pointer; /* Pointer cursor on hover */
     transition: all 0.3s ease;
     font-size: 30px;
@@ -74,15 +79,16 @@
     width: 100%; /* Take the full width of the header */
 }
 .mypage-search-title {
+    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
     font-size: 50px;
     font-family: 'YuGothic', sans-serif; /* 글씨체 변경 */
     font-weight: 500; /* 중간체로 설정 */
+    padding-bottom:50px;
 }
 
 .mypage-search-box {
     background: #fff;
     height: 500px; /* Adjust the height as necessary */
     width: 100%; /* Take the full width of the search section */
-    margin-top: 50px; /* Spacing above the search box */
     border-radius: 10px; /* Rounded corners for the search box */
 }
