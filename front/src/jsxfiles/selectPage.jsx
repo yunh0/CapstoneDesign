@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import '../cssfiles/selectPage.css';
 
+const fileTable = [
+    { id: 1, type: '암 보험', company: 'KB손해보험', plan: '보험 A', path: '/path/to/암보험-KB손해보험-A.pdf' },
+    { id: 2, type: '화재 보험', company: '현대해상', plan: '보험 B', path: '/path/to/화재보험-현대해상-B.pdf' },
+    // 추가 데이터...
+];
+
 const SelectPage = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [insuranceType, setInsuranceType] = useState('');
     const [insuranceCompany, setInsuranceCompany] = useState('');
     const [insurancePlan, setInsurancePlan] = useState('');
     const [confirmationStep, setConfirmationStep] = useState(false);
+    const [selectedPath, setSelectedPath] = useState('');
 
     const goToNextStep = () => {
         setCurrentStep(currentStep + 1);
@@ -27,11 +34,21 @@ const SelectPage = () => {
         goToNextStep();
         setConfirmationStep(true); // 사용자가 계획을 선택하면 확인 단계로 넘어갑니다.
     };
-
+    const modifySelection = () => {
+        // 선택 수정을 위해 단계를 리셋합니다.
+        setCurrentStep(1);
+        setConfirmationStep(false);
+    };
     const handleFinalSelection = () => {
-        alert(`선택된 보험: ${insuranceType}, 보험사: ${insuranceCompany}, 보험: ${insurancePlan}`);
-        // 여기서 최종 선택을 처리합니다.
-        // 예: API에 선택 사항을 전송하거나, 다른 페이지로 이동합니다.
+        const selectedContract = fileTable.find(contract =>
+            contract.type === insuranceType && contract.company === insuranceCompany && contract.plan === insurancePlan);
+
+        if (selectedContract) {
+            setSelectedPath(selectedContract.path);
+            alert(`선택된 보험: ${insuranceType}, 보험사: ${insuranceCompany}, 보험: ${insurancePlan}\n파일 아이디: ${selectedContract.id}, 파일 경로: ${selectedContract.path}`);
+        } else {
+            alert('해당하는 계약서를 찾을 수 없습니다.');
+        }
     };
 
     return (
