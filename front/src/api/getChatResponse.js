@@ -1,6 +1,6 @@
 export const getChatResponse = async (question, chatroomId) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/chat/response/${chatroomId}`;
+    const path = `/api/user/message/${chatroomId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {

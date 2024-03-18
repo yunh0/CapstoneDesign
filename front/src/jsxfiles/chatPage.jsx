@@ -6,6 +6,7 @@ import NewChatModal from '../jsxfiles/newchatModal';
 import { getChatResponse } from '../api/getChatResponse';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
+import { sendChatRoomClick } from '../api/sendChatRoomClick';
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -128,6 +129,7 @@ const ChatPage = () => {
         const newButton = { title, id, pdfUrl };
         // 버튼을 맨 앞에 추가하기 위해 기존 버튼 배열 앞에 새로운 버튼을 추가합니다.
         setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
+        fetchChatRooms();
     };
 
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
@@ -138,10 +140,18 @@ const ChatPage = () => {
         }
     }, [showPdfViewer]);
 
-    const handleButtonClicked = (pdfUrl, chatId) => {
+    const handleButtonClicked = async (pdfUrl, chatId) => {
         setPdfUrl(pdfUrl);
         setShowPdfViewer(true);
         setSelectedChatId(chatId);
+
+        try {
+
+            const result = await sendChatRoomClick(selectedChatId);
+            console.log(result);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
     };
 
 
@@ -149,7 +159,7 @@ const ChatPage = () => {
 
 
     return (
-        <div className="chat-container">
+        <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel">
                 <Link to="/main" className="home-btn"></Link>
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
