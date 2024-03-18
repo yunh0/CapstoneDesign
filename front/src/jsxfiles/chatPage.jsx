@@ -53,6 +53,9 @@ const ChatPage = () => {
     useEffect(() => {
         fetchChatRooms()
     }, []);
+    useEffect(() => {
+        fetchChatRooms();
+    }, [chatList]);
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
