@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../cssfiles/newchatModal.css';
 import { postInsuranceTerms } from '../api/postInsuranceTerms';
+import { getUserChatRooms} from "../api/createChatRoom";
 
 const NewChatModal = ({ onClose, setChatList }) => {
     const [title, setTitle] = useState('');
@@ -45,6 +46,24 @@ const NewChatModal = ({ onClose, setChatList }) => {
             } else {
                 console.error('Failed to post insurance terms.');
             }
+        }
+        try {
+            const token = localStorage.getItem('token');
+            const chatRooms = await getUserChatRooms(token);
+            if (chatRooms && chatRooms.length > 0) {
+                // 각 채팅방 객체에 필요한 속성 할당
+                const updatedChatList = chatRooms.map(chatRoom => ({
+                    id: chatRoom.chatRoomId,
+                    title: chatRoom.chatRoomName,
+                    pdfUrl: chatRoom.filePath
+                }));
+                setChatList(updatedChatList);
+            } else {
+                // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+            }
+        } catch (error) {
+            console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
+            alert('채팅방 목록을 불러오는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         }
     };
 
