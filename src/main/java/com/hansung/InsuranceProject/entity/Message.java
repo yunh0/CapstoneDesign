@@ -1,12 +1,11 @@
 package com.hansung.InsuranceProject.entity;
 
 import com.hansung.InsuranceProject.constant.MessageType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +26,10 @@ public class Message extends BaseTimeEntity{
     @ManyToOne(optional = false)
     @JoinColumn(name = "chatRoomId")
     private ChatRoom chatRoom;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "message")
+    private List<PinnedAnswer> pinnedAnswers = new ArrayList<>();
 
     public Message(MessageType messageType, String content, ChatRoom chatRoom) {
         this.messageType = messageType;
