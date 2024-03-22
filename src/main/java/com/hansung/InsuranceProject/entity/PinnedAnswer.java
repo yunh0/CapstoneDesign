@@ -22,4 +22,7 @@ public class PinnedAnswer {
     @JoinColumn(name = "messageId")
     private Message message;
 
+    public PinnedAnswer(Message message){
+        this.message = message;
+    }
 }

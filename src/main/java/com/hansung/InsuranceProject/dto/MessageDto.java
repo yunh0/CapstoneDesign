@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDto {
+    private Long messageId;
 
     private MessageType messageType;
 
@@ -20,6 +21,7 @@ public class MessageDto {
 
     public static final MessageDto convertToDto(Message message){
         return MessageDto.builder()
+                .messageId(message.getMessageId())
                 .messageType(message.getMessageType())
                 .content(message.getContent())
                 .build();
