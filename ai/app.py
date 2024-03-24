@@ -68,7 +68,7 @@ def chat_with_pdf_bot(question, source_id):
 
     messages = [
         {'role': 'user', 'content': question},
-        {'role': 'assistant', 'content': ''}
+        {'role': '당신은 보험약관 전문가입니다.', 'content': '', 'temperature': 0.2}
     ]
 
     data = {'sourceId': source_id, 'messages': messages}
