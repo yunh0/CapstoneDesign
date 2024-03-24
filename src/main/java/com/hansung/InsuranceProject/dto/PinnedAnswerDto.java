@@ -34,10 +34,4 @@ public class PinnedAnswerDto {
                 .content(message.getContent())
                 .build();
     }
-
-    public static List<PinnedAnswerDto> convertToDtoList(List<PinnedAnswer> pinnedAnswers, ChatRoom chatRoom, FileInformation fileInformation, Message message) {
-        return pinnedAnswers.stream()
-                .map(pinnedAnswer -> convertToDto(chatRoom, fileInformation, pinnedAnswer, message))
-                .collect(Collectors.toList());
-    }
 }

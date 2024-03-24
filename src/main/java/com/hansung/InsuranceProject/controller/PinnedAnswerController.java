@@ -1,6 +1,7 @@
 package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.dto.PinnedAnswerDto;
+import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.entity.PinnedAnswer;
 import com.hansung.InsuranceProject.service.PinnedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class PinnedAnswerController {
     // 핀 답변 받아와서 넘겨주는 로직 추가해야 함
     @GetMapping("/getPin")
     public ResponseEntity<List<PinnedAnswerDto>> getPinnedAnswer(Principal principal){
-        return null;
+        List<PinnedAnswerDto> pinnedAnswers = pinnedAnswerService.getPinnedAnswers(principal);
+        return ResponseEntity.ok().body(pinnedAnswers);
     }
 }
