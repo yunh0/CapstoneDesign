@@ -13,7 +13,7 @@ from langchain.agents import AgentExecutor
 # 사용자가 보낸 질문에 마우스 호버 하면(또는 각 질문 위에)
 # <타 보험과 비교하기> 버튼을 눌러서 그 질문이 이 파일에 넘어와서 질문을 하도록 하기
 os.environ["OPENAI_API_KEY"] = "YOUR_API_KEY"
-#llm 셋업
+# llm 셋업
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
 loaders = [
@@ -34,27 +34,25 @@ text_splitter = RecursiveCharacterTextSplitter(
 # docs 변수에 분할 문서를 저장
 splits = text_splitter.split_documents(docs)
 
-#OpenAI 임베딩 모델을 사용하여 텍스트를 벡터로 변환하고, 이를 Chroma 벡터 저장소에 저장
+# OpenAI 임베딩 모델을 사용하여 텍스트를 벡터로 변환하고, 이를 Chroma 벡터 저장소에 저장
 embedding = OpenAIEmbeddings()
 vectorstore = Chroma.from_documents(documents=splits, embedding=embedding)
 
 vectorstore.persist()
 print(vectorstore._collection.count(), "documents in collection saved.")
 
-
-
 # LLM 에이전트가 사용할 수 있도록 retriever 라는 툴로 만들기
 retriever = vectorstore.as_retriever()
 
-#LLM에이전트가 만약 유저가 내가 업로드한 문서에 관련된 질문을 하면 이 tool을 사용해서 검색을 하게 됨
+# LLM에이전트가 만약 유저가 내가 업로드한 문서에 관련된 질문을 하면 이 tool을 사용해서 검색을 하게 됨
 tool = create_retriever_tool(
-retriever,
-"cusomter_service",
-"Searches and returns documents regarding the customer service guide.",
+    retriever,
+    "cusomter_service",
+    "Searches and returns documents regarding the customer service guide.",
 )
 tools = [tool]
 
-#대화 내용 기억할 수 있는 메모리 부여
+# 대화 내용 기억할 수 있는 메모리 부여
 memory_key = "history"
 
 from langchain.agents.openai_functions_agent.agent_token_buffer_memory import (
@@ -63,7 +61,7 @@ from langchain.agents.openai_functions_agent.agent_token_buffer_memory import (
 
 memory = AgentTokenBufferMemory(memory_key=memory_key, llm=llm)
 
-#에이전트 만들기(할루시네이션 전처리)
+# 에이전트 만들기(할루시네이션 전처리)
 # LLM이 어떤 행동을 해야하는지 알려주는 프롬프트
 system_message = SystemMessage(
     content=(
@@ -89,16 +87,16 @@ prompt = OpenAIFunctionsAgent.create_prompt(
 # 위에서 만든 llm, tools, prompt를 바탕으로 에이전트 만들어주기
 agent = OpenAIFunctionsAgent(llm=llm, tools=tools, prompt=prompt)
 
-#에이전트 실행하기
-#여기를 플라스크에서 질문을 받아오도록 바꾸기 
+# 에이전트 실행하기
+# 여기를 플라스크에서 질문을 받아오도록 바꾸기
 from langchain.agents import AgentExecutor
 
 agent_executor = AgentExecutor(
-agent=agent,
-tools=tools,
-memory=memory,
-verbose=True,
-return_intermediate_steps=True,
+    agent=agent,
+    tools=tools,
+    memory=memory,
+    verbose=True,
+    return_intermediate_steps=True,
 )
 
 result = agent_executor({"input": "안녕하세요"})
