@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 훅 임포트
 import '../cssfiles/selectPage.css';
+import {postInsuranceTerms} from "../api/postInsuranceTerms";
+import {getUserChatRooms} from "../api/createChatRoom";
 
 const fileTable = [
     { id: 1, type: '암 보험', company: 'KB손해보험', plan: '보험 A', path: '/path/to/암보험-KB손해보험-A.pdf' },
@@ -7,13 +10,15 @@ const fileTable = [
     // 추가 데이터...
 ];
 
-const SelectPage = () => {
+const SelectPage = ({setChatList}) => {
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
     const [currentStep, setCurrentStep] = useState(1);
     const [insuranceType, setInsuranceType] = useState('');
     const [insuranceCompany, setInsuranceCompany] = useState('');
     const [insurancePlan, setInsurancePlan] = useState('');
     const [confirmationStep, setConfirmationStep] = useState(false);
-    const [selectedPath, setSelectedPath] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
 
     const goToNextStep = () => {
         setCurrentStep(currentStep + 1);
@@ -35,24 +40,57 @@ const SelectPage = () => {
         setConfirmationStep(true); // 사용자가 계획을 선택하면 확인 단계로 넘어갑니다.
     };
     const modifySelection = () => {
-        // 선택 수정을 위해 단계를 리셋합니다.
         setCurrentStep(1);
         setConfirmationStep(false);
+        setInsuranceType('');
+        setInsuranceCompany('');
+        setInsurancePlan('');
+        setConfirmationStep(false);
+        setErrorMessage('');
     };
     const handleFinalSelection = () => {
         const selectedContract = fileTable.find(contract =>
             contract.type === insuranceType && contract.company === insuranceCompany && contract.plan === insurancePlan);
 
         if (selectedContract) {
-            setSelectedPath(selectedContract.path);
-            alert(`선택된 보험: ${insuranceType}, 보험사: ${insuranceCompany}, 보험: ${insurancePlan}\n파일 아이디: ${selectedContract.id}, 파일 경로: ${selectedContract.path}`);
+            const newChat = { insuranceType, insurancePlan };
+            setChatList(prevChatList => [...prevChatList, newChat]);
+
+            const success = postInsuranceTerms(newChat);
+            if (success) {
+                console.log('Insurance terms posted successfully.');
+            } else {
+                console.error('Failed to post insurance terms.');
+            }
+
+            navigate('/chat');
         } else {
             alert('해당하는 계약서를 찾을 수 없습니다.');
+        }
+        try {
+            const token = localStorage.getItem('token');
+            const chatRooms = getUserChatRooms(token);
+            if (chatRooms && chatRooms.length > 0) {
+                // 각 채팅방 객체에 필요한 속성 할당
+                const updatedChatList = chatRooms.map(chatRoom => ({
+                    id: chatRoom.chatRoomId,
+                    title: chatRoom.chatRoomName,
+                    pdfUrl: chatRoom.filePath
+                }));
+                setChatList(updatedChatList);
+            } else {
+                // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+            }
+        } catch (error) {
+            console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
+            alert('채팅방 목록을 불러오는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         }
     };
 
     return (
         <div className="select-container">
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+
             {currentStep === 1 && (
                 <div className="step-container">
                     <h2>INSURANCE TYPE</h2>

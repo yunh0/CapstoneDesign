@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
-import NewChatModal from '../jsxfiles/newchatModal';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+import { pinMessage } from "../api/pinMessage";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -64,7 +64,7 @@ const ChatPage = () => {
     ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
 
     const handleNewChat = () => {
-        setShowNewChatModal(true);
+        navigate('/select', { state: { setChatList: setChatList } }); // Pass setChatList via state
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -171,6 +171,7 @@ const ChatPage = () => {
         }
     };
 
+
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -202,8 +203,9 @@ const ChatPage = () => {
                 <div ref={rightPanelRef} className="chat-panel right">
                     <div className="chat-messages">
                         {messages.map((msg, index) => (
-                            <div key={index} className={`chat-message ${msg.sender}`}>
+                            <div className={`chat-message ${msg.sender}`} key={index}>
                                 {msg.text}
+                                <button className="pin-button" onClick={() => pinMessage(msg.id)}>📌</button>
                             </div>
                         ))}
                     </div>
@@ -215,7 +217,6 @@ const ChatPage = () => {
                     </form>
                 </div>
             </Fragment>
-            {showNewChatModal && <NewChatModal onClose={() => setShowNewChatModal(false)} setChatList={setChatList} onNewChatButton={handleNewChatButton} />}
         </div>
     );
 };
