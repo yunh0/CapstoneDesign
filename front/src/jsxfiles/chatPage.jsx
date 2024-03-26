@@ -2,21 +2,21 @@ import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
-import NewChatModal from '../jsxfiles/newchatModal';
+import SelectPage from "./selectPage";
 import { postChatContent } from "../api/postChatContent";
-import { getUserChatRooms} from "../api/createChatRoom";
+import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+
 
 const ChatPage = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [pdfUrl, setPdfUrl] = useState("");
-    const [showNewChatModal, setShowNewChatModal] = useState(false);
+    const [showSelectPage, setShowSelectPage] = useState(false); // Change to control SelectPage visibility
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
-    const [newChatButtons, setNewChatButtons] = useState([]);
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
@@ -51,9 +51,12 @@ const ChatPage = () => {
         }
     };
     useEffect(() => {
-        fetchChatRooms()
+        fetchChatRooms();
     }, []);
-
+    const updateChatList = async () => {
+        const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
+        setChatList(updatedChatRooms);
+    };
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
     const handleLogout = () => {
@@ -64,7 +67,7 @@ const ChatPage = () => {
     ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
 
     const handleNewChat = () => {
-        setShowNewChatModal(true);
+        setShowSelectPage(true); // Show SelectPage instead
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -135,10 +138,7 @@ const ChatPage = () => {
 
 
     //////////////////////////////////////새 채팅/////////////////////////////
-    const handleNewChatButton = async (title, id, pdfUrl) => {
-        const newButton = { title, id, pdfUrl };
-        setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
-    };
+
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
     useEffect(() => {
@@ -191,6 +191,12 @@ const ChatPage = () => {
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
+            {showSelectPage && (
+                <SelectPage
+                    setChatList={setChatList} // 이전에 사용한 props
+                    updateChatList={updateChatList} // 새로운 함수를 props로 추가
+                />
+            )}
             <Fragment>
                 <div ref={middlePanelRef} className="chat-panel">
                     <div className="chat-middle-content">
@@ -215,7 +221,6 @@ const ChatPage = () => {
                     </form>
                 </div>
             </Fragment>
-            {showNewChatModal && <NewChatModal onClose={() => setShowNewChatModal(false)} setChatList={setChatList} onNewChatButton={handleNewChatButton} />}
         </div>
     );
 };

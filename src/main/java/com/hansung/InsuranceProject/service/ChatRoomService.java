@@ -27,9 +27,11 @@ public class ChatRoomService {
     @Transactional
     public ChatRoom createChatRoom(Long accountId, String chatRoomName, String fileName) {
         Account creator = accountRepository.findById(accountId).orElse(null);
+        System.out.println("fileName : " + fileName);
         FileInformation file = fileInformationRepository.findByFileName(fileName).orElse(null);
         if (creator != null) {
             ChatRoom chatRoom = new ChatRoom(chatRoomName, creator, file);
+            System.out.println("chat room name: " + chatRoomName + ", " + "creator: " + creator + "file :" + file);
             creator.getChatRooms().add(chatRoom);
             return chatRoomRepository.save(chatRoom);
         }
