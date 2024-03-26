@@ -106,15 +106,47 @@ const NewChatModal = ({ onClose, setChatList }) => {
                             <div>
                                 <label>보험약관</label>
                                 <div>
-                                    {Array.from({ length: 5 }, (_, i) => {
-                                        const term = `${insuranceCompany}${insuranceType}${i + 1}`;
-                                        return (
-                                            <div key={i}>
-                                                <input type="radio" name="insuranceTerms" value={term} checked={insuranceTerms === term} onChange={handleInsuranceTermsChange} />
-                                                <label>{term}</label>
-                                            </div>
-                                        );
-                                    })}
+                                    {/*{Array.from({ length: 5 }, (_, i) => {*/}
+                                    {/*    const term = `${insuranceCompany}${insuranceType}${i + 1}`;*/}
+                                    {/*    return (*/}
+                                    {/*        <div key={i}>*/}
+                                    {/*            <input type="radio" name="insuranceTerms" value={term} checked={insuranceTerms === term} onChange={handleInsuranceTermsChange} />*/}
+                                    {/*            <label>{term}</label>*/}
+                                    {/*        </div>*/}
+                                    {/*    );*/}
+                                    {/*})}*/}
+                                    <div key={1}>
+                                        <input type="radio" name="insuranceTerms" value="메리츠 다이렉트 개인용 자동차보험" checked={insuranceTerms === "메리츠 다이렉트 개인용 자동차보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>메리츠 다이렉트 개인용 자동차보험</label>
+                                    </div>
+                                    <div key={2}>
+                                        <input type="radio" name="insuranceTerms" value="메리츠 다이렉트실손의료비보험" checked={insuranceTerms === "메리츠 다이렉트실손의료비보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>메리츠 다이렉트실손의료비보험</label>
+                                    </div>
+                                    <div key={3}>
+                                        <input type="radio" name="insuranceTerms" value="메리츠 또 걸려도 또 받는 암보험" checked={insuranceTerms === "메리츠 또 걸려도 또 받는 암보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>메리츠 또 걸려도 또 받는 암보험</label>
+                                    </div>
+                                    <div key={4}>
+                                        <input type="radio" name="insuranceTerms" value="메리츠 성공파트너 종합보험" checked={insuranceTerms === "메리츠 성공파트너 종합보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>메리츠 성공파트너 종합보험</label>
+                                    </div>
+                                    <div key={5}>
+                                        <input type="radio" name="insuranceTerms" value="메리츠 올바른 암보험" checked={insuranceTerms === "메리츠 올바른 암보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>메리츠 올바른 암보험</label>
+                                    </div>
+                                    <div key={6}>
+                                        <input type="radio" name="insuranceTerms" value="메리츠 우리집보험 M-House 2" checked={insuranceTerms === "메리츠 우리집보험 M-House 2"} onChange={handleInsuranceTermsChange} />
+                                        <label>메리츠 우리집보험 M-House 2</label>
+                                    </div>
+                                    <div key={7}>
+                                        <input type="radio" name="insuranceTerms" value="모여라 올인원 라이프보장보험" checked={insuranceTerms === "모여라 올인원 라이프보장보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>모여라 올인원 라이프보장보험</label>
+                                    </div>
+                                    <div key={8}>
+                                        <input type="radio" name="insuranceTerms" value="연금저축손해보험 노후생활지킴이보험" checked={insuranceTerms === "연금저축손해보험 노후생활지킴이보험"} onChange={handleInsuranceTermsChange} />
+                                        <label>연금저축손해보험 노후생활지킴이보험</label>
+                                    </div>
                                 </div>
                             </div>
                         )}
