@@ -38,7 +38,7 @@ const MainPage = () => {
             content = <SelectPage />;
             break;
         case 'chat':
-            content = <ChatPage setChatList={setChatList}/>;
+            content = <ChatPage setChatList={setChatList} />;
             break;
         default:
             content = (

@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import '../cssfiles/selectPage.css';
 import { postInsuranceTerms } from '../api/postInsuranceTerms';
 import { getUserChatRooms} from "../api/getChatRoom";
+import { useNavigate } from 'react-router-dom';
 
 
-const SelectPage = () => {
+const SelectPage = ({ onChatRoomCreated }) => {
+    const navigate = useNavigate();
+
     const [currentStep, setCurrentStep] = useState(0);
     const [title, setTitle] = useState(''); // 채팅방 제목 상태 추가
     const [insuranceType, setInsuranceType] = useState('');
@@ -68,6 +71,8 @@ const SelectPage = () => {
             console.log('Insurance terms posted successfully.');
             // 채팅 목록 업데이트
             updateChatList(); // 채팅방 목록을 업데이트하는 함수를 호출
+            onChatRoomCreated?.(); // 채팅방 생성 후 콜백 호출
+            navigate('/chat'); // 예: 사용자를 메인 페이지로 리디렉션
         } else {
             console.error('Failed to post insurance terms.');
         }

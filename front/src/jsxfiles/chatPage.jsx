@@ -52,6 +52,10 @@ const ChatPage = () => {
     useEffect(() => {
         fetchChatRooms();
     }, []);
+    const onChatRoomCreated = () => {
+        setShowSelectPage(false); // SelectPage 숨기기
+        fetchChatRooms(); // 채팅방 목록 새로고침
+    };
     const updateChatList = async () => {
         const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
         setChatList(updatedChatRooms);
@@ -62,8 +66,6 @@ const ChatPage = () => {
         setIsLogin(false);
         navigate('/rlogin');
     };
-
-    ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
 
     const handleNewChat = () => {
         setShowSelectPage(true); // Show SelectPage instead
@@ -194,6 +196,7 @@ const ChatPage = () => {
                 <SelectPage
                     setChatList={setChatList} // 이전에 사용한 props
                     updateChatList={updateChatList} // 새로운 함수를 props로 추가
+                    onChatRoomCreated={onChatRoomCreated} // 콜백 함수 전달
                 />
             )}
             <Fragment>
