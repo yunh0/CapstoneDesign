@@ -5,7 +5,7 @@ import PdfViewer from '../jsxfiles/pdfViewer';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
-import { pinMessage } from "../api/pinMessage";
+import {pinMessage} from "../api/pinMessage";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -170,7 +170,16 @@ const ChatPage = () => {
             }
         }
     };
-
+    const handlePinMessage = async (messageId, content) => {
+        // API 호출 로직 구현
+        const response = await pinMessage({ id: messageId, content });
+        if (response.success) {
+            console.log('메시지 핀 성공');
+            // 필요한 경우 추가 상태 업데이트 로직 구현
+        } else {
+            console.error('메시지 핀 실패');
+        }
+    };
 
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
@@ -205,7 +214,9 @@ const ChatPage = () => {
                         {messages.map((msg, index) => (
                             <div className={`chat-message ${msg.sender}`} key={index}>
                                 {msg.text}
-                                <button className="pin-button" onClick={() => pinMessage(msg.id)}>📌</button>
+                                {msg.sender === "received" && (
+                                    <button className="pin-button" onClick={() => handlePinMessage(msg.id,msg.text)}>📌</button>
+                                )}
                             </div>
                         ))}
                     </div>

@@ -49,24 +49,17 @@ const SelectPage = ({setChatList}) => {
         setErrorMessage('');
     };
     const handleFinalSelection = () => {
-        const selectedContract = fileTable.find(contract =>
-            contract.type === insuranceType && contract.company === insuranceCompany && contract.plan === insurancePlan);
+        const newChat = { insuranceType, insurancePlan };
+        setChatList(prevChatList => [...prevChatList, newChat]);
 
-        if (selectedContract) {
-            const newChat = { insuranceType, insurancePlan };
-            setChatList(prevChatList => [...prevChatList, newChat]);
-
-            const success = postInsuranceTerms(newChat);
-            if (success) {
-                console.log('Insurance terms posted successfully.');
-            } else {
-                console.error('Failed to post insurance terms.');
-            }
-
-            navigate('/chat');
+        const success = postInsuranceTerms(newChat);
+        if (success) {
+            console.log('Insurance terms posted successfully.');
         } else {
-            alert('해당하는 계약서를 찾을 수 없습니다.');
+            console.error('Failed to post insurance terms.');
         }
+
+        navigate('/chat');
         try {
             const token = localStorage.getItem('token');
             const chatRooms = getUserChatRooms(token);
@@ -124,7 +117,7 @@ const SelectPage = ({setChatList}) => {
                     <h2>INSURANCE</h2>
                     <p>선택한 {insuranceCompany}의 보험 중에서 {insuranceType}을 선택하세요.</p>
                     <div className="step-buttons">
-                        <button onClick={() => selectPlan('보험 A')}>보험 A</button>
+                        <button onClick={() => selectPlan('A자동차1')}>A자동차1</button>
                         <button onClick={() => selectPlan('보험 B')}>보험 B</button>
                         <button onClick={() => selectPlan('보험 C')}>보험 C</button>
                     </div>
