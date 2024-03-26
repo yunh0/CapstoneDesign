@@ -7,7 +7,6 @@ import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
 
-
 const ChatPage = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);

@@ -6,11 +6,13 @@ import FindPage from '../jsxfiles/findPage';
 import PinPage from '../jsxfiles/pinPage';
 import SelectPage from "./selectPage";
 import '../cssfiles/mainPage.css'
+import ChatPage from "./chatPage";
 
 const MainPage = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
+    const [chatList, setChatList] = useState([]);
 
     const handleLogout = () => {
         setIsLogin(false);
@@ -34,6 +36,9 @@ const MainPage = () => {
             break;
         case 'select': // 'select' 케이스를 추가합니다
             content = <SelectPage />;
+            break;
+        case 'chat':
+            content = <ChatPage setChatList={setChatList}/>;
             break;
         default:
             content = (
