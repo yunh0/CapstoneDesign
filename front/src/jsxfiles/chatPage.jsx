@@ -1,14 +1,19 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
 import SelectPage from "./selectPage";
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+import { pinMessage } from "../api/pinMessage";
 
 const ChatPage = () => {
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const pdfPathFromSelectPage = location.state?.pdfPath;
+
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [pdfUrl, setPdfUrl] = useState("");
@@ -143,10 +148,12 @@ const ChatPage = () => {
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
     useEffect(() => {
-        if (showPdfViewer) {
-            setPdfUrl(null);
+        if (pdfPathFromSelectPage) {
+            setShowPdfViewer(true);
+            setPdfUrl(pdfPathFromSelectPage);
         }
-    }, [showPdfViewer]);
+    }, [pdfPathFromSelectPage]);
+
 
     const handleButtonClicked = async (chat) => {
         const { id, pdfUrl } = chat;
@@ -155,6 +162,7 @@ const ChatPage = () => {
         if (selectedChatId !== id) {
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
+            console.log("handleButtonClicked: " + pdfUrl);
             setMessages(defaultMessages);
 
             try {
@@ -171,7 +179,17 @@ const ChatPage = () => {
             }
         }
     };
-
+    const handlePinMessage = async (messageId, content) => {
+        // API 호출 로직 구현
+        const response = await pinMessage({ messageId, content });
+        console.log("id: " + messageId + "content :" + content);
+        if (response.success) {
+            console.log('메시지 핀 성공');
+            // 필요한 경우 추가 상태 업데이트 로직 구현
+        } else {
+            console.error('메시지 핀 실패');
+        }
+    };
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -185,44 +203,53 @@ const ChatPage = () => {
                             <button style={{width: '100%', height: '70px'}} className="chat-message" onClick={() => {
                                 handleButtonClicked(chat);
                             }}>{chat.title}</button>
-
                         </div>
                     ))}
                 </div>
-                <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
+                <button onClick={() => setShowSelectPage(true)} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
-            {showSelectPage && (
-                <SelectPage
-                    setChatList={setChatList} // 이전에 사용한 props
-                    updateChatList={updateChatList} // 새로운 함수를 props로 추가
-                    onChatRoomCreated={onChatRoomCreated} // 콜백 함수 전달
-                />
-            )}
-            <Fragment>
-                <div ref={middlePanelRef} className="chat-panel">
-                    <div className="chat-middle-content">
-                        <span>Middle Panel</span>
-                    </div>
-                    {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }} />}
+            {showSelectPage ? (
+                <div className="select-page-container">
+                    <SelectPage
+                        updateChatList={updateChatList}
+                        onChatRoomCreated={() => {
+                            setShowSelectPage(false); // SelectPage 숨기기
+                            fetchChatRooms(); // 채팅방 목록 새로고침
+                        }}
+                    />
                 </div>
-                <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
-                <div ref={rightPanelRef} className="chat-panel right">
-                    <div className="chat-messages">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`chat-message ${msg.sender}`}>
-                                {msg.text}
+            ) : (
+                <>
+                    <Fragment>
+                        <div ref={middlePanelRef} className="chat-panel">
+                            <div className="chat-middle-content">
+                                <span>Middle Panel</span>
                             </div>
-                        ))}
-                    </div>
-                    <form className="chat-input-container" onSubmit={handleSendMessage}>
-                        <textarea className="chat-input" name="message" type="text" placeholder="메시지 입력..." />
-                        <button className="chat-submit-button">
-                            <i className="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </Fragment>
+                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }} />}
+                        </div>
+                        <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
+                        <div ref={rightPanelRef} className="chat-panel right">
+                            <div className="chat-messages">
+                                {messages.map((msg, index) => (
+                                    <div key={index} className={`chat-message ${msg.sender}`}>
+                                        {msg.id} {msg.text}
+                                        {msg.sender === "received" && (
+                                            <button className="pin-button" onClick={() => handlePinMessage(msg.id, msg.text)}>📌</button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <form className="chat-input-container" onSubmit={handleSendMessage}>
+                                <textarea className="chat-input" name="message" type="text" placeholder="메시지 입력..." />
+                                <button className="chat-submit-button">
+                                    <i className="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </Fragment>
+                </>
+            )}
         </div>
     );
 };

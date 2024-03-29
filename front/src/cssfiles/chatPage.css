@@ -1,9 +1,19 @@
 
+.select-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    min-height: 100vh;
+}
 
 .chat-container {
     display: flex;
     height: 100vh;
+    min-height:100vh;
     background-color: #f5f5f5; /* 메인 페이지 배경색과 동일하게 조정 */
+    flex-direction: row;
+    margin-right:0px;
 }
 
 .chat-left-panel {
