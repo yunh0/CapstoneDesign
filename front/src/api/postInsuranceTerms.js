@@ -13,6 +13,7 @@ export const postInsuranceTerms = async (newChat) => {
             body: JSON.stringify( newChat ),
         });
         if (!response.ok) throw new Error('bad server condition');
+        console.log(newChat)
         return true;
     } catch (e) {
         console.error('postInsuranceTerms Error: ', e.message);
