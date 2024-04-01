@@ -6,6 +6,8 @@ import NewChatModal from '../jsxfiles/newchatModal';
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/createChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+import {postPinMessage} from "../api/pinMessage";
+import {delPinMessages} from "../api/delPinMessages";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -24,11 +26,11 @@ const ChatPage = () => {
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages] = useState([
-        { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
-        { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
+        { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
+        { id: 2, text: "무엇을 도와드릴까요?", sender: "received", backid:1}
     ]);
     const [messages, setMessages] = useState(defaultMessages);
-
+    const [pinnedMessages, setPinnedMessages] = useState([]);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -139,14 +141,13 @@ const ChatPage = () => {
             return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
         }
         //채팅 메시지를 추가합니다.
-        const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
+        const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
 
         scrollToBottom();
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
-
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
@@ -156,8 +157,7 @@ const ChatPage = () => {
                 if (success.messageType === "PERSON") {
                     senderValue = "sent";
                 }
-                const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue };
-
+                const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
                 // 상태 업데이트 시 함수형 업데이트 사용
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 scrollToBottom2();
@@ -207,7 +207,7 @@ const ChatPage = () => {
                 const results = await sendChatRoomClick(id);
                 results.forEach(result => {
                     let senderValue = result.messageType === "PERSON" ? "sent" : "received";
-                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue };
+                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid:result.messageId };
 
                     setMessages(prevMessages => [...prevMessages, newResponse]);
                     messageInputRef.current.value = '';
@@ -217,6 +217,50 @@ const ChatPage = () => {
             }
         }
 
+    };
+
+    /////////////////////////////// 핀 기능 ////////////////////////////////////////////
+
+    const handlePinToggle = (msg) => {
+        if (isPinned(msg)) {
+            delhandlePinMessage(msg);
+            unpinMessage(msg);
+        } else {
+            handlePinMessage(msg);
+            pinMessage(msg);
+        }
+    };
+
+    const isPinned = (msg) => {
+        return pinnedMessages.some(pinnedMsg => pinnedMsg.backid === msg.backid);
+    };
+
+    const pinMessage = (msg) => {
+        setPinnedMessages([...pinnedMessages, msg]);
+    };
+
+    const unpinMessage = (msg) => {
+        setPinnedMessages(pinnedMessages.filter(pinnedMsg => pinnedMsg.backid !== msg.backid));
+    };
+
+    const handlePinMessage = async (msg) => {
+        console.log(msg.backid);
+        try {
+            const results = await postPinMessage(msg.backid);
+            console.log(results);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
+    };
+
+    const delhandlePinMessage = async (msg) => {
+        console.log(msg.backid);
+        try {
+            const results = await delPinMessages(msg.backid);
+            console.log(results);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
     };
 
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
@@ -252,6 +296,9 @@ const ChatPage = () => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`chat-message ${msg.sender}`}>
                                 {msg.text}
+                                {msg.id != 1 && msg.id != 2 && msg.sender === "received" && (
+                                    <button className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`} onClick={() => handlePinToggle(msg)}>{isPinned(msg) ? 'B' : '📌'}</button>
+                                )}
                             </div>
                         ))}
                     </div>

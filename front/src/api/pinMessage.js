@@ -1,6 +1,6 @@
-export const postChatContent = async (content, chatroomId) => {
+export const postPinMessage = async (messageId) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/user/message/${chatroomId}`;
+    const path = `/api/savePin/${messageId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
@@ -10,12 +10,11 @@ export const postChatContent = async (content, chatroomId) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ content }),
         });
         if (!response.ok) throw new Error('Failed to send message to the backend');
         return response.json();
     } catch (error) {
-        console.error('postChatContent Error: ', error.message);
+        console.error('pinMessage Error: ', error.message);
         return false;
     }
 };
