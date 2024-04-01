@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface PinnedAnswerRepository extends JpaRepository<PinnedAnswer, Long> {
     List<PinnedAnswer> findByMessage_ChatRoom_Account(Account account);
-    Optional<PinnedAnswer> findByMessageId(Long messageId);
+    Optional<PinnedAnswer> findByMessage_MessageId(Long messageId);
 }

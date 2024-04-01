@@ -40,7 +40,7 @@ public class PinnedAnswerService {
 
     @Transactional
     public boolean deletePinnedAnswer(Long messageId) {
-        PinnedAnswer pinnedAnswer = pinnedAnswerRepository.findByMessageId(messageId).orElse(null);
+        PinnedAnswer pinnedAnswer = pinnedAnswerRepository.findByMessage_MessageId(messageId).orElse(null);
         try {
             pinnedAnswerRepository.deleteById(pinnedAnswer.getPinnedAnswerId());
             return true;
