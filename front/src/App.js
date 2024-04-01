@@ -4,6 +4,7 @@ import StartPage from './jsxfiles/startPage';
 import MainPage from './jsxfiles/mainPage';
 import ChatPage from './jsxfiles/chatPage';
 import RloginPage from './jsxfiles/rloginPage';
+import SelectPage from './jsxfiles/selectPage'; // 경로는 실제 구조에 맞게 조정
 import { getUserInfo } from './api/getUserInfo';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/rlogin" element={<RloginPage isLogin={isLogin} setIsLogin={setIsLogin} />} />
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/chat" element={<ChatPage />} />
+                <Route path="/select" element={<SelectPage />} />
             </Routes>
         </Router>
     );
