@@ -1,6 +1,6 @@
 export const delPinMessages = async (messageId) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/deletePin/{messageId}`;
+    const path = `/api/deletePin/${messageId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {

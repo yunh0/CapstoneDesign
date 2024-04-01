@@ -26,7 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/api/insurance/terms")
                 .ignoringAntMatchers("/api/user/chatrooms")
                 .ignoringAntMatchers("/api/user/chatroom/**")
-                .ignoringAntMatchers("/api/user/message/**");
+                .ignoringAntMatchers("/api/user/message/**")
+                .ignoringAntMatchers("/api/savePin/**")
+                .ignoringAntMatchers("/api/getPin")
+                .ignoringAntMatchers("/api/deletePin/**");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
@@ -35,6 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/chatrooms").permitAll()
                 .antMatchers("/api/user/chatroom/**").permitAll()
                 .antMatchers("/api/user/message/**").permitAll()
+                .antMatchers("/api/savePin/**").permitAll()
+                .antMatchers("/api/getPin").permitAll()
+                .antMatchers("/api/deletePin/**").permitAll()
                 .anyRequest().authenticated();
     }
 }
