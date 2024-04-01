@@ -8,16 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class PinnedAnswerController {
+
     @Autowired
     private PinnedAnswerService pinnedAnswerService;
+
     @PostMapping("/savePin/{messageId}")
     public ResponseEntity savePinnedAnswer(@PathVariable Long messageId){
         PinnedAnswer pinnedAnswer = pinnedAnswerService.savePinnedAnswer(messageId);
+
         if (pinnedAnswer != null) {
             return ResponseEntity.ok().body("Pinned answer saved successfully");
         } else {
