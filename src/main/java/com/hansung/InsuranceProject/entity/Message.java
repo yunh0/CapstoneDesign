@@ -28,7 +28,7 @@ public class Message extends BaseTimeEntity{
     private ChatRoom chatRoom;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "message")
+    @OneToMany(mappedBy = "message", fetch = FetchType.EAGER)
     private List<PinnedAnswer> pinnedAnswers = new ArrayList<>();
 
     public Message(MessageType messageType, String content, ChatRoom chatRoom) {

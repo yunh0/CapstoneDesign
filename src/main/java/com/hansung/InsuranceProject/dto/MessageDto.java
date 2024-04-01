@@ -1,11 +1,11 @@
 package com.hansung.InsuranceProject.dto;
 
-import com.hansung.InsuranceProject.constant.MessageType;
-import com.hansung.InsuranceProject.entity.Message;
-import lombok.*;
+        import com.hansung.InsuranceProject.constant.MessageType;
+        import com.hansung.InsuranceProject.entity.Message;
+        import lombok.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+        import java.util.List;
+        import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,11 +22,7 @@ public class MessageDto {
     private Boolean pinnedChecked;
 
     public static final MessageDto convertToDto(Message message){
-        Boolean pin;
-        if(message.getPinnedAnswers().isEmpty())
-            pin = false;
-        else
-            pin = true;
+        Boolean pin = message.getPinnedAnswers().isEmpty();
 
         return MessageDto.builder()
                 .messageId(message.getMessageId())
