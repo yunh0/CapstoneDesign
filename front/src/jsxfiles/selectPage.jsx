@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import '../cssfiles/selectPage.css';
 import { postInsuranceTerms } from '../api/postInsuranceTerms';
 import { getUserChatRooms} from "../api/getChatRoom";
+import { getInsuranceType} from "../api/getInsuranceType";
+import { getInsuranceCompany } from "../api/getInsuranceCompany";
+import { getInsuranceTerms } from "../api/getInsuranceTerms"
 import { useNavigate } from 'react-router-dom';
+const API_URL = process.env.REACT_APP_API_URL;
 
 
 const SelectPage = ({ onChatRoomCreated }) => {
     const navigate = useNavigate();
+
+    const [insuranceData, setInsuranceData] = useState({
+        types: [], // Holds all insurance types
+        companies: {}, // Maps type to companies
+        terms: {}, // Maps company to terms under a type
+    });
 
     const [currentStep, setCurrentStep] = useState(1);
     const [title, setTitle] = useState(''); // 채팅방 제목 상태 추가
@@ -17,45 +27,46 @@ const SelectPage = ({ onChatRoomCreated }) => {
     const [chatList, setChatList] = useState([]);
     const [pdfPath, setPdfPath] = useState('');
 
-    const insuranceCompaniesByType = {
-        '암 보험': ['암보험사1', '암보험사2', '암보험사3'],
-        '화재 보험': ['화재보험사1', '화재보험사2', '화재보험사3'],
-        '연금 보험': ['연금보험사1', '연금보험사2', '연금보험사3'],
-        '실비 보험': ['실비보험사1', '실비보험사2', '실비보험사3'],
-        '자동차 보험': ['자동차보험사1', '자동차보험사2', '자동차보험사3'],
+
+    useEffect(() => {
+        const fetchInsuranceInfo = async () => {
+            const fetchedType = await getInsuranceType();
+            console.log("fetched type: ", fetchedType);
+            if (fetchedType && Array.isArray(fetchedType)) {
+                setInsuranceData(prev => ({
+                    ...prev,
+                    types: fetchedType,
+                }));
+            }
+        };
+        fetchInsuranceInfo();
+
+    }, []);
+
+
+
+    const renderInsuranceTypes = () => {
+        return insuranceData.types.map(type => (
+            <button key={type} onClick={() => selectType(type)}>{type}</button>
+        ));
     };
 
-    // 보험사와 보험 종류에 따른 보험 상품 목록
-    const insuranceTermsByCompanyAndType = {
-        '암 보험': {
-            '암보험사1': ['암보험사1보험1', '암보험사1보험2', '암보험사1보험3'],
-            '암보험사2': ['암보험사2보험1', '암보험사2보험2', '암보험사2보험3'],
-            '암보험사3': ['암보험사3보험1', '암보험사3보험2', '암보험사3보험3'],
-        },
-        '화재 보험': {
-            '화재보험사1': ['화재보험사1보험1', '화재보험사1보험2', '화재보험사1보험3'],
-            '화재보험사2': ['화재보험사2보험1', '화재보험사2보험2', '화재보험사2보험3'],
-            '화재보험사3': ['화재보험사3보험1', '화재보험사3보험2', '화재보험사3보험3'],
-        },
-        '연금 보험': {
-            '연금보험사1': ['연금보험사1보험1', '연금보험사1보험2', '연금보험사1보험3'],
-            '연금보험사2': ['연금보험사2보험1', '연금보험사2보험2', '연금보험사2보험3'],
-            '연금보험사3': ['연금보험사3보험1', '연금보험사3보험2', '연금보험사3보험3'],
-        },
-        '실비 보험': {
-            '실비보험사1': ['실비보험사1보험1', '실비보험사1보험2', '실비보험사1보험3'],
-            '실비보험사2': ['실비보험사2보험1', '실비보험사2보험2', '실비보험사2보험3'],
-            '실비보험사3': ['실비보험사3보험1', '실비보험사3보험2', '실비보험사3보험3'],
-        },
-        '자동차 보험': {
-            '자동차보험사1': ['자동차보험사1보험1', '자동차보험사1보험2', '자동차보험사1보험3'],
-            '자동차보험사2': ['자동차보험사2보험1', '자동차보험사2보험2', '자동차보험사2보험3'],
-            '자동차보험사3': ['자동차보험사3보험1', '자동차보험사3보험2', '자동차보험사3보험3'],
-        },
+
+    const renderInsuranceCompanies = () => {
+        const companies = insuranceData.companies[insuranceType] || []; // Use the selected type
+        return companies.map((company, index) => (
+            <button key={index} onClick={() => selectCompany(company)}>{company}</button>
+        ));
     };
 
-    const availableCompanies = insuranceType ? insuranceCompaniesByType[insuranceType] : [];
-    const availableTerms = insuranceType && insuranceCompany ? insuranceTermsByCompanyAndType[insuranceType][insuranceCompany] : [];
+    const renderInsuranceTerms = () => {
+        // Accessing terms based on the selected type and company
+        const terms = insuranceData.terms[insuranceType]?.[insuranceCompany] || [];
+        console.log("rendering insurance terms: ", terms);
+        return terms.map((term, index) => (
+            <button key={index} onClick={() => selectTerms(term)}>{term}</button>
+        ));
+    };
 
     const goToNextStep = () => {
         if (currentStep >= 4) { // 4단계에서 Next 버튼을 눌렀을 때 최종 확인 단계로 이동
@@ -68,28 +79,42 @@ const SelectPage = ({ onChatRoomCreated }) => {
         setTitle(e.target.value);
     };
 
-    const selectType = (type) => {
+    const selectType = async (type) => {
         setInsuranceType(type);
+        const companies = await getInsuranceCompany(type); // Pass the selected type
+        if (companies) {
+            setInsuranceData(prev => ({
+                ...prev,
+                companies: { ...prev.companies, [type]: companies },
+            }));
+        }
         goToNextStep();
     };
 
-    const selectCompany = (company) => {
+    const selectCompany = async (company) => {
         setInsuranceCompany(company);
+        // Fetch terms based on type and company
+        const terms = await getInsuranceTerms(insuranceType, company);
+        setInsuranceData(prev => ({
+            ...prev,
+            terms: { ...prev.terms, [insuranceType]: { ...prev.terms[insuranceType], [company]: terms } },
+        }));
         goToNextStep();
     };
 
-    const selectTerms = (plan, pdfPath) => {
-        setInsuranceTerms(plan);
-        setPdfPath(pdfPath); // PDF 경로 설정
+    const selectTerms = async (term) => {
+        setInsuranceTerms(term);
         goToNextStep();
         setConfirmationStep(true);
     };
+
     const modifySelection = () => {
         // 선택 수정을 위해 단계를 리셋합니다.
         setCurrentStep(1);
         setTitle('');
         setConfirmationStep(false);
     };
+
     const updateChatList = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -120,10 +145,10 @@ const SelectPage = ({ onChatRoomCreated }) => {
             updateChatList(); // 채팅방 목록을 업데이트하는 함수를 호출
             onChatRoomCreated?.(); // 채팅방 생성 후 콜백 호출
             navigate('/chat', { state: { pdfPath } });
+            console.log("pdf Path is ", pdfPath);
         } else {
             console.error('Failed to post insurance terms.');
         }
-
     };
 
 
@@ -134,12 +159,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
                     <h2>INSURANCE TYPE</h2>
                     <p>선택하고 싶은 계약의 종류를 선택하세요.</p>
                     <div className = "step-buttons">
-                        <button onClick={() => selectType('암 보험')}>암 보험</button>
-                        <button onClick={() => selectType('화재 보험')}>화재 보험</button>
-                        <button onClick={() => selectType('연금 보험')}>연금 보험</button>
-                        <button onClick={() => selectType('실비 보험')}>실비 보험</button>
-                        <button onClick={() => selectType('자동차 보험')}>자동차 보험</button>
-
+                        {renderInsuranceTypes()}
                     </div>
                 </div>
             )}
@@ -148,9 +168,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
                     <h2>INSURANCE COMPANY</h2>
                     <p>선택한 {insuranceType}의 보험사를 선택하세요.</p>
                     <div className="step-buttons">
-                        {availableCompanies.map(company => (
-                            <button key={company} onClick={() => selectCompany(company)}>{company}</button>
-                        ))}
+                        {renderInsuranceCompanies()}
                     </div>
                     <button onClick={() => setCurrentStep(currentStep - 1)} className="back-button">
                         <i className="fas fa-arrow-left"></i> {/* Font Awesome 아이콘 */}
@@ -162,9 +180,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
                     <h2>INSURANCE</h2>
                     <p>선택한 {insuranceCompany}의 보험 중에서 {insuranceType}을 선택하세요.</p>
                     <div className="step-buttons">
-                        {availableTerms.map(term => (
-                            <button key={term} onClick={() => selectTerms(term, 'PDF_PATH')}>{term}</button>
-                        ))}
+                        {renderInsuranceTerms()}
                     </div>
                     <div>
                         <button onClick={() => setCurrentStep(currentStep - 1)} className="back-button">
