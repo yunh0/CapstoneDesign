@@ -38,7 +38,18 @@ public class PinnedAnswerService {
         return null;
     }
 
-    //유저에 대한 핀 답변만 가져오는 로직 구현해야함
+    @Transactional
+    public boolean deletePinnedAnswer(Long messageId) {
+        PinnedAnswer pinnedAnswer = pinnedAnswerRepository.findByMessageId(messageId).orElse(null);
+        try {
+            pinnedAnswerRepository.deleteById(pinnedAnswer.getPinnedAnswerId());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<PinnedAnswerDto> getPinnedAnswers(Principal principal){
         Long accountId = Long.valueOf(principal.getName());
         Account account = accountRepository.findById(accountId).orElse(null);

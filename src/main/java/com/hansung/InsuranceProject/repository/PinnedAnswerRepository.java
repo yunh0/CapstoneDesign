@@ -5,7 +5,9 @@ import com.hansung.InsuranceProject.entity.PinnedAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PinnedAnswerRepository extends JpaRepository<PinnedAnswer, Long> {
     List<PinnedAnswer> findByMessage_ChatRoom_Account(Account account);
+    Optional<PinnedAnswer> findByMessageId(Long messageId);
 }

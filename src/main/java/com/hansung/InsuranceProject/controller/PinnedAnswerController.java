@@ -29,11 +29,22 @@ public class PinnedAnswerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save pinned answer.");
         }
     }
-    
-    // 핀 답변 받아와서 넘겨주는 로직 추가해야 함
+
     @GetMapping("/getPin")
     public ResponseEntity<List<PinnedAnswerDto>> getPinnedAnswer(Principal principal){
         List<PinnedAnswerDto> pinnedAnswers = pinnedAnswerService.getPinnedAnswers(principal);
         return ResponseEntity.ok().body(pinnedAnswers);
     }
+
+    @PostMapping("deletePin/{messageId}")
+    public ResponseEntity deletePinnedAnswer(@PathVariable Long messageId){
+        boolean deleted = pinnedAnswerService.deletePinnedAnswer(messageId);
+
+        if (deleted) {
+            return ResponseEntity.ok().body("success");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail");
+        }
+    }
+
 }
