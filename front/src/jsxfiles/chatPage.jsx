@@ -6,7 +6,12 @@ import SelectPage from "./selectPage";
 import { postChatContent } from "../api/postChatContent";
 import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+<<<<<<< HEAD
 import { pinMessage } from "../api/pinMessage";
+=======
+import {postPinMessage} from "../api/pinMessage";
+import {delPinMessages} from "../api/delPinMessages";
+>>>>>>> origin/JW2
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -26,11 +31,11 @@ const ChatPage = () => {
     const rightPanelRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [defaultMessages] = useState([
-        { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
-        { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
+        { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
+        { id: 2, text: "무엇을 도와드릴까요?", sender: "received", backid:1}
     ]);
     const [messages, setMessages] = useState(defaultMessages);
-
+    const [pinnedMessages, setPinnedMessages] = useState([]);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -111,14 +116,22 @@ const ChatPage = () => {
         if (!messageText.trim()) {
             return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
         }
+<<<<<<< HEAD
 
         // 입력 필드를 비우기 전에 채팅 메시지를 추가합니다.
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
+=======
+        //채팅 메시지를 추가합니다.
+        const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
+>>>>>>> origin/JW2
         setMessages(prevMessages => [...prevMessages, newMessage]);
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
+<<<<<<< HEAD
         console.log(messageText)
+=======
+>>>>>>> origin/JW2
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
@@ -130,9 +143,13 @@ const ChatPage = () => {
                 if (success.messageType === "PERSON") {
                     senderValue = "sent";
                 }
+<<<<<<< HEAD
                 console.log(success.content)
                 const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue };
 
+=======
+                const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
+>>>>>>> origin/JW2
                 // 상태 업데이트 시 함수형 업데이트 사용
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 console.log(messages)
@@ -170,7 +187,7 @@ const ChatPage = () => {
 
                 results.forEach(result => {
                     let senderValue = result.messageType === "PERSON" ? "sent" : "received";
-                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue };
+                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid:result.messageId };
 
                     setMessages(prevMessages => [...prevMessages, newResponse]);
                 });
@@ -179,6 +196,7 @@ const ChatPage = () => {
             }
         }
     };
+<<<<<<< HEAD
     const handlePinMessage = async (messageId, content) => {
         // API 호출 로직 구현
         const response = await pinMessage({ messageId, content });
@@ -190,6 +208,53 @@ const ChatPage = () => {
             console.error('메시지 핀 실패');
         }
     };
+=======
+
+    /////////////////////////////// 핀 기능 ////////////////////////////////////////////
+
+    const handlePinToggle = (msg) => {
+        if (isPinned(msg)) {
+            delhandlePinMessage(msg);
+            unpinMessage(msg);
+        } else {
+            handlePinMessage(msg);
+            pinMessage(msg);
+        }
+    };
+
+    const isPinned = (msg) => {
+        return pinnedMessages.some(pinnedMsg => pinnedMsg.backid === msg.backid);
+    };
+
+    const pinMessage = (msg) => {
+        setPinnedMessages([...pinnedMessages, msg]);
+    };
+
+    const unpinMessage = (msg) => {
+        setPinnedMessages(pinnedMessages.filter(pinnedMsg => pinnedMsg.backid !== msg.backid));
+    };
+
+    const handlePinMessage = async (msg) => {
+        console.log(msg.backid);
+        try {
+            const results = await postPinMessage(msg.backid);
+            console.log(results);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
+    };
+
+    const delhandlePinMessage = async (msg) => {
+        console.log(msg.backid);
+        try {
+            const results = await delPinMessages(msg.backid);
+            console.log(results);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
+    };
+
+>>>>>>> origin/JW2
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -219,12 +284,24 @@ const ChatPage = () => {
                         }}
                     />
                 </div>
+<<<<<<< HEAD
             ) : (
                 <>
                     <Fragment>
                         <div ref={middlePanelRef} className="chat-panel">
                             <div className="chat-middle-content">
                                 <span>Middle Panel</span>
+=======
+                <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
+                <div ref={rightPanelRef} className="chat-panel right">
+                    <div ref={chatMessagesRef} className="chat-messages">
+                        {messages.map((msg, index) => (
+                            <div key={index} className={`chat-message ${msg.sender}`}>
+                                {msg.text}
+                                {msg.id != 1 && msg.id != 2 && msg.sender === "received" && (
+                                    <button className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`} onClick={() => handlePinToggle(msg)}>{isPinned(msg) ? 'B' : '📌'}</button>
+                                )}
+>>>>>>> origin/JW2
                             </div>
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }} />}
                         </div>
