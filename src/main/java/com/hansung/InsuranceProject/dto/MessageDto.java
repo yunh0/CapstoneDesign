@@ -19,11 +19,20 @@ public class MessageDto {
 
     private String content;
 
+    private Boolean pinnedChecked;
+
     public static final MessageDto convertToDto(Message message){
+        Boolean pin;
+        if(message.getPinnedAnswers().isEmpty())
+            pin = false;
+        else
+            pin = true;
+
         return MessageDto.builder()
                 .messageId(message.getMessageId())
                 .messageType(message.getMessageType())
                 .content(message.getContent())
+                .pinnedChecked(pin)
                 .build();
     }
 
