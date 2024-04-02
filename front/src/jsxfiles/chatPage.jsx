@@ -213,7 +213,6 @@ const ChatPage = () => {
 
 
         if (selectedChatId !== id) {
-            messageInputRef.current.value = 'LOADING........';
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
             console.log("handleButtonClicked: " + pdfUrl);
@@ -324,32 +323,31 @@ const ChatPage = () => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`chat-message ${msg.sender}`}>
                                 {msg.text}
-                                {msg.id != 1 && msg.id != 2 && msg.sender === "received" && (
+                                {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                     <button className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`} onClick={() => handlePinToggle(msg)}>{isPinned(msg) ? 'B' : '📌'}</button>
                                 )}
                             </div>
                         ))}
                     </div>
                     <form className="chat-input-container" onSubmit={handleFormSubmit}>
-    <textarea
-        ref={messageInputRef}
-        className="chat-input"
-        name="message"
-        type="text"
-        disabled={isLoading}
-        placeholder="메시지 입력..."
-        onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault(); // 기본 엔터 동작 방지
-                handleSendMessage(); // handleSendMessage 호출
-            }
-        }}
-    />
-                        <button type="submit" className="chat-submit-button"  disabled={isLoading}>
-                            <i className="fas fa-paper-plane"></i>
-                        </button>
+                    <textarea
+                        ref={messageInputRef}
+                        className="chat-input"
+                        name="message"
+                        type="text"
+                        disabled={isLoading}
+                        placeholder="메시지 입력..."
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault(); // 기본 엔터 동작 방지
+                                handleSendMessage(); // handleSendMessage 호출
+                            }
+                        }}
+                    />
+                    <button type="submit" className="chat-submit-button"  disabled={isLoading}>
+                        <i className="fas fa-paper-plane"></i>
+                    </button>
                     </form>
-
                 </div>
             </Fragment>
                 </>

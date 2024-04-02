@@ -1,4 +1,3 @@
-
 .select-page-container {
     display: flex;
     justify-content: center;
@@ -7,12 +6,11 @@
     min-height: 100vh;
 }
 
-
 .chat-container {
     display: flex;
     height: 100vh;
     min-height:100vh;
-    background-color: #f5f5f5; /* 메인 페이지 배경색과 동일하게 조정 */
+    background-color: #f5f5f5;
     flex-direction: row;
     margin-right:0px;
 }
@@ -25,8 +23,26 @@
     flex-direction: column;
     align-items: center;
     padding: 20px 0; /* 상단 및 하단 패딩 유지 */
+    position: relative; /* 추가 */
     color: #333;
     justify-content: space-between; /* 버튼 간 동일 간격 유지, 메인 페이지 스타일 적용 */
+}
+
+.chat-left-panel button {
+    width: 100%; /* 추가 */
+    margin-bottom: 10px; /* 추가 */
+
+}
+
+.chat-left-panel button:not(.logout-btn), .chat-left-panel a {
+    margin-bottom: 20px; /* 조금 더 여유 있는 간격 */
+    font-size: 18px; /* 텍스트 크기를 적절히 조정 */
+    padding: 15px 25px; /* 내부 여백 조정 */
+    border: 2px solid transparent; /* 테두리 더 명확하게 */
+    cursor: pointer;
+    color: #333; /* 텍스트 색상 유지 */
+    border-radius: 20px; /* 모서리 더 둥글게 */
+    transition: all 0.3s ease;
 }
 
 .chat-panel {
@@ -38,13 +54,32 @@
     border-left: 1px solid #ddd;
 }
 
+.chat-panel.right {
+    width: 40%;
+    background-color: #f0f0f0; /* 밝은 회색으로 배경 설정 */
+    display: flex;
+    flex-direction: column;
+}
+.button-wrapper{
+    height: 80%;
+    width: 98%;
+    border: 2px solid black;
+    padding: 10px;
+    overflow: auto;
+
+}
+.newchat-btn{
+    margin: 10px;
+    height: 10%;
+    padding: 10px;
+}
+
 .chat-room-list {
     height: 150px;
     overflow-y: auto;
     width: 100%; /* 채팅방 목록 너비 조정 */
     background-color: #F7F7F7;
 }
-
 .chat-room {
     padding: 15px;
     margin: 10px 0;
@@ -60,26 +95,13 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강조 */
 }
 
-.chat-panel.right {
-    width: 40%;
-    background-color: #f0f0f0; /* 밝은 회색으로 배경 설정 */
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background-color: white; /* 입력 창 배경색 조정 */
-}
-
 .chat-input-container {
     display: flex;
     border-top: 2px solid #E1E1E1;
     padding: 10px;
     background-color: #F8F9FA; /* 입력 창 배경색 조정 */
 }
+
 .chat-input {
     flex-grow: 1;
     padding: 10px 15px;
@@ -90,7 +112,6 @@
     outline: none; /* 포커스 시 테두리 제거 */
     background-color: #F7F7F7;
 }
-
 .chat-submit-button {
     padding: 10px 15px;
     background-color: #007BFF;
@@ -103,11 +124,16 @@
     justify-content: center;
     align-items: center;
 }
-
 .chat-submit-button:hover {
     background-color: #0056b3;
 }
 
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: white; /* 입력 창 배경색 조정 */
+}
 
 .chat-message {
     overflow: auto;
@@ -121,19 +147,6 @@
     position: relative; /* 이 부분을 추가 */
 }
 
-.pin-button {
-    position: absolute; /* 절대 위치 */
-    top: 0; /* 위쪽에서 0px 떨어진 위치 */
-    right: 0; /* 오른쪽에서 0px 떨어진 위치 */
-    border: none; /* 버튼 기본 테두리 제거 */
-    background: none; /* 버튼 기본 배경 제거 */
-    cursor: pointer; /* 마우스 오버 시 커서 변경 */
-    font-size: 16px; /* 아이콘 크기, 필요에 따라 조정 */
-    padding: 5px; /* 클릭 영역을 넓히기 위해 패딩 추가 */
-    transform: translate(50%, -50%); /* 아이콘을 부분적으로 말풍선 밖으로 이동 */
-}
-
-
 .chat-message.sent {
     align-self: flex-end;
     background-color: #007bff;
@@ -146,25 +159,6 @@
     background-color: aliceblue;
     color: #000;
 }
-
-.divider {
-    cursor: ew-resize;
-    width:5px;
-    background-color: #ddd;
-}
-
-/* 메인 페이지와 동일한 버튼 스타일 적용 */
-.chat-left-panel button:not(.logout-btn), .chat-left-panel a {
-    margin-bottom: 20px; /* 조금 더 여유 있는 간격 */
-    font-size: 18px; /* 텍스트 크기를 적절히 조정 */
-    padding: 15px 25px; /* 내부 여백 조정 */
-    border: 2px solid transparent; /* 테두리 더 명확하게 */
-    cursor: pointer;
-    color: #333; /* 텍스트 색상 유지 */
-    border-radius: 20px; /* 모서리 더 둥글게 */
-    transition: all 0.3s ease;
-}
-
 .logout-btn {
     margin-bottom: 20px; /* 조금 더 여유 있는 간격 */
     font-size: 50px; /* 텍스트 크기를 적절히 조정 */
@@ -174,4 +168,9 @@
     color: #333; /* 텍스트 색상 유지 */
     border-radius: 20px; /* 모서리 더 둥글게 */
     transition: all 0.3s ease;
+}
+.divider {
+    cursor: ew-resize;
+    width:1px;
+    background-color: #ddd;
 }
