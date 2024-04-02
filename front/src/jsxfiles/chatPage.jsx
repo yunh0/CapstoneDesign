@@ -1,24 +1,27 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
-import NewChatModal from '../jsxfiles/newchatModal';
+import SelectPage from "./selectPage";
 import { postChatContent } from "../api/postChatContent";
-import { getUserChatRooms} from "../api/createChatRoom";
+import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
 import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 
 const ChatPage = () => {
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const pdfPathFromSelectPage = location.state?.pdfPath;
+
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [pdfUrl, setPdfUrl] = useState("");
-    const [showNewChatModal, setShowNewChatModal] = useState(false);
+    const [showSelectPage, setShowSelectPage] = useState(false); // Change to control SelectPage visibility
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
-    const [newChatButtons, setNewChatButtons] = useState([]);
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
@@ -56,9 +59,13 @@ const ChatPage = () => {
         }
     };
     useEffect(() => {
-        fetchChatRooms()
+        fetchChatRooms();
     }, []);
 
+    const updateChatList = async () => {
+        const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
+        setChatList(updatedChatRooms);
+    };
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
     const handleLogout = () => {
@@ -69,7 +76,7 @@ const ChatPage = () => {
     ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
 
     const handleNewChat = () => {
-        setShowNewChatModal(true);
+        setShowSelectPage(true); // Show SelectPage instead
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -187,21 +194,23 @@ const ChatPage = () => {
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
     useEffect(() => {
-        if (showPdfViewer) {
-            setPdfUrl(null);
+        if (pdfPathFromSelectPage) {
+            setShowPdfViewer(true);
+            setPdfUrl(pdfPathFromSelectPage);
         }
-    }, [showPdfViewer]);
+    }, [pdfPathFromSelectPage]);
 
 
     const handleButtonClicked = async (chat) => {
-
         const { id, pdfUrl } = chat;
         setSelectedChatId(id);
 
 
         if (selectedChatId !== id) {
+            messageInputRef.current.value = '';
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
+            console.log("handleButtonClicked: " + pdfUrl);
             setMessages(defaultMessages);
 
             try {
@@ -281,7 +290,7 @@ const ChatPage = () => {
                         </div>
                     ))}
                 </div>
-                <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
+                <button onClick={() => setShowSelectPage(true)} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
             {showSelectPage ? (
@@ -296,26 +305,31 @@ const ChatPage = () => {
                 </div>
             ) : (
                 <>
-            <Fragment>
-                <div ref={middlePanelRef} className="chat-panel">
-                    <div className="chat-middle-content">
-                        <span>Middle Panel</span>
-                    </div>
-                    {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} onMouseMove={handleMouseMove} style={{ width: '100%', height: '96%' }} />}
-                </div>
-                <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
-                <div ref={rightPanelRef} className="chat-panel right">
-                    <div ref={chatMessagesRef} className="chat-messages">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`chat-message ${msg.sender}`}>
-                                {msg.text}
-                                {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
-                                    <button className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`} onClick={() => handlePinToggle(msg)}>{isPinned(msg) ? 'B' : '📌'}</button>
-                                )}
+                    <Fragment>
+                        <div ref={middlePanelRef} className="chat-panel">
+                            <div className="chat-middle-content">
+                                <span>Middle Panel</span>
                             </div>
-                        ))}
-                    </div>
-                    <form className="chat-input-container" onSubmit={handleFormSubmit}>
+                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} onMouseMove={handleMouseMove} style={{ width: '100%', height: '96%' }} />}
+                        </div>
+                        <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
+                        <div ref={rightPanelRef} className="chat-panel right">
+                            <div ref={chatMessagesRef} className="chat-messages">
+                                {messages.map((msg, index) => (
+                                    <div key={index} className={`chat-message ${msg.sender}`}>
+                                        {msg.text}
+                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
+                                            <button
+                                                className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`}
+                                                onClick={() => handlePinToggle(msg)}
+                                                aria-label={isPinned(msg) ? "Unpin Message" : "Pin Message"}>
+                                                {isPinned(msg) ? '📍' : '📌'}
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <form className="chat-input-container" onSubmit={handleFormSubmit}>
                     <textarea
                         ref={messageInputRef}
                         className="chat-input"
@@ -330,12 +344,12 @@ const ChatPage = () => {
                             }
                         }}
                     />
-                    <button type="submit" className="chat-submit-button"  disabled={isLoading}>
-                        <i className="fas fa-paper-plane"></i>
-                    </button>
-                    </form>
-                </div>
-            </Fragment>
+                                <button type="submit" className="chat-submit-button"  disabled={isLoading}>
+                                    <i className="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </Fragment>
                 </>
             )}
         </div>

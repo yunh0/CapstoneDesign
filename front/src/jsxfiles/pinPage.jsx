@@ -61,6 +61,7 @@ const PinPage = () => {
         setIsModalOpen(false);
     };
 
+
     return (
         <div className="pin-page">
             <h2 className="pin-page-title">Pinned Answers</h2>

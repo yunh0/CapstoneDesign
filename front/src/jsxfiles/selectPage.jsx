@@ -8,11 +8,6 @@ import { getInsuranceTerms } from "../api/getInsuranceTerms"
 import { useNavigate } from 'react-router-dom';
 const API_URL = process.env.REACT_APP_API_URL;
 
-const fileTable = [
-    { id: 1, type: '암 보험', company: 'KB손해보험', plan: '보험 A', path: '/path/to/암보험-KB손해보험-A.pdf' },
-    { id: 2, type: '화재 보험', company: '현대해상', plan: '보험 B', path: '/path/to/화재보험-현대해상-B.pdf' },
-    // 추가 데이터...
-];
 
 const SelectPage = ({ onChatRoomCreated }) => {
     const navigate = useNavigate();
@@ -24,11 +19,13 @@ const SelectPage = ({ onChatRoomCreated }) => {
     });
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [title, setTitle] = useState(''); // 채팅방 제목 상태 추가
     const [insuranceType, setInsuranceType] = useState('');
     const [insuranceCompany, setInsuranceCompany] = useState('');
-    const [insurancePlan, setInsurancePlan] = useState('');
+    const [insuranceTerms, setInsuranceTerms] = useState('');
     const [confirmationStep, setConfirmationStep] = useState(false);
-    const [selectedPath, setSelectedPath] = useState('');
+    const [chatList, setChatList] = useState([]);
+    const [pdfPath, setPdfPath] = useState('');
 
 
     useEffect(() => {
@@ -72,7 +69,14 @@ const SelectPage = ({ onChatRoomCreated }) => {
     };
 
     const goToNextStep = () => {
-        setCurrentStep(currentStep + 1);
+        if (currentStep >= 4) { // 4단계에서 Next 버튼을 눌렀을 때 최종 확인 단계로 이동
+            setCurrentStep(5);
+        } else {
+            setCurrentStep(currentStep + 1);
+        }
+    };
+    const handleTitleInput = (e) => {
+        setTitle(e.target.value);
     };
 
     const selectType = async (type) => {
@@ -101,12 +105,13 @@ const SelectPage = ({ onChatRoomCreated }) => {
     const selectTerms = async (term) => {
         setInsuranceTerms(term);
         goToNextStep();
-        setConfirmationStep(true); // 사용자가 계획을 선택하면 확인 단계로 넘어갑니다.
+        setConfirmationStep(true);
     };
 
     const modifySelection = () => {
         // 선택 수정을 위해 단계를 리셋합니다.
         setCurrentStep(1);
+        setTitle('');
         setConfirmationStep(false);
     };
 
@@ -142,9 +147,10 @@ const SelectPage = ({ onChatRoomCreated }) => {
             navigate('/chat', { state: { pdfPath } });
             console.log("pdf Path is ", pdfPath);
         } else {
-            alert('해당하는 계약서를 찾을 수 없습니다.');
+            console.error('Failed to post insurance terms.');
         }
     };
+
 
     return (
         <div className="select-container">
@@ -178,18 +184,31 @@ const SelectPage = ({ onChatRoomCreated }) => {
                     </div>
                     <div>
                         <button onClick={() => setCurrentStep(currentStep - 1)} className="back-button">
-                            <i className="fas fa-arrow-left"></i> {/* Font Awesome 아이콘 */}
+                            <i className="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
             )}
-            {confirmationStep && (
+            {currentStep === 4 && (
+                <div className="step-container">
+                    <h2>CHAT ROOM TITLE</h2>
+                    <input
+                        type="text"
+                        placeholder="Enter chat room title..."
+                        value={title}
+                        onChange={handleTitleInput}
+                    />
+                    <button onClick={goToNextStep} disabled={!title} className="next-button">Next</button>
+                </div>
+            )}
+            {currentStep === 5 && ( // 최종 확인 단계
                 <div className="confirmation-container">
                     <h2>SELECTED INSURANCE</h2>
                     <div className="confirmation-summary">
+                        <p>채팅방 이름: <strong>{title}</strong></p>
                         <p>보험 종류: <strong>{insuranceType}</strong></p>
                         <p>보험사: <strong>{insuranceCompany}</strong></p>
-                        <p>보험: <strong>{insurancePlan}</strong></p>
+                        <p>보험: <strong>{insuranceTerms}</strong></p>
                         <p>선택하신 보험이 맞습니까?</p>
                     </div>
                     <div className="confirmation-buttons">

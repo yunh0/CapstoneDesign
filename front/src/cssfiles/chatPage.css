@@ -144,6 +144,7 @@
     margin-bottom: 10px;
     max-width: 100%;
     word-wrap: break-word; /* 긴 텍스트 처리 */
+    position: relative; /* 이 부분을 추가 */
 }
 
 .chat-message.sent {
@@ -172,4 +173,22 @@
     cursor: ew-resize;
     width:1px;
     background-color: #ddd;
+}
+
+.pin-button {
+    font-size: 24px; /* Adjust size to ensure emojis are clearly visible */
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+
+.pin-button:hover, .pin-button.pinned {
+    color: #0056b3; /* Darker shade of the color on hover and when pinned */
+    transform: scale(1.1); /* Slightly increase the size on hover and when pinned for a pop effect */
+}
+
+/* Additional style for the pinned state, if you want to differentiate pinned messages even more */
+.pin-button.pinned {
+    color: #dc3545; /* Change color to indicate the pinned state, e.g., a red color */
 }
