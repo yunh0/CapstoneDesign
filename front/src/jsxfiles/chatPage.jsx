@@ -22,7 +22,6 @@ const ChatPage = () => {
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
-    const [newChatButtons, setNewChatButtons] = useState([]);
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
@@ -62,10 +61,7 @@ const ChatPage = () => {
     useEffect(() => {
         fetchChatRooms();
     }, []);
-    const onChatRoomCreated = () => {
-        setShowSelectPage(false); // SelectPage 숨기기
-        fetchChatRooms(); // 채팅방 목록 새로고침
-    };
+
     const updateChatList = async () => {
         const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
         setChatList(updatedChatRooms);
@@ -205,14 +201,13 @@ const ChatPage = () => {
     }, [pdfPathFromSelectPage]);
 
 
-
     const handleButtonClicked = async (chat) => {
-
         const { id, pdfUrl } = chat;
         setSelectedChatId(id);
 
 
         if (selectedChatId !== id) {
+            messageInputRef.current.value = '';
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
             console.log("handleButtonClicked: " + pdfUrl);
@@ -324,7 +319,12 @@ const ChatPage = () => {
                             <div key={index} className={`chat-message ${msg.sender}`}>
                                 {msg.text}
                                 {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
-                                    <button className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`} onClick={() => handlePinToggle(msg)}>{isPinned(msg) ? 'B' : '📌'}</button>
+                                    <button
+                                        className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`}
+                                        onClick={() => handlePinToggle(msg)}
+                                        aria-label={isPinned(msg) ? "Unpin Message" : "Pin Message"}>
+                                        {isPinned(msg) ? '📍' : '📌'}
+                                    </button>
                                 )}
                             </div>
                         ))}
