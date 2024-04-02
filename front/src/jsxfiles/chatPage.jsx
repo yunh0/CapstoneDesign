@@ -18,6 +18,7 @@ const ChatPage = () => {
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
+    const [newChatButtons, setNewChatButtons] = useState([]);
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
@@ -148,6 +149,7 @@ const ChatPage = () => {
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
+
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
@@ -198,7 +200,6 @@ const ChatPage = () => {
 
 
         if (selectedChatId !== id) {
-            messageInputRef.current.value = 'LOADING........';
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
             setMessages(defaultMessages);
@@ -283,6 +284,18 @@ const ChatPage = () => {
                 <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
+            {showSelectPage ? (
+                <div className="select-page-container">
+                    <SelectPage
+                        updateChatList={updateChatList}
+                        onChatRoomCreated={() => {
+                            setShowSelectPage(false); // SelectPage 숨기기
+                            fetchChatRooms(); // 채팅방 목록 새로고침
+                        }}
+                    />
+                </div>
+            ) : (
+                <>
             <Fragment>
                 <div ref={middlePanelRef} className="chat-panel">
                     <div className="chat-middle-content">
@@ -296,35 +309,35 @@ const ChatPage = () => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`chat-message ${msg.sender}`}>
                                 {msg.text}
-                                {msg.id != 1 && msg.id != 2 && msg.sender === "received" && (
+                                {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                     <button className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`} onClick={() => handlePinToggle(msg)}>{isPinned(msg) ? 'B' : '📌'}</button>
                                 )}
                             </div>
                         ))}
                     </div>
                     <form className="chat-input-container" onSubmit={handleFormSubmit}>
-    <textarea
-        ref={messageInputRef}
-        className="chat-input"
-        name="message"
-        type="text"
-        disabled={isLoading}
-        placeholder="메시지 입력..."
-        onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault(); // 기본 엔터 동작 방지
-                handleSendMessage(); // handleSendMessage 호출
-            }
-        }}
-    />
-                        <button type="submit" className="chat-submit-button"  disabled={isLoading}>
-                            <i className="fas fa-paper-plane"></i>
-                        </button>
+                    <textarea
+                        ref={messageInputRef}
+                        className="chat-input"
+                        name="message"
+                        type="text"
+                        disabled={isLoading}
+                        placeholder="메시지 입력..."
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault(); // 기본 엔터 동작 방지
+                                handleSendMessage(); // handleSendMessage 호출
+                            }
+                        }}
+                    />
+                    <button type="submit" className="chat-submit-button"  disabled={isLoading}>
+                        <i className="fas fa-paper-plane"></i>
+                    </button>
                     </form>
-
                 </div>
             </Fragment>
-            {showNewChatModal && <NewChatModal onClose={() => setShowNewChatModal(false)} setChatList={setChatList}/>}
+                </>
+            )}
         </div>
     );
 };

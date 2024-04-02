@@ -1,13 +1,11 @@
+// PdfViewer.js
 import React from 'react';
 
-const PdfViewer = ({ pdfUrl, onMouseMove }) => {
-    const handleIframeMouseMove = (e) => {
-        onMouseMove(e);
-    };
-
+const PdfViewer = ({ pdfUrl }) => {
+    console.log("In pdfViewer: ",pdfUrl);
     return (
-        <div className="pdf-viewer-container" style={{ height: '96%', display: 'flex', justifyContent: 'center' }}>
-            <iframe src={pdfUrl} title="PDF Viewer" style={{ width: '95%', height: '100%' }} onMouseMove={handleIframeMouseMove} />
+        <div className="pdf-viewer-container" style={{height: '96%'}}>
+            <iframe src={pdfUrl} title="PDF Viewer" style={{width: '100%', height: '100%'}} key={pdfUrl}/>
         </div>
     );
 };
