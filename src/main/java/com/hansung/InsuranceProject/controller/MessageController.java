@@ -43,6 +43,7 @@ public class MessageController {
             Message aiMessage = messageService.saveMessage(chatroomId, MessageType.AI, messageReceived);
             MessageDto messageDto = MessageDto.convertToDto(aiMessage);
             System.out.println(messageDto);
+
             return ResponseEntity.ok().body(messageDto);
         }
         catch (IOException e){

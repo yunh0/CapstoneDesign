@@ -1,11 +1,11 @@
 package com.hansung.InsuranceProject.dto;
 
-        import com.hansung.InsuranceProject.constant.MessageType;
-        import com.hansung.InsuranceProject.entity.Message;
-        import lombok.*;
+import com.hansung.InsuranceProject.constant.MessageType;
+import com.hansung.InsuranceProject.entity.Message;
+import lombok.*;
 
-        import java.util.List;
-        import java.util.stream.Collectors;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,16 +19,17 @@ public class MessageDto {
 
     private String content;
 
-    private Boolean pinnedChecked;
+    private Boolean pinned;
 
     public static final MessageDto convertToDto(Message message){
-        Boolean pin = message.getPinnedAnswers().isEmpty();
 
+        System.out.println(message.getPinned());
+        // Message가 pin이 되어 있는지 확인하고, 함께 리턴하는 코드 작성해야함
         return MessageDto.builder()
                 .messageId(message.getMessageId())
                 .messageType(message.getMessageType())
                 .content(message.getContent())
-                .pinnedChecked(pin)
+                .pinned(message.getPinned())
                 .build();
     }
 

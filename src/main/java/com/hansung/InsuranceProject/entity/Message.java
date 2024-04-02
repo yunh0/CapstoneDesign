@@ -31,9 +31,12 @@ public class Message extends BaseTimeEntity{
     @OneToMany(mappedBy = "message", fetch = FetchType.EAGER)
     private List<PinnedAnswer> pinnedAnswers = new ArrayList<>();
 
+    private Boolean pinned;
+
     public Message(MessageType messageType, String content, ChatRoom chatRoom) {
         this.messageType = messageType;
         this.content = content;
         this.chatRoom = chatRoom;
+        this.pinned = false;
     }
 }

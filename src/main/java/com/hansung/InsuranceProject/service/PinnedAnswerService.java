@@ -31,6 +31,7 @@ public class PinnedAnswerService {
         Message message = messageRepository.findById(messageId).orElse(null);
 
         if(message != null){
+            messageRepository.updateMessageByPinned(messageId, true);
             PinnedAnswer pinnedAnswer = new PinnedAnswer(message);
             message.getPinnedAnswers().add(pinnedAnswer);
             return pinnedAnswerRepository.save(pinnedAnswer);
@@ -43,6 +44,7 @@ public class PinnedAnswerService {
         PinnedAnswer pinnedAnswer = pinnedAnswerRepository.findByMessage_MessageId(messageId).orElse(null);
         try {
             pinnedAnswerRepository.deleteById(pinnedAnswer.getPinnedAnswerId());
+            messageRepository.updateMessageByPinned(messageId, false);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
