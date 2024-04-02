@@ -7,6 +7,7 @@
     min-height: 100vh;
 }
 
+
 .chat-container {
     display: flex;
     height: 100vh;
@@ -29,6 +30,7 @@
 }
 
 .chat-panel {
+    width: 40%;
     color: #F0F0F0;
     flex-grow: 1;
     box-sizing: border-box;
@@ -37,7 +39,7 @@
 }
 
 .chat-room-list {
-   height: 150px;
+    height: 150px;
     overflow-y: auto;
     width: 100%; /* 채팅방 목록 너비 조정 */
     background-color: #F7F7F7;
@@ -59,6 +61,7 @@
 }
 
 .chat-panel.right {
+    width: 40%;
     background-color: #f0f0f0; /* 밝은 회색으로 배경 설정 */
     display: flex;
     flex-direction: column;
@@ -107,6 +110,9 @@
 
 
 .chat-message {
+    overflow: auto;
+    overflow-wrap: break-word; /* 단어가 줄 바꿈 되어야 하는 경우 줄 바꿈 */
+    white-space: pre-wrap; /* 공백 및 줄 바꿈 유지 */
     padding: 12px 20px;
     border-radius: 25px;
     margin-bottom: 10px;
@@ -143,7 +149,7 @@
 
 .divider {
     cursor: ew-resize;
-    width:1px;
+    width:5px;
     background-color: #ddd;
 }
 
