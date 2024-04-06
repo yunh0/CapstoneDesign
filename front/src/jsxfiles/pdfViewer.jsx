@@ -6,8 +6,8 @@ const PdfViewer = ({ pdfUrl, onMouseMove }) => {
     };
 
     return (
-        <div className="pdf-viewer-container" style={{ height: '96%', display: 'flex', justifyContent: 'center' }}>
-            <iframe src={pdfUrl} title="PDF Viewer" style={{ width: '95%', height: '100%' }} onMouseMove={handleIframeMouseMove} />
+        <div className="pdf-viewer-container" style={{height: '96%', display: 'flex', justifyContent: 'center'}}>
+            <iframe src={pdfUrl} title="PDF Viewer" style={{width: '100%', height: '100%'}} key={pdfUrl}/>
         </div>
     );
 };

@@ -19,11 +19,16 @@ public class FileInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fileId;
 
+    private String fileType;
+    private String fileCompany;
+
     private String fileName;
 
     private String filePath;
 
-    public FileInformation(String fileName, String filePath) {
+    public FileInformation(String fileType, String fileCompany, String fileName, String filePath) {
+        this.fileType = fileType;
+        this.fileCompany = fileCompany;
         this.fileName = fileName;
         this.filePath = filePath;
     }

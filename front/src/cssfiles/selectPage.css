@@ -4,6 +4,7 @@
     display: flex; /* 이 컨테이너를 flex 컨테이너로 만듭니다. */
     flex-direction: column; /* 자식 요소를 세로로 정렬합니다. */
     justify-content: center; /* 자식 요소 사이에 공간을 균등하게 배분합니다. */
+    width:100%;
 }
 
 .step-container {
@@ -15,6 +16,7 @@
     background-color: #ccc;
     height: 70%;
     width: 50%;
+    text-align: center;
 }
 
 .step-container h2 {
@@ -25,7 +27,6 @@
     font-weight:80;
     padding-top:50px;
 }
-
 .step-container p {
     text-align: center;
     margin-bottom: 20px;
@@ -35,7 +36,6 @@
     padding-bottom:60px;
     color:black;
 }
-
 .step-buttons {
     display: flex;
     justify-content: space-between; /* 버튼 사이의 간격을 균등하게 배분합니다. */
@@ -45,7 +45,6 @@
     text-align: center;
     flex: 1; /* 이 div가 가능한 모든 공간을 차지하도록 합니다. */
 }
-
 .step-container button:not(.back-button) {
     display: flex;
     width: 70%;
@@ -62,16 +61,13 @@
     flex-grow: 0; /* 버튼의 크기가 늘어나지 않도록 설정합니다. */
     flex-shrink: 0; /* 버튼의 크기가 줄어들지 않도록 설정합니다. */
 }
-
 .step-container button:hover {
     background-color: #e0e0e0;
 }
-
 .step-container button:focus, .step-container button:active {
     background-color: #007bff;
     color: white;
 }
-
 .confirmation-container {
     margin: 20px;
     padding-top: 20px;
@@ -94,7 +90,6 @@
     font-weight:80;
     padding-top:50px;
 }
-
 .confirmation-summary {
     border: 10px solid white;
     background-color: white;
@@ -111,8 +106,6 @@
     align-items: center; /* 자식 요소들을 가로 중앙에 배치합니다. */
     margin: auto; /* 가로 방향 양쪽에 자동 마진을 설정하여 중앙 정렬 */
 }
-
-
 .confirmation-buttons button {
     width: 120px;
     height:50px;
@@ -122,22 +115,18 @@
     font-weight: bold;
     margin: 0 20px; /* 왼쪽과 오른쪽에 20px의 마진을 추가 */
 }
-
 .no-button {
     background-color: #ff6b6b;
     color: white;
 }
-
 .yes-button {
     background-color: #54a0ff;
     color: white;
 }
-
 .confirmation-buttons {
     display: flex;
     justify-content: center;
 }
-
 .back-button {
     position: absolute; /* 절대 위치 설정 */
     bottom: 20px; /* 아래쪽에서 20px 떨어진 곳에 위치 */
@@ -154,11 +143,47 @@
     align-items: center;
     font-size: 24px; /* 아이콘 크기 적당히 조정 */
 }
-
 .back-button:hover {
     background-color: #d0d0d0;
 }
-
 .back-button i {
     margin: auto; /* 아이콘을 버튼 중앙에 배치 */
+}
+
+.step-container input[type="text"] {
+    width: 70%; /* 너비 설정 */
+    padding: 15px; /* 안쪽 여백으로 더 나은 타이핑 경험 제공 */
+    margin: 100px 0 20px; /* 마진으로 주변 요소와의 거리 설정 */
+    border: 2px solid #ccc; /* 테두리 스타일 */
+    border-radius: 5px; /* 테두리 둥근 처리 */
+    font-size: 20px; /* 텍스트 크기 */
+    color: #333; /* 텍스트 색상 */
+    background-color: #f9f9f9; /* 배경 색상 */
+    transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
+}
+
+/* 입력 필드에 포커스 됐을 때 스타일 */
+.step-container input[type="text"]:focus {
+    border-color: #007bff; /* 포커스 상태에서의 테두리 색상 */
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+/* 다음 버튼 스타일 */
+.step-container button.next-button {
+    display: block; /* 블록 레벨 요소로 변경 */
+    width: 20%; /* 너비 설정 */
+    padding: 10px; /* 패딩 */
+    margin: 20px auto; /* 상하 마진 20px, 좌우 마진 자동으로 설정하여 가로 중앙 정렬 */
+    background-color: #007bff; /* 배경 색상 */
+    color: white; /* 텍스트 색상 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 18px; /* 글씨 크기 */
+    cursor: pointer; /* 커서 스타일 */
+    transition: background-color 0.3s; /* 배경 색상 변화 애니메이션 */
+}
+
+/* 다음 버튼에 마우스를 올렸을 때 스타일 */
+.step-container button.next-button:hover {
+    background-color: #0056b3; /* 호버 상태의 배경 색상 */
 }
