@@ -19,11 +19,16 @@ public class MessageDto {
 
     private String content;
 
+    private Boolean pinned;
+
     public static final MessageDto convertToDto(Message message){
+        System.out.println(message.getPinned());
+
         return MessageDto.builder()
                 .messageId(message.getMessageId())
                 .messageType(message.getMessageType())
                 .content(message.getContent())
+                .pinned(message.getPinned())
                 .build();
     }
 

@@ -25,27 +25,27 @@ public class PinnedAnswerService {
     @Transactional
     public PinnedAnswer savePinnedAnswer(Long messageId){
         Message message = messageRepository.findById(messageId).orElse(null);
+
         if(message != null){
+            messageRepository.updateMessageByPinned(messageId, true);
             PinnedAnswer pinnedAnswer = new PinnedAnswer(message);
             message.getPinnedAnswers().add(pinnedAnswer);
             return pinnedAnswerRepository.save(pinnedAnswer);
         }
         return null;
     }
-
-    //유저에 대한 핀 답변만 가져오는 로직 구현해야함
     @Transactional
     public boolean deletePinnedAnswer(Long messageId) {
         PinnedAnswer pinnedAnswer = pinnedAnswerRepository.findByMessage_MessageId(messageId).orElse(null);
         try {
             pinnedAnswerRepository.deleteById(pinnedAnswer.getPinnedAnswerId());
+            messageRepository.updateMessageByPinned(messageId, false);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-
     public List<PinnedAnswerDto> getPinnedAnswers(Principal principal){
         Long accountId = Long.valueOf(principal.getName());
         Account account = accountRepository.findById(accountId).orElse(null);

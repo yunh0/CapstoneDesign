@@ -214,7 +214,7 @@ const ChatPage = () => {
             const results = await sendChatRoomClick(id);
             results.forEach(result => {
                 let senderValue = result.messageType === "PERSON" ? "sent" : "received";
-                const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId };
+                const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId,  pinned: result.pinned };
 
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 messageInputRef.current.value = '';
@@ -230,18 +230,34 @@ const ChatPage = () => {
 
     /////////////////////////////// 핀 기능 ////////////////////////////////////////////
 
-    const handlePinToggle = (msg) => {
+    const handlePinToggle = async (msg) => {
         if (isPinned(msg)) {
-            delhandlePinMessage(msg);
+            await delhandlePinMessage(msg);
             unpinMessage(msg);
         } else {
-            handlePinMessage(msg);
+            await handlePinMessage(msg);
             pinMessage(msg);
         }
     };
 
+    const handlePinClick = async (msg) => {
+        // 핀 상태 토글 함수 호출
+        await handlePinToggle(msg);
+
+        // 핀 상태 변경 후 메시지 리스트 업데이트
+        const updatedMessages = messages.map(item => {
+            if (item.backid === msg.backid) {
+                return { ...item, pinned: !item.pinned };
+            }
+            return item;
+        });
+
+        // 메시지 리스트 업데이트
+        setMessages(updatedMessages);
+    };
+
     const isPinned = (msg) => {
-        return pinnedMessages.some(pinnedMsg => pinnedMsg.backid === msg.backid);
+        return msg.pinned;
     };
 
     const pinMessage = (msg) => {
@@ -332,10 +348,10 @@ const ChatPage = () => {
                                         {msg.text}
                                         {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                             <button
-                                                className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`}
-                                                onClick={() => handlePinToggle(msg)}
-                                                aria-label={isPinned(msg) ? "Unpin Message" : "Pin Message"}>
-                                                {isPinned(msg) ? '📍' : '📌'}
+                                                className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
+                                                onClick={() => handlePinClick(msg)}
+                                                aria-label={msg.pinned ? "Unpin Message" : "Pin Message"}>
+                                                {msg.pinned ? '📍' : '📌'}
                                             </button>
                                         )}
                                     </div>
