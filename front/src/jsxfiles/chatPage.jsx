@@ -43,7 +43,6 @@ const ChatPage = () => {
             const token = localStorage.getItem('token');
             const chatRooms = await getUserChatRooms(token);
             if (chatRooms && chatRooms.length > 0) {
-                // 각 채팅방 객체에 필요한 속성 할당
                 const updatedChatList = chatRooms.map(chatRoom => ({
                     id: chatRoom.chatRoomId,
                     title: chatRoom.chatRoomName,
@@ -71,12 +70,6 @@ const ChatPage = () => {
     const handleLogout = () => {
         setIsLogin(false);
         navigate('/rlogin');
-    };
-
-    ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
-
-    const handleNewChat = () => {
-        setShowSelectPage(true); // Show SelectPage instead
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -189,7 +182,7 @@ const ChatPage = () => {
             const lastChat = chatList[chatList.length - 1];
             handleButtonClicked(lastChat);
         }
-    }, [chatList]);
+    }, [chatList.length]);
 
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
@@ -203,46 +196,68 @@ const ChatPage = () => {
 
     const handleButtonClicked = async (chat) => {
         const { id, pdfUrl } = chat;
+        if (selectedChatId === id && !isLoading) {
+            return;
+        }
+
         setSelectedChatId(id);
 
+        setIsLoading(true);
 
-        if (selectedChatId !== id) {
-            messageInputRef.current.value = '';
+        try {
+            messageInputRef.current.value = 'LOADING........';
+
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
-            console.log("handleButtonClicked: " + pdfUrl);
             setMessages(defaultMessages);
 
-            try {
-                const results = await sendChatRoomClick(id);
-                results.forEach(result => {
-                    let senderValue = result.messageType === "PERSON" ? "sent" : "received";
-                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid:result.messageId };
+            const results = await sendChatRoomClick(id);
+            results.forEach(result => {
+                let senderValue = result.messageType === "PERSON" ? "sent" : "received";
+                const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId,  pinned: result.pinned };
 
-                    setMessages(prevMessages => [...prevMessages, newResponse]);
-                    messageInputRef.current.value = '';
-                });
-            } catch (error) {
-                console.error('Error sending button click to the backend:', error.message);
-            }
+                setMessages(prevMessages => [...prevMessages, newResponse]);
+                messageInputRef.current.value = '';
+            });
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        } finally {
+            setIsLoading(false);
         }
 
     };
 
+
     /////////////////////////////// 핀 기능 ////////////////////////////////////////////
 
-    const handlePinToggle = (msg) => {
+    const handlePinToggle = async (msg) => {
         if (isPinned(msg)) {
-            delhandlePinMessage(msg);
+            await delhandlePinMessage(msg);
             unpinMessage(msg);
         } else {
-            handlePinMessage(msg);
+            await handlePinMessage(msg);
             pinMessage(msg);
         }
     };
 
+    const handlePinClick = async (msg) => {
+        // 핀 상태 토글 함수 호출
+        await handlePinToggle(msg);
+
+        // 핀 상태 변경 후 메시지 리스트 업데이트
+        const updatedMessages = messages.map(item => {
+            if (item.backid === msg.backid) {
+                return { ...item, pinned: !item.pinned };
+            }
+            return item;
+        });
+
+        // 메시지 리스트 업데이트
+        setMessages(updatedMessages);
+    };
+
     const isPinned = (msg) => {
-        return pinnedMessages.some(pinnedMsg => pinnedMsg.backid === msg.backid);
+        return msg.pinned;
     };
 
     const pinMessage = (msg) => {
@@ -283,18 +298,31 @@ const ChatPage = () => {
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button style={{width: '100%', height: '70px'}} className="chat-message" onClick={() => {
-                                handleButtonClicked(chat);
-                            }}>{chat.title}</button>
-
+                            <button
+                                style={{ width: '100%', height: '70px' }}
+                                className="chat-message"
+                                onClick={() => {
+                                    if (showSelectPage) {
+                                        alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
+                                    } else {
+                                        handleButtonClicked(chat);
+                                    }
+                                }}
+                                disabled={isLoading}
+                            >
+                                {chat.title}
+                            </button>
                         </div>
                     ))}
                 </div>
-                <button onClick={() => setShowSelectPage(true)} className="newchat-btn">새 채팅</button>
+                <button onClick={() => setShowSelectPage(true)} className="newchat-btn"  disabled={isLoading || showSelectPage}>새 채팅</button>
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
             {showSelectPage ? (
                 <div className="select-page-container">
+                    <button onClick={() => setShowSelectPage(false)} className="back-btn">
+                        ❌
+                    </button>
                     <SelectPage
                         updateChatList={updateChatList}
                         onChatRoomCreated={() => {
@@ -320,10 +348,10 @@ const ChatPage = () => {
                                         {msg.text}
                                         {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                             <button
-                                                className={`pin-button ${isPinned(msg) ? 'pinned' : ''}`}
-                                                onClick={() => handlePinToggle(msg)}
-                                                aria-label={isPinned(msg) ? "Unpin Message" : "Pin Message"}>
-                                                {isPinned(msg) ? '📍' : '📌'}
+                                                className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
+                                                onClick={() => handlePinClick(msg)}
+                                                aria-label={msg.pinned ? "Unpin Message" : "Pin Message"}>
+                                                {msg.pinned ? '📍' : '📌'}
                                             </button>
                                         )}
                                     </div>

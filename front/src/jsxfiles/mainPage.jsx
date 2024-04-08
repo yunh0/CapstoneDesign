@@ -1,4 +1,3 @@
-// MainPage.jsx
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import MyPage from '../jsxfiles/myPage';
@@ -7,22 +6,18 @@ import PinPage from '../jsxfiles/pinPage';
 import SelectPage from "./selectPage";
 import '../cssfiles/mainPage.css'
 import ChatPage from "./chatPage";
-
 const MainPage = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
     const [chatList, setChatList] = useState([]);
-
     const handleLogout = () => {
         setIsLogin(false);
         navigate('/rlogin');
     };
-
     const handlePageChange = (pageName) => {
         setCurrentPage(pageName);
     };
-
     let content;
     switch (currentPage) {
         case 'find':
@@ -51,7 +46,6 @@ const MainPage = () => {
             );
             break;
     }
-
     return (
         <div className="main-container">
             <div className="left-panel">
@@ -60,7 +54,6 @@ const MainPage = () => {
                 <button className="find-btn" onClick={() => handlePageChange('find')}></button>
                 <button className="mypage-btn" onClick={() => handlePageChange('mypage')}></button>
                 <Link to="/chat" className="chat-btn"></Link>
-
                 <button onClick={handleLogout} className="logout-btn"></button>
             </div>
             <div className="spare-panel">
@@ -76,5 +69,4 @@ const MainPage = () => {
         </div>
     );
 };
-
 export default MainPage;
