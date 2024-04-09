@@ -62,7 +62,10 @@ const ChatPage = () => {
         messageInputRef.current.value = '';
 
     }, []);
-
+    const onChatRoomCreated = () => {
+        setShowSelectPage(false); // SelectPage 숨기기
+        fetchChatRooms(); // 채팅방 목록 새로고침
+    };
     const updateChatList = async () => {
         const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
         setChatList(updatedChatRooms);
@@ -72,6 +75,12 @@ const ChatPage = () => {
     const handleLogout = () => {
         setIsLogin(false);
         navigate('/rlogin');
+    };
+
+    ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
+
+    const handleNewChat = () => {
+        setShowSelectPage(true); // Show SelectPage instead
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -228,7 +237,6 @@ const ChatPage = () => {
         }
 
     };
-
 
     /////////////////////////////// 핀 기능 ////////////////////////////////////////////
 
