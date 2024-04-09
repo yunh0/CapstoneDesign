@@ -59,8 +59,13 @@ const ChatPage = () => {
     };
     useEffect(() => {
         fetchChatRooms();
-    }, []);
+        messageInputRef.current.value = '';
 
+    }, []);
+    const onChatRoomCreated = () => {
+        setShowSelectPage(false); // SelectPage 숨기기
+        fetchChatRooms(); // 채팅방 목록 새로고침
+    };
     const updateChatList = async () => {
         const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
         setChatList(updatedChatRooms);
@@ -70,6 +75,12 @@ const ChatPage = () => {
     const handleLogout = () => {
         setIsLogin(false);
         navigate('/rlogin');
+    };
+
+    ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
+
+    const handleNewChat = () => {
+        setShowSelectPage(true); // Show SelectPage instead
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -135,7 +146,6 @@ const ChatPage = () => {
         }
 
         setIsLoading(true);
-        messageInputRef.current.value = 'LOADING........';
 
         // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
@@ -144,6 +154,7 @@ const ChatPage = () => {
         //채팅 메시지를 추가합니다.
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
+        messageInputRef.current.value = 'Sending my question to chatbot...';
 
         scrollToBottom();
 
@@ -205,7 +216,7 @@ const ChatPage = () => {
         setIsLoading(true);
 
         try {
-            messageInputRef.current.value = 'LOADING........';
+            messageInputRef.current.value = 'LOADING Please wait...';
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
@@ -217,8 +228,9 @@ const ChatPage = () => {
                 const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId,  pinned: result.pinned };
 
                 setMessages(prevMessages => [...prevMessages, newResponse]);
-                messageInputRef.current.value = '';
             });
+            messageInputRef.current.value = '';
+
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         } finally {
@@ -226,7 +238,6 @@ const ChatPage = () => {
         }
 
     };
-
 
     /////////////////////////////// 핀 기능 ////////////////////////////////////////////
 
