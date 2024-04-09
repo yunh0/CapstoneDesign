@@ -335,9 +335,6 @@ const ChatPage = () => {
                 <>
                     <Fragment>
                         <div ref={middlePanelRef} className="chat-panel">
-                            <div className="chat-middle-content">
-                                <span>Middle Panel</span>
-                            </div>
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} onMouseMove={handleMouseMove} style={{ width: '100%', height: '96%' }} />}
                         </div>
                         <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
