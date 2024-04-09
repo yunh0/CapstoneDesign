@@ -59,6 +59,8 @@ const ChatPage = () => {
     };
     useEffect(() => {
         fetchChatRooms();
+        messageInputRef.current.value = '';
+
     }, []);
 
     const updateChatList = async () => {
@@ -135,7 +137,6 @@ const ChatPage = () => {
         }
 
         setIsLoading(true);
-        messageInputRef.current.value = 'LOADING........';
 
         // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
@@ -205,7 +206,7 @@ const ChatPage = () => {
         setIsLoading(true);
 
         try {
-            messageInputRef.current.value = 'LOADING........';
+            messageInputRef.current.value = 'LOADING.....';
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
@@ -217,8 +218,9 @@ const ChatPage = () => {
                 const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId,  pinned: result.pinned };
 
                 setMessages(prevMessages => [...prevMessages, newResponse]);
-                messageInputRef.current.value = '';
             });
+            messageInputRef.current.value = '';
+
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         } finally {
@@ -335,9 +337,6 @@ const ChatPage = () => {
                 <>
                     <Fragment>
                         <div ref={middlePanelRef} className="chat-panel">
-                            <div className="chat-middle-content">
-                                <span>Middle Panel</span>
-                            </div>
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} onMouseMove={handleMouseMove} style={{ width: '100%', height: '96%' }} />}
                         </div>
                         <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
