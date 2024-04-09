@@ -154,6 +154,7 @@ const ChatPage = () => {
         //채팅 메시지를 추가합니다.
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
+        messageInputRef.current.value = 'Sending my question to chatbot...';
 
         scrollToBottom();
 
@@ -215,7 +216,7 @@ const ChatPage = () => {
         setIsLoading(true);
 
         try {
-            messageInputRef.current.value = 'LOADING.....';
+            messageInputRef.current.value = 'LOADING Please wait...';
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
