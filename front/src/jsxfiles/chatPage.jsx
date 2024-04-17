@@ -8,13 +8,14 @@ import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
 import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
+import {getfReco} from "../api/getFirstRecommend";
 
 const ChatPage = () => {
     const navigate = useNavigate();
-
+    const [currentPage, setCurrentPage] = useState(1);
     const location = useLocation();
     const pdfPathFromSelectPage = location.state?.pdfPath;
-
+    const [isPlusButtonClicked, setIsPlusButtonClicked] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [pdfUrl, setPdfUrl] = useState("");
@@ -31,7 +32,7 @@ const ChatPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
-        { id: 2, text: "무엇을 도와드릴까요?", sender: "received", backid:1}
+
     ]);
     const [messages, setMessages] = useState(defaultMessages);
     const [pinnedMessages, setPinnedMessages] = useState([]);
@@ -46,7 +47,7 @@ const ChatPage = () => {
                 const updatedChatList = chatRooms.map(chatRoom => ({
                     id: chatRoom.chatRoomId,
                     title: chatRoom.chatRoomName,
-                    pdfUrl: chatRoom.filePath
+                    pdfUrl: chatRoom.filePath,
                 }));
                 setChatList(updatedChatList);
             } else {
@@ -195,13 +196,13 @@ const ChatPage = () => {
 
 
     const handleButtonClicked = async (chat) => {
-        const { id, pdfUrl } = chat;
+        const { id, pdfUrl, freCo } = chat;
         if (selectedChatId === id && !isLoading) {
             return;
         }
 
         setSelectedChatId(id);
-
+        setIsPlusButtonClicked(false);
         setIsLoading(true);
 
         try {
@@ -209,6 +210,7 @@ const ChatPage = () => {
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
+            const fReco = getfReco();
             setMessages(defaultMessages);
 
             const results = await sendChatRoomClick(id);
@@ -288,6 +290,29 @@ const ChatPage = () => {
         }
     };
 
+    //////////////////////////////////// PLUS 버튼 ///////////////////////////////////////////
+
+    const handlePlusButtonClick = (e) => {
+        e.preventDefault();
+        setIsPlusButtonClicked(!isPlusButtonClicked);
+    }
+
+    const handleRightButtonClick = () => {
+        setCurrentPage(prevPage => (prevPage % 3) + 1);
+    };
+
+    const handleLeftButtonClick = () => {
+        setCurrentPage(prevPage => {
+            if (prevPage === 1) {
+                return 3;
+            } else {
+                return prevPage - 1;
+            }
+        });
+    };
+
+
+
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -357,22 +382,71 @@ const ChatPage = () => {
                                     </div>
                                 ))}
                             </div>
+                            {isPlusButtonClicked && (
+                                <div className="extra-window">
+                                    {currentPage === 1 && (
+                                        <>
+                                            <p className="exfont">This is the content for page 1</p>
+                                            <div className="extra-window-buttons">
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                    {currentPage === 2 && (
+                                        <>
+                                            <p className="exfont">This is the content for page 2</p>
+                                            <div className="extra-window-buttons">
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                    {currentPage === 3 && (
+                                        <>
+                                            <p className="exfont" >This is the content for page 3</p>
+                                            <div className="extra-window-buttons">
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+
+                            )}
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
-                    <textarea
-                        ref={messageInputRef}
-                        className="chat-input"
-                        name="message"
-                        type="text"
-                        disabled={isLoading}
-                        placeholder="메시지 입력..."
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault(); // 기본 엔터 동작 방지
-                                handleSendMessage(); // handleSendMessage 호출
-                            }
-                        }}
-                    />
-                                <button type="submit" className="chat-submit-button"  disabled={isLoading}>
+                                <div className="plus-button">
+                                    <button className="p-button" onClick={handlePlusButtonClick}>
+                                        {isPlusButtonClicked ? '➖' : '➕'}
+                                    </button>
+                                </div>
+                                <textarea
+                                    ref={messageInputRef}
+                                    className="chat-input"
+                                    name="message"
+                                    type="text"
+                                    disabled={isLoading}
+                                    placeholder="메시지 입력..."
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault(); // 기본 엔터 동작 방지
+                                            handleSendMessage(); // handleSendMessage 호출
+                                        }
+                                    }}
+                                />
+                                <button type="submit" className="chat-submit-button" disabled={isLoading}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </form>

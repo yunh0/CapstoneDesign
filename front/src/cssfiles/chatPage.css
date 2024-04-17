@@ -183,6 +183,7 @@
     margin-left: 10px;
 }
 
+
 .pin-button:hover, .pin-button.pinned {
     color: #0056b3; /* Darker shade of the color on hover and when pinned */
     transform: scale(1.1); /* Slightly increase the size on hover and when pinned for a pop effect */
@@ -198,4 +199,21 @@
     height: 40px;
 
 
+}
+
+.extra-window-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-button {
+    order: 1;
+}
+
+.right-button {
+    order: 2;
+}
+
+.exfont {
+    color: red;
 }
