@@ -1,10 +1,10 @@
 export const getfReco = async () => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/freCo/`;
+    const path = `/api/freCo`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
-            method: 'POST',
+            method: 'GET',
             credentials: 'include',
             headers: {
                 Accept: 'application/json',
@@ -14,7 +14,7 @@ export const getfReco = async () => {
         if (!response.ok) throw new Error('Failed to send message to the backend');
         return response.json();
     } catch (error) {
-        console.error('pinMessage Error: ', error.message);
+        console.error('fReco Error: ', error.message);
         return false;
     }
 };

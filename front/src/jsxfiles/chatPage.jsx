@@ -29,8 +29,9 @@ const ChatPage = () => {
     const chatMessagesRef = useRef(null);
     const messageInputRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
+    const [formattedText, setFormattedText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [defaultMessages] = useState([
+    const [defaultMessages,setDefaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
 
     ]);
@@ -66,6 +67,30 @@ const ChatPage = () => {
         const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
         setChatList(updatedChatRooms);
     };
+
+    useEffect(() => {
+        const messageWithId2Index = messages.findIndex(msg => msg.id === 2);
+
+        if (formattedText) {
+            if (messageWithId2Index !== -1) {
+                setMessages(prevMessages => prevMessages.map((msg, index) => {
+                    if (index === messageWithId2Index) {
+                        return { ...msg, text: formattedText };
+                    }
+                    return msg;
+                }));
+            } else {
+                const newMessage = {
+                    id: 2,
+                    text: formattedText,
+                    sender: "received",
+                    backid: 1,
+                    pinned: false
+                };
+                setMessages(prevMessages => [...prevMessages, newMessage]);
+            }
+        }
+    }, [formattedText, messages]);
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
     const handleLogout = () => {
@@ -136,7 +161,7 @@ const ChatPage = () => {
         }
 
         setIsLoading(true);
-        messageInputRef.current.value = 'LOADING........';
+        messageInputRef.current.value = 'Sending my question to chatbot...';
 
         // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
@@ -196,7 +221,7 @@ const ChatPage = () => {
 
 
     const handleButtonClicked = async (chat) => {
-        const { id, pdfUrl, freCo } = chat;
+        const { id, pdfUrl } = chat;
         if (selectedChatId === id && !isLoading) {
             return;
         }
@@ -206,12 +231,18 @@ const ChatPage = () => {
         setIsLoading(true);
 
         try {
-            messageInputRef.current.value = 'LOADING........';
+            messageInputRef.current.value = 'LOADING Please wait...';
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
-            const fReco = getfReco();
+            const fReco = await getfReco();
+            const formattedText = `사용자들이 많이 검색한 질문이에요!
+            1. ${fReco.first ?? ''}
+            2. ${fReco.second ?? ''}
+            3. ${fReco.third ?? ''}`;
+
             setMessages(defaultMessages);
+            setFormattedText(formattedText);
 
             const results = await sendChatRoomClick(id);
             results.forEach(result => {
@@ -219,8 +250,8 @@ const ChatPage = () => {
                 const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId,  pinned: result.pinned };
 
                 setMessages(prevMessages => [...prevMessages, newResponse]);
-                messageInputRef.current.value = '';
             });
+            messageInputRef.current.value = '';
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         } finally {
@@ -360,10 +391,7 @@ const ChatPage = () => {
                 <>
                     <Fragment>
                     <div ref={middlePanelRef} className="chat-panel">
-                            <div className="chat-middle-content">
-                                <span>Middle Panel</span>
-                            </div>
-                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} onMouseMove={handleMouseMove} style={{ width: '100%', height: '96%' }} />}
+                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }} />}
                         </div>
                         <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
                         <div ref={rightPanelRef} className="chat-panel right">
