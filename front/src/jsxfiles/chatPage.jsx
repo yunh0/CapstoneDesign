@@ -68,7 +68,8 @@ const ChatPage = () => {
         setChatList(updatedChatRooms);
     };
 
-    const updateMessages = (formattedText) => {
+    // formattedText 상태가 변경될 때마다 메시지 업데이트
+    useEffect(() => {
         if (formattedText) {
             const messageWithId2Index = messages.findIndex(msg => msg.id === 2);
 
@@ -90,12 +91,8 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newMessage]);
             }
         }
-    };
-
-    // formattedText 상태가 변경될 때마다 메시지 업데이트
-    useEffect(() => {
-        updateMessages(formattedText);
     }, [formattedText]);
+
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
@@ -403,7 +400,7 @@ const ChatPage = () => {
                         <div ref={rightPanelRef} className="chat-panel right">
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
-                                    <div key={index} className={`chat-message ${msg.sender}`}>
+                                    <div key={index} className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
                                         {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                             <button
