@@ -68,10 +68,10 @@ const ChatPage = () => {
         setChatList(updatedChatRooms);
     };
 
-    useEffect(() => {
-        const messageWithId2Index = messages.findIndex(msg => msg.id === 2);
-
+    const updateMessages = (formattedText) => {
         if (formattedText) {
+            const messageWithId2Index = messages.findIndex(msg => msg.id === 2);
+
             if (messageWithId2Index !== -1) {
                 setMessages(prevMessages => prevMessages.map((msg, index) => {
                     if (index === messageWithId2Index) {
@@ -90,7 +90,13 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newMessage]);
             }
         }
-    }, [formattedText, messages]);
+    };
+
+    // formattedText 상태가 변경될 때마다 메시지 업데이트
+    useEffect(() => {
+        updateMessages(formattedText);
+    }, [formattedText]);
+
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
     const handleLogout = () => {
