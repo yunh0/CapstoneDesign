@@ -38,6 +38,7 @@ const ChatPage = () => {
     const [messages, setMessages] = useState(defaultMessages);
     const [pinnedMessages, setPinnedMessages] = useState([]);
     const [fnum, setFnum] = useState(0);
+    const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -105,15 +106,20 @@ const ChatPage = () => {
     //////////////////////////////////경계선 이동/////////////////////////////////////////
 
     const handleMouseDown = (e) => {
-        setDragging(true);
-        setPositionX(e.clientX);
+        if (e.target === dividerRef.current) {
+            setIsPdfViewerDisabled(true);
+            setDragging(true);
+            setPositionX(e.clientX);
+        }
     };
 
     const handleMouseUp = () => {
+        setIsPdfViewerDisabled(false);
         setDragging(false);
     };
 
     const handleMouseMove = (e) => {
+
         if (dragging) {
             const dx = e.clientX - positionX;
             setPositionX(e.clientX);
@@ -125,6 +131,18 @@ const ChatPage = () => {
             rightPanelRef.current.style.overflow = 'hidden';
         }
     };
+
+    useEffect(() => {
+        const handleMouseUp = () => {
+            setIsPdfViewerDisabled(false);
+        };
+
+        document.addEventListener('mouseup', handleMouseUp);
+
+        return () => {
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, []);
     ///////////////////////////////메세지 보내기//////////////////////////////////////////////
     const handleFormSubmit = (e) => {
         e.preventDefault(); // 폼 제출 기본 동작 방지
@@ -346,8 +364,6 @@ const ChatPage = () => {
         });
     };
 
-
-
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -394,10 +410,10 @@ const ChatPage = () => {
             ) : (
                 <>
                     <Fragment>
-                        <div ref={middlePanelRef} className="chat-panel">
+                        <div ref={middlePanelRef} className="chat-panel" style={{ pointerEvents: isPdfViewerDisabled ? 'none' : 'auto' }}>
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
-                        <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
+                        <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
                         <div ref={rightPanelRef} className="chat-panel right">
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
