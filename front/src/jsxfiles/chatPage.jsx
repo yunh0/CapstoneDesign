@@ -37,6 +37,7 @@ const ChatPage = () => {
     ]);
     const [messages, setMessages] = useState(defaultMessages);
     const [pinnedMessages, setPinnedMessages] = useState([]);
+    const [fnum, setFnum] = useState(0);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -68,7 +69,7 @@ const ChatPage = () => {
         setChatList(updatedChatRooms);
     };
 
-    // formattedText 상태가 변경될 때마다 메시지 업데이트
+
     useEffect(() => {
         if (formattedText) {
             const messageWithId2Index = messages.findIndex(msg => msg.id === 2);
@@ -91,7 +92,7 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newMessage]);
             }
         }
-    }, [formattedText]);
+    }, [fnum]);
 
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
@@ -243,7 +244,7 @@ const ChatPage = () => {
             1. ${fReco.first ?? ''}
             2. ${fReco.second ?? ''}
             3. ${fReco.third ?? ''}`;
-
+            setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);
             setFormattedText(formattedText);
 
@@ -393,8 +394,8 @@ const ChatPage = () => {
             ) : (
                 <>
                     <Fragment>
-                    <div ref={middlePanelRef} className="chat-panel">
-                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }} />}
+                        <div ref={middlePanelRef} className="chat-panel">
+                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
                         <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
                         <div ref={rightPanelRef} className="chat-panel right">

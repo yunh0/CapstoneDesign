@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 const PdfViewer = ({ pdfUrl }) => {
     return (
-        <div className="pdf-viewer-container" style={{ height: '100%', display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+        <div className="pdf-viewer-container" style={{ height: '100%', display: 'flex', justifyContent: 'center', pointerEvents: 'auto'  }}>
             <iframe src={pdfUrl} title="PDF Viewer" style={{ width: '100%', height: '100%' }} />
         </div>
     );
