@@ -1,3 +1,6 @@
+.full-width {
+    width: 100%;
+}
 .select-page-container {
     display: flex;
     justify-content: center;
@@ -220,4 +223,3 @@
 .special-message {
     background-color: lightyellow !important;
 }
-

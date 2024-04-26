@@ -39,6 +39,7 @@ const ChatPage = () => {
     const [pinnedMessages, setPinnedMessages] = useState([]);
     const [fnum, setFnum] = useState(0);
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
+    const [isFolded, setIsFolded] = useState(false);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -282,6 +283,11 @@ const ChatPage = () => {
 
     };
 
+    ///////////////////////////////사이드 바 접기 ////////////////////////////////////////
+    const handleFoldButtonClick = () => {
+        // 현재 상태의 반대로 변경
+        setIsFolded(prevFolded => !prevFolded);
+    };
 
     /////////////////////////////// 핀 기능 ////////////////////////////////////////////
 
@@ -369,7 +375,7 @@ const ChatPage = () => {
 
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
-            <div className="chat-left-panel">
+            <div className="chat-left-panel"  style={{ width: isFolded ? '0%' : '20%', display: isFolded ? 'none' : 'flex' }}>
                 <Link to="/main" className="home-btn"></Link>
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
@@ -410,11 +416,18 @@ const ChatPage = () => {
             ) : (
                 <>
                     <Fragment>
-                        <div ref={middlePanelRef} className="chat-panel" style={{ pointerEvents: isPdfViewerDisabled ? 'none' : 'auto' }}>
-                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
+                        <div style={{width: "20px"}}>
+                            <button className="foldbtn" style={{width: "100%", height: "100%",  border: 'none'}}
+                                    onClick={handleFoldButtonClick}>
+                                {isFolded ? '펴기' : '접기'}
+                            </button>
+                        </div>
+                        <div ref={middlePanelRef} className="chat-panel"
+                             style={{width: isFolded ? '80%' : '40%', pointerEvents: isPdfViewerDisabled ? 'none' : 'auto'}}>
+                        {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
                         <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
-                        <div ref={rightPanelRef} className="chat-panel right">
+                        <div ref={rightPanelRef} className="chat-panel right" style={{ width: isFolded ? '80%' : '40%' }}>
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
