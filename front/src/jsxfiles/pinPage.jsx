@@ -8,8 +8,9 @@ const PinPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [messageList, setMessageList] = useState([]);
     const [contracts, setContracts] = useState({});
+    const [selectedType, setSelectedType] = useState("all");  // 계약서 유형 선택 상태 추가
 
-    ///////////////////////////////핀 불러오기//////////////////////////
+    const contractTypes = ["all", "cancer", "fire", "pension", "medical", "auto"]; // 계약 유형 목록
 
     const getPinM = async () => {
         try {
@@ -17,9 +18,9 @@ const PinPage = () => {
             const messages = await getPinMessages(token);
 
             if (messages && messages.length > 0) {
-                // Group messages by fileName
                 const groupedMessages = messages.reduce((groups, message) => {
-                    const key = message.fileName; // Use fileName as key
+                    const key = message.fileName;
+                    const type = message.type; // 메시지 유형 정보 추출
                     if (!groups[key]) {
                         groups[key] = [];
                     }
@@ -27,16 +28,18 @@ const PinPage = () => {
                     return groups;
                 }, {});
 
-                // Generate contracts based on grouped messages
                 const updatedContracts = {};
                 Object.keys(groupedMessages).forEach((fileName, index) => {
-                    updatedContracts[fileName] = groupedMessages[fileName].map(message => message.content);
+                    updatedContracts[fileName] = groupedMessages[fileName].map(message => ({
+                        content: message.content,
+                        detail: message.detail // 추가된 상세 정보
+                    }));
                 });
 
                 setMessageList(messages);
                 setContracts(updatedContracts);
             } else {
-                // Handle case when there are no messages
+                // 메시지가 없는 경우 처리
             }
         } catch (error) {
             console.error('Error while fetching pinned messages:', error.message);
@@ -53,7 +56,7 @@ const PinPage = () => {
     };
 
     const handleAnswerClick = (answer) => {
-        setModalContent(answer);
+        setModalContent(answer.content); // 상세 내용으로 변경
         setIsModalOpen(true);
     };
 
@@ -75,7 +78,8 @@ const PinPage = () => {
                 {activeContract ? (
                     activeContract.map((answer, index) => (
                         <div key={index} className="pinned-answer" onClick={() => handleAnswerClick(answer)}>
-                            {answer}
+                            <strong>{answer.content}</strong>
+                            <p>{answer.detail}</p> {/* 추가된 상세 정보 출력 */}
                         </div>
                     ))
                 ) : (
@@ -95,6 +99,5 @@ const PinPage = () => {
             )}
         </div>
     );
-
 };
 export default PinPage;

@@ -192,6 +192,7 @@ const ChatPage = () => {
         if (chatList.length > 0) {
             const lastChat = chatList[chatList.length - 1];
             handleButtonClicked(lastChat);
+            messageInputRef.current.value = '';
         }
     }, [chatList.length]);
 
@@ -230,7 +231,6 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newResponse]);
             });
             messageInputRef.current.value = '';
-
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         } finally {
@@ -305,18 +305,22 @@ const ChatPage = () => {
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel">
-                <Link to="/main" className="home-btn"></Link>
+                <Link to="/main" className="home-btn">
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
+                </Link>
+                <button className="newchat-btn" onClick={() => setShowSelectPage(true)} disabled={isLoading || showSelectPage}>New Chat
+                    <span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>
+                </button>
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button
-                                style={{ width: '100%', height: '70px' }}
-                                className="chat-message"
+                            <button className="chatroom-button"
                                 onClick={() => {
                                     if (showSelectPage) {
                                         alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
                                     } else {
                                         handleButtonClicked(chat);
+                                        messageInputRef.current.value = '';
                                     }
                                 }}
                                 disabled={isLoading}
@@ -326,8 +330,9 @@ const ChatPage = () => {
                         </div>
                     ))}
                 </div>
-                <button onClick={() => setShowSelectPage(true)} className="newchat-btn"  disabled={isLoading || showSelectPage}>새 채팅</button>
-                <button onClick={handleLogout} className="logout-btn"></button>
+                <button className="logout-btn" onClick={handleLogout}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>logout</span>
+                </button>
             </div>
             {showSelectPage ? (
                 <div className="select-page-container">
@@ -366,20 +371,20 @@ const ChatPage = () => {
                                 ))}
                             </div>
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
-                    <textarea
-                        ref={messageInputRef}
-                        className="chat-input"
-                        name="message"
-                        type="text"
-                        disabled={isLoading}
-                        placeholder="메시지 입력..."
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault(); // 기본 엔터 동작 방지
-                                handleSendMessage(); // handleSendMessage 호출
-                            }
-                        }}
-                    />
+                                <textarea
+                                    ref={messageInputRef}
+                                    className="chat-input"
+                                    name="message"
+                                    type="text"
+                                    disabled={isLoading}
+                                    placeholder="메시지 입력..."
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault(); // 기본 엔터 동작 방지
+                                            handleSendMessage(); // handleSendMessage 호출
+                                        }
+                                    }}
+                                />
                                 <button type="submit" className="chat-submit-button"  disabled={isLoading}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>

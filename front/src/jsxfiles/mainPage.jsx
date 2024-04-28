@@ -49,18 +49,18 @@ const MainPage = () => {
                 <button className="home-btn" onClick={() => handlePageChange('welcome')}>
                     <span className="material-symbols-outlined">home</span>
                 </button>
-                <button className="pinpage-btn" onClick={() => handlePageChange('pinpage')}>
-                    <span className="material-symbols-outlined">push_pin</span>
-                </button>
+                <Link to="/pinpage" className="pinpage-btn">
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>push_pin</span>
+                </Link>
                 <button className="find-btn" onClick={() => handlePageChange('find')}>
                     <span className="material-symbols-outlined">search</span>
                 </button>
                 <button className="mypage-btn" onClick={() => handlePageChange('mypage')}>
                     <span className="material-symbols-outlined">account_circle</span>
                 </button>
-                <button className="chat-btn" onClick={() => handlePageChange('chat')}>
-                    <span className="material-symbols-outlined">chat</span>
-                </button>
+                <Link to="/chat" className="chat-btn">
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>chat</span>
+                </Link>
                 <button className="logout-btn" onClick={handleLogout}>
                     <span className="material-symbols-outlined">logout</span>
                 </button>
@@ -77,7 +77,7 @@ const MainPage = () => {
                             </div>
                         </div>
                         <div className="message-container">
-                            {/*<div className="content-image"></div>*/}
+                            <div className="content-image"></div>
                             <div className="content-message">
                                 {/*<p>환영합니다! 당신이 원하는 모든 보험 정보를 한곳에서 확인하고, AI 챗봇을 통해 실시간으로 상담 받을 수 있는 곳입니다. 우리 사이트는 사용자가 보험 계약을 이해하고, 최적의 선택을 할 수 있도록 설계되었습니다.*/}
                                 {/*</p>*/}
