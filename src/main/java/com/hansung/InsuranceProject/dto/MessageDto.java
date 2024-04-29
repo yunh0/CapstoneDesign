@@ -13,15 +13,23 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDto {
+    private Long messageId;
 
     private MessageType messageType;
 
     private String content;
 
+    private Boolean pinned;
+
     public static final MessageDto convertToDto(Message message){
+
+        System.out.println(message.getPinned());
+        // Message가 pin이 되어 있는지 확인하고, 함께 리턴하는 코드 작성해야함
         return MessageDto.builder()
+                .messageId(message.getMessageId())
                 .messageType(message.getMessageType())
                 .content(message.getContent())
+                .pinned(message.getPinned())
                 .build();
     }
 

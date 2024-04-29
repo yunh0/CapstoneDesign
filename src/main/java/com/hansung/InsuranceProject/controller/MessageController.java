@@ -28,7 +28,7 @@ public class MessageController {
     private MessageService messageService;
 
     @PostMapping("/user/message/{chatroomId}")
-    public ResponseEntity saveMessageAndReturnAiMessage(@PathVariable Long chatroomId, @RequestBody MessageRequest request, Principal principal){
+    public ResponseEntity saveMessageAndReturnAiMessage(@PathVariable Long chatroomId, @RequestBody MessageRequest request){
 
         Message userMessage = messageService.saveMessage(chatroomId, MessageType.PERSON, request.getContent());
 
@@ -43,6 +43,7 @@ public class MessageController {
             Message aiMessage = messageService.saveMessage(chatroomId, MessageType.AI, messageReceived);
             MessageDto messageDto = MessageDto.convertToDto(aiMessage);
             System.out.println(messageDto);
+
             return ResponseEntity.ok().body(messageDto);
         }
         catch (IOException e){

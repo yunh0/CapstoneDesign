@@ -1,32 +1,40 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
-import NewChatModal from '../jsxfiles/newchatModal';
+import SelectPage from "./selectPage";
 import { postChatContent } from "../api/postChatContent";
-import { getUserChatRooms} from "../api/createChatRoom";
+import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
+import {postPinMessage} from "../api/pinMessage";
+import {delPinMessages} from "../api/delPinMessages";
 
 const ChatPage = () => {
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const pdfPathFromSelectPage = location.state?.pdfPath;
+
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [pdfUrl, setPdfUrl] = useState("");
-    const [showNewChatModal, setShowNewChatModal] = useState(false);
+    const [showSelectPage, setShowSelectPage] = useState(false); // Change to control SelectPage visibility
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
-    const [newChatButtons, setNewChatButtons] = useState([]);
     const dividerRef = useRef(null);
     const middlePanelRef = useRef(null);
     const rightPanelRef = useRef(null);
+    const chatMessagesRef = useRef(null);
+    const messageInputRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages] = useState([
-        { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received" },
-        { id: 2, text: "무엇을 도와드릴까요?", sender: "received" }
+        { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
+        { id: 2, text: "무엇을 도와드릴까요?", sender: "received", backid:1}
     ]);
     const [messages, setMessages] = useState(defaultMessages);
-
+    const [pinnedMessages, setPinnedMessages] = useState([]);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -35,7 +43,6 @@ const ChatPage = () => {
             const token = localStorage.getItem('token');
             const chatRooms = await getUserChatRooms(token);
             if (chatRooms && chatRooms.length > 0) {
-                // 각 채팅방 객체에 필요한 속성 할당
                 const updatedChatList = chatRooms.map(chatRoom => ({
                     id: chatRoom.chatRoomId,
                     title: chatRoom.chatRoomName,
@@ -51,9 +58,18 @@ const ChatPage = () => {
         }
     };
     useEffect(() => {
-        fetchChatRooms()
-    }, []);
+        fetchChatRooms();
+        messageInputRef.current.value = '';
 
+    }, []);
+    const onChatRoomCreated = () => {
+        setShowSelectPage(false); // SelectPage 숨기기
+        fetchChatRooms(); // 채팅방 목록 새로고침
+    };
+    const updateChatList = async () => {
+        const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
+        setChatList(updatedChatRooms);
+    };
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
     const handleLogout = () => {
@@ -64,7 +80,7 @@ const ChatPage = () => {
     ////////////////////////////////////새채팅 모달 창////////////////////////////////////////
 
     const handleNewChat = () => {
-        setShowNewChatModal(true);
+        setShowSelectPage(true); // Show SelectPage instead
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -90,84 +106,196 @@ const ChatPage = () => {
             rightPanelRef.current.style.overflow = 'hidden';
         }
     };
-
     ///////////////////////////////메세지 보내기//////////////////////////////////////////////
+    const handleFormSubmit = (e) => {
+        e.preventDefault(); // 폼 제출 기본 동작 방지
+        handleSendMessage(); // 메시지 전송 함수 호출
+    };
 
-    const handleSendMessage = async (event) => {
-        event.preventDefault();
-        const messageText = event.target.elements.message.value;
+    const scrollToBottom = () => {
+        if (chatMessagesRef.current) {
+            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+        }
+    };
+
+    const scrollToBottom2 = () => {
+        if (chatMessagesRef.current) {
+            const scrollHeight = chatMessagesRef.current.scrollHeight;
+            const clientHeight = chatMessagesRef.current.clientHeight;
+            const maxScrollTop = scrollHeight - clientHeight;
+            let scrollTop = chatMessagesRef.current.scrollTop;
+
+            const scrollStep = () => {
+                scrollTop += 3; // 조절 가능한 값
+                chatMessagesRef.current.scrollTop = scrollTop;
+                if (scrollTop < maxScrollTop) {
+                    requestAnimationFrame(scrollStep);
+                }
+            };
+
+            scrollStep();
+        }
+    };
+
+    const handleSendMessage = async () => {
+        // textarea 요소의 값 가져오기
+        const messageText = messageInputRef.current.value;
         const chatroomId = selectedChatId;
+        if (isLoading) {
+            return;
+        }
+
+        setIsLoading(true);
 
         // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
             return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
         }
-
-        // 입력 필드를 비우기 전에 채팅 메시지를 추가합니다.
-        const newMessage = { id: messages.length + 1, text: messageText, sender: "sent" };
+        //채팅 메시지를 추가합니다.
+        const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
+        messageInputRef.current.value = 'Sending my question to chatbot...';
+
+        scrollToBottom();
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
-        console.log(messageText)
+
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
-            // 입력 필드를 비웁니다.
-            event.target.elements.message.value = '';
             // 백엔드로부터 대답 받아오기
             if (success) {
                 let senderValue = "received";
                 if (success.messageType === "PERSON") {
                     senderValue = "sent";
                 }
-                console.log(success.content)
-                const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue };
-
+                const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
                 // 상태 업데이트 시 함수형 업데이트 사용
                 setMessages(prevMessages => [...prevMessages, newResponse]);
-                console.log(messages)
+                scrollToBottom2();
             } else {
+                let senderValue = "received";
+                const newResponse = { id: messages.length + 2, text: 'Failed to get chat response from the backend', sender: senderValue };
+                setMessages(prevMessages => [...prevMessages, newResponse]);
                 console.error('Failed to get chat response from the backend');
             }
         }
+        messageInputRef.current.value = '';
+        setIsLoading(false);
+
     };
 
+    /////////////////////////////////버튼 생성 후 /////////////////////////////////////
 
-    //////////////////////////////////////새 채팅/////////////////////////////
-    const handleNewChatButton = async (title, id, pdfUrl) => {
-        const newButton = { title, id, pdfUrl };
-        setNewChatButtons(prevButtons => [newButton, ...prevButtons]);
-    };
+    useEffect(() => {
+        if (chatList.length > 0) {
+            const lastChat = chatList[chatList.length - 1];
+            handleButtonClicked(lastChat);
+            messageInputRef.current.value = '';
+        }
+    }, [chatList.length]);
+
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
     useEffect(() => {
-        if (showPdfViewer) {
-            setPdfUrl(null);
+        if (pdfPathFromSelectPage) {
+            setShowPdfViewer(true);
+            setPdfUrl(pdfPathFromSelectPage);
         }
-    }, [showPdfViewer]);
+    }, [pdfPathFromSelectPage]);
+
 
     const handleButtonClicked = async (chat) => {
         const { id, pdfUrl } = chat;
+        if (selectedChatId === id && !isLoading) {
+            return;
+        }
+
         setSelectedChatId(id);
 
-        if (selectedChatId !== id) {
+        setIsLoading(true);
+
+        try {
+            messageInputRef.current.value = 'LOADING Please wait...';
+
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
             setMessages(defaultMessages);
 
-            try {
-                const results = await sendChatRoomClick(id);
+            const results = await sendChatRoomClick(id);
+            results.forEach(result => {
+                let senderValue = result.messageType === "PERSON" ? "sent" : "received";
+                const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue, backid: result.messageId,  pinned: result.pinned };
 
-                results.forEach(result => {
-                    let senderValue = result.messageType === "PERSON" ? "sent" : "received";
-                    const newResponse = { id: messages.length + 1, text: result.content, sender: senderValue };
+                setMessages(prevMessages => [...prevMessages, newResponse]);
+            });
+            messageInputRef.current.value = '';
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        } finally {
+            setIsLoading(false);
+        }
 
-                    setMessages(prevMessages => [...prevMessages, newResponse]);
-                });
-            } catch (error) {
-                console.error('Error sending button click to the backend:', error.message);
+    };
+
+    /////////////////////////////// 핀 기능 ////////////////////////////////////////////
+
+    const handlePinToggle = async (msg) => {
+        if (isPinned(msg)) {
+            await delhandlePinMessage(msg);
+            unpinMessage(msg);
+        } else {
+            await handlePinMessage(msg);
+            pinMessage(msg);
+        }
+    };
+
+    const handlePinClick = async (msg) => {
+        // 핀 상태 토글 함수 호출
+        await handlePinToggle(msg);
+
+        // 핀 상태 변경 후 메시지 리스트 업데이트
+        const updatedMessages = messages.map(item => {
+            if (item.backid === msg.backid) {
+                return { ...item, pinned: !item.pinned };
             }
+            return item;
+        });
+
+        // 메시지 리스트 업데이트
+        setMessages(updatedMessages);
+    };
+
+    const isPinned = (msg) => {
+        return msg.pinned;
+    };
+
+    const pinMessage = (msg) => {
+        setPinnedMessages([...pinnedMessages, msg]);
+    };
+
+    const unpinMessage = (msg) => {
+        setPinnedMessages(pinnedMessages.filter(pinnedMsg => pinnedMsg.backid !== msg.backid));
+    };
+
+    const handlePinMessage = async (msg) => {
+        console.log(msg.backid);
+        try {
+            const results = await postPinMessage(msg.backid);
+            console.log(results);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
+        }
+    };
+
+    const delhandlePinMessage = async (msg) => {
+        console.log(msg.backid);
+        try {
+            const results = await delPinMessages(msg.backid);
+            console.log(results);
+        } catch (error) {
+            console.error('Error sending button click to the backend:', error.message);
         }
     };
 
@@ -177,45 +305,94 @@ const ChatPage = () => {
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel">
-                <Link to="/main" className="home-btn"></Link>
+                <Link to="/main" className="home-btn">
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
+                </Link>
+                <button className="newchat-btn" onClick={() => setShowSelectPage(true)} disabled={isLoading || showSelectPage}>New Chat
+                    {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
+                </button>
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button style={{width: '100%', height: '70px'}} className="chat-message" onClick={() => {
-                                handleButtonClicked(chat);
-                            }}>{chat.title}</button>
-
+                            <button className="chatroom-button"
+                                onClick={() => {
+                                    if (showSelectPage) {
+                                        alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
+                                    } else {
+                                        handleButtonClicked(chat);
+                                        messageInputRef.current.value = '';
+                                    }
+                                }}
+                                disabled={isLoading}
+                            >
+                                {chat.title}
+                            </button>
                         </div>
                     ))}
                 </div>
-                <button onClick={handleNewChat} className="newchat-btn">새 채팅</button>
-                <button onClick={handleLogout} className="logout-btn"></button>
+                <button className="logout-btn" onClick={handleLogout}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>logout</span>
+                </button>
             </div>
-            <Fragment>
-                <div ref={middlePanelRef} className="chat-panel">
-                    <div className="chat-middle-content">
-                        <span>Middle Panel</span>
-                    </div>
-                    {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} style={{ width: '100%', height: '96%' }} />}
+            {showSelectPage ? (
+                <div className="select-page-container">
+                    <button onClick={() => setShowSelectPage(false)} className="back-btn">
+                        <span className="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <SelectPage
+                        updateChatList={updateChatList}
+                        onChatRoomCreated={() => {
+                            setShowSelectPage(false); // SelectPage 숨기기
+                            fetchChatRooms(); // 채팅방 목록 새로고침
+                        }}f
+                    />
                 </div>
-                <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
-                <div ref={rightPanelRef} className="chat-panel right">
-                    <div className="chat-messages">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`chat-message ${msg.sender}`}>
-                                {msg.text}
+            ) : (
+                <>
+                    <Fragment>
+                        <div ref={middlePanelRef} className="chat-panel">
+                            {showPdfViewer && <PdfViewer pdfUrl={pdfUrl} onMouseMove={handleMouseMove} style={{ width: '100%', height: '96%' }} />}
+                        </div>
+                        <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
+                        <div ref={rightPanelRef} className="chat-panel right">
+                            <div ref={chatMessagesRef} className="chat-messages">
+                                {messages.map((msg, index) => (
+                                    <div key={index} className={`chat-message ${msg.sender}`}>
+                                        {msg.text}
+                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
+                                            <button
+                                                className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
+                                                onClick={() => handlePinClick(msg)}
+                                                aria-label={msg.pinned ? "Unpin Message" : "Pin Message"}>
+                                                {msg.pinned ? '📍' : '📌'}
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                    <form className="chat-input-container" onSubmit={handleSendMessage}>
-                        <textarea className="chat-input" name="message" type="text" placeholder="메시지 입력..." />
-                        <button className="chat-submit-button">
-                            <i className="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </Fragment>
-            {showNewChatModal && <NewChatModal onClose={() => setShowNewChatModal(false)} setChatList={setChatList} onNewChatButton={handleNewChatButton} />}
+                            <form className="chat-input-container" onSubmit={handleFormSubmit}>
+                                <textarea
+                                    ref={messageInputRef}
+                                    className="chat-input"
+                                    name="message"
+                                    type="text"
+                                    disabled={isLoading}
+                                    placeholder="메시지 입력..."
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault(); // 기본 엔터 동작 방지
+                                            handleSendMessage(); // handleSendMessage 호출
+                                        }
+                                    }}
+                                />
+                                <button type="submit" className="chat-submit-button"  disabled={isLoading}>
+                                    <i className="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </Fragment>
+                </>
+            )}
         </div>
     );
 };
