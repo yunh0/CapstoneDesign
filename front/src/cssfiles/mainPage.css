@@ -50,29 +50,19 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;  /* Takes up all remaining space */
-    background-color: #E1E1E1;
+    background-color: #eae7e5;
+    background-image: url('https://www.transparenttextures.com/patterns/beige-paper.png');
     position: relative; /* Set position context for absolute children */
 }
-.spare-panel::before {
-    content: "";
-    position: absolute;
-    left: 6%; /* 조정하여 선을 원하는 위치로 이동 */
-    top: 0;
-    bottom: 0;
-    width: 2px; /* 선의 두께 */
-    background-color: #333; /* 선의 색상 */
-    transform: translateX(-50%); /* 선의 중심을 완벽하게 중앙에 맞춤 */
-}
-
 
 .content-container {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top:20px;
+    margin-top:5px;
     padding-bottom: 20px; /* 선과 텍스트 사이의 간격을 추가 */
-    border-bottom: 2px solid #333; /* 사이드바와 메인 컨텐츠 사이에 선 추가 */
+    /*border-top: 5px solid #d0d0d0; !* 사이드바와 메인 컨텐츠 사이에 선 추가 *!*/
 }
 
 @keyframes slideDown {
@@ -129,15 +119,17 @@
     margin-bottom:0px;
     color: #333;
     animation: slideDown 2s ease-out forwards;
+    border-bottom: 3px solid #cccccc; /* 사이드바와 메인 컨텐츠 사이에 선 추가 */
 }
 
 .message-container {
     display: flex;
     flex-direction: row;
     flex-grow: 1;  /* Takes up all remaining space */
-    background-color: #E1E1E1;
+    background-color: #eae7e5;
+    background-image: url('https://www.transparenttextures.com/patterns/beige-paper.png');
     margin-top:20px;
-    margin-left:40px;
+    margin-left:20px;
     margin-bottom:40px;
 }
 

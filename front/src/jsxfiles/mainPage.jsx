@@ -49,9 +49,12 @@ const MainPage = () => {
                 <button className="home-btn" onClick={() => handlePageChange('welcome')}>
                     <span className="material-symbols-outlined">home</span>
                 </button>
-                <Link to="/pinpage" className="pinpage-btn">
-                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>push_pin</span>
-                </Link>
+                {/*<Link to="/pinpage" className="pinpage-btn">*/}
+                {/*    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>push_pin</span>*/}
+                {/*</Link>*/}
+                <button className="pinpage-btn" onClick={() => handlePageChange('pinpage')}>
+                    <span className="material-symbols-outlined">push_pin</span>
+                </button>
                 <button className="find-btn" onClick={() => handlePageChange('find')}>
                     <span className="material-symbols-outlined">search</span>
                 </button>

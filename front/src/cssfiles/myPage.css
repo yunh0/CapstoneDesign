@@ -1,94 +1,96 @@
-
+/* myPage.css */
 .mypage-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    height: 100vh;
-    box-sizing: border-box;
-    font-size: 36px; /* Large font size for greeting */
-    width:100%;
-    padding:70px;
+    align-items: center;
+    background-color: #ecf0f1;
+    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");    min-height: 100vh;
+    padding: 40px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .mypage-header {
-    width: 80%; /* Adjust the width as necessary */
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    color: white;
-    box-sizing: border-box;
-    border-radius: 10px; /* Rounded corners */
-    font-size: 36px; /* Large font size for greeting */
-    padding:0;
-}
-.mypage-content {
-    width:100%;
-    font-size: 70px; /* Large font size for greeting */
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+    margin-bottom: 50px;
 }
 
 .mypage-greeting {
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    font-family: 'Helvetica', sans-serif; /* 글씨체 변경 */
-    font-size: 100px; /* Large font size for greeting */
-    margin-bottom: 90px; /* Spacing below greeting */
+    color: #2C3E50;
+    font-size: 32px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
-.mypage-details {
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    display: flex;
+.mypage-content {
     width: 100%;
-    font-family: 'Impact', sans-serif; /* 글씨체 변경 */
-    justify-content: space-between; /* Aligns children with space between */
-    align-items: center; /* Centers children vertically */
-    border-bottom: 3px solid #ddd; /* Separator line */
-    padding-bottom: 50px; /* Spacing below details */
-    margin-bottom: 50px; /* Spacing below the details section */
-    font-size: 30px; /* Large font size for greeting *
-    /* Other styling properties */
-}
-.mypage-info-wrapper {
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    flex-grow: 1; /* Ensures it takes up the available space */
-    display: flex;
-    justify-content: space-between; /* Pushes the button to the far right */
-    align-items: center; /* Aligns children vertically */
-}
-.mypage-info p{
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
+    max-width: 640px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    border: 1px solid #dddddd;
 }
 
+.mypage-details,
+.mypage-search {
+    margin-bottom: 30px;
+}
+
+.mypage-info-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.mypage-info {
+    color: #34495E;
+    font-weight: 500;
+}
+
+.mypage-info p {
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+.mypage-update-btn-wrapper {
+    display: flex;
+    align-items: center;
+}
 
 .mypage-update-btn {
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    border: 2px solid white;
+    background-color: #3498DB;
     color: white;
-    padding: 15px 30px;
-    text-align: center;
-    display: inline-block; /* Align button next to text */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: all 0.3s ease;
-    font-size: 30px;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .mypage-update-btn:hover {
-    background: white;
-    color: #383535;
+    background-color: #2980B9;
+    transform: scale(1.05);
 }
 
-.mypage-search {
-    width: 100%; /* Take the full width of the header */
-}
 .mypage-search-title {
-    background-color: #434343; /* 배경색 변경, 어두운 색상 유지 */
-    font-size: 50px;
-    font-family: 'YuGothic', sans-serif; /* 글씨체 변경 */
-    font-weight: 500; /* 중간체로 설정 */
-    padding-bottom:50px;
+    font-size: 22px;
+    color: #2C3E50;
+    margin-bottom: 15px;
+    font-weight: 600;
 }
 
 .mypage-search-box {
-    background: #fff;
-    height: 500px; /* Adjust the height as necessary */
-    width: 100%; /* Take the full width of the search section */
-    border-radius: 10px; /* Rounded corners for the search box */
+    width: 100%;
+    height: 45px;
+    border: 2px solid #BDC3C7;
+    border-radius: 8px;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
+
+.mypage-search-box:focus {
+    border-color: #3498DB;
+    outline: none;
 }

@@ -309,7 +309,7 @@ const ChatPage = () => {
                     <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
                 </Link>
                 <button className="newchat-btn" onClick={() => setShowSelectPage(true)} disabled={isLoading || showSelectPage}>New Chat
-                    <span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>
+                    {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
                 </button>
                 <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
@@ -337,14 +337,14 @@ const ChatPage = () => {
             {showSelectPage ? (
                 <div className="select-page-container">
                     <button onClick={() => setShowSelectPage(false)} className="back-btn">
-                        ❌
+                        <span className="material-symbols-outlined">arrow_back</span>
                     </button>
                     <SelectPage
                         updateChatList={updateChatList}
                         onChatRoomCreated={() => {
                             setShowSelectPage(false); // SelectPage 숨기기
                             fetchChatRooms(); // 채팅방 목록 새로고침
-                        }}
+                        }}f
                     />
                 </div>
             ) : (

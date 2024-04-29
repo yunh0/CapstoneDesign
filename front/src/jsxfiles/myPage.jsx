@@ -31,7 +31,7 @@ export default function MyPage({ isLogin })  {
                 <div className="mypage-details">
                     <div className="mypage-info-wrapper">
                         <div className="mypage-info">
-                            <p>NAME: {`${info.lastName} ${info.firstName}`}</p>
+                            <p>NAME: {`${info.firstName}`}</p>
                             <p>EMAIL: {info.email}</p>
                         </div>
                         <div className="mypage-update-btn-wrapper">
