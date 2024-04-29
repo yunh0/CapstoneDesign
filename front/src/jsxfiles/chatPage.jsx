@@ -41,6 +41,7 @@ const ChatPage = () => {
     const [fnum, setFnum] = useState(0);
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
     const [isFolded, setIsFolded] = useState(false);
+    const [sReco, setSReco] = useState(null);
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -199,9 +200,8 @@ const ChatPage = () => {
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
-        const sReco = await getsReco(messageText);
-
-        if (!success || !sReco) {
+        const sReco = await getsReco(formattedText);
+        if (!success) {
             console.error('Failed to send message to the backend');
         } else {
             // 백엔드로부터 대답 받아오기
@@ -213,6 +213,8 @@ const ChatPage = () => {
                 const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
                 // 상태 업데이트 시 함수형 업데이트 사용
                 setMessages(prevMessages => [...prevMessages, newResponse]);
+                console.log(sReco);
+                setSReco(sReco);
                 scrollToBottom2();
             } else {
                 let senderValue = "received";
@@ -447,7 +449,7 @@ const ChatPage = () => {
                                     </div>
                                 ))}
                             </div>
-                            {isPlusButtonClicked && (
+                            {isPlusButtonClicked && sReco && (
                                 <div className="extra-window">
                                     {sReco.first && currentPage === 1 && (
                                         <>
