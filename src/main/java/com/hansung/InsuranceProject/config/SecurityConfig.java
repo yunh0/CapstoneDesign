@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/api/user/message/**")
                 .ignoringAntMatchers("/api/savePin/**")
                 .ignoringAntMatchers("/api/getPin")
-                .ignoringAntMatchers("/api/deletePin/**");
+                .ignoringAntMatchers("/api/deletePin/**")
+                .ignoringAntMatchers("/api/freCo");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/savePin/**").permitAll()
                 .antMatchers("/api/getPin").permitAll()
                 .antMatchers("/api/deletePin/**").permitAll()
+                .antMatchers("api/freCo").permitAll()
                 .anyRequest().authenticated();
     }
 }
