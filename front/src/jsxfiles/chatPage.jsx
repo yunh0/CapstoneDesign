@@ -449,48 +449,36 @@ const ChatPage = () => {
                             </div>
                             {isPlusButtonClicked && (
                                 <div className="extra-window">
-                                    {currentPage === 1 && (
+                                    {sReco.first && currentPage === 1 && (
                                         <>
-                                            <p className="exfont">This is the content for page 1</p>
+                                            <p className="exfont">{sReco.first}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button"
-                                                        onClick={handleLeftButtonClick}>◀️
-                                                </button>
-                                                <button className="extra-window-button right-button"
-                                                        onClick={handleRightButtonClick}>▶️
-                                                </button>
+                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
+                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
                                             </div>
                                         </>
                                     )}
-                                    {currentPage === 2 && (
+                                    {sReco.second && currentPage === 2 && (
                                         <>
-                                            <p className="exfont">This is the content for page 2</p>
+                                            <p className="exfont">{sReco.second}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button"
-                                                        onClick={handleLeftButtonClick}>◀️
-                                                </button>
-                                                <button className="extra-window-button right-button"
-                                                        onClick={handleRightButtonClick}>▶️
-                                                </button>
+                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
+                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
                                             </div>
                                         </>
                                     )}
-                                    {currentPage === 3 && (
+                                    {sReco.third && currentPage === 3 && (
                                         <>
-                                            <p className="exfont" >This is the content for page 3</p>
+                                            <p className="exfont">{sReco.third}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button"
-                                                        onClick={handleLeftButtonClick}>◀️
-                                                </button>
-                                                <button className="extra-window-button right-button"
-                                                        onClick={handleRightButtonClick}>▶️
-                                                </button>
+                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
+                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
                                             </div>
                                         </>
                                     )}
                                 </div>
-
                             )}
+
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
                                 <div className="plus-button">
                                     <button className="p-button" onClick={handlePlusButtonClick}>
