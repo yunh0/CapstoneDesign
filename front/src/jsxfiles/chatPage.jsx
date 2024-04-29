@@ -9,6 +9,7 @@ import { sendChatRoomClick } from '../api/sendChatRoomClick';
 import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 import {getfReco} from "../api/getFirstRecommend";
+import {getsReco} from "../api/getSecondRecommend";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -198,8 +199,9 @@ const ChatPage = () => {
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
+        const sReco = await getsReco(messageText);
 
-        if (!success) {
+        if (!success || !sReco) {
             console.error('Failed to send message to the backend');
         } else {
             // 백엔드로부터 대답 받아오기
@@ -218,6 +220,8 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 console.error('Failed to get chat response from the backend');
             }
+
+
         }
         messageInputRef.current.value = '';
         setIsLoading(false);
