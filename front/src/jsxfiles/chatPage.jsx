@@ -200,7 +200,7 @@ const ChatPage = () => {
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
-        const sReco = await getsReco(formattedText);
+        const sReco = await getsReco(messageText);
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
@@ -381,14 +381,20 @@ const ChatPage = () => {
 
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
-            <div className="chat-left-panel"  style={{ width: isFolded ? '0%' : '20%', display: isFolded ? 'none' : 'flex' }}>
-                <Link to="/main" className="home-btn"></Link>
-                <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
+            <div className="chat-left-panel"
+                 style={{width: isFolded ? '0%' : '20%', display: isFolded ? 'none' : 'flex'}}>
+                <Link to="/main" className="home-btn">
+                    <span className="material-symbols-outlined" style={{fontSize: '40px'}}>home</span>
+                </Link>
+                <button className="newchat-btn" onClick={() => setShowSelectPage(true)}
+                        disabled={isLoading || showSelectPage}>New Chat
+                    {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
+                </button>
+                <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
                             <button
-                                style={{ width: '100%', height: '70px' }}
-                                className="chat-message"
+                                className="chatroom-button"
                                 onClick={() => {
                                     if (showSelectPage) {
                                         alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
@@ -403,13 +409,14 @@ const ChatPage = () => {
                         </div>
                     ))}
                 </div>
-                <button onClick={() => setShowSelectPage(true)} className="newchat-btn"  disabled={isLoading || showSelectPage}>새 채팅</button>
-                <button onClick={handleLogout} className="logout-btn"></button>
+                <button className="logout-btn" onClick={handleLogout}>
+                    <span className="material-symbols-outlined" style={{fontSize: '40px'}}>logout</span>
+                </button>
             </div>
             {showSelectPage ? (
                 <div className="select-page-container">
                     <button onClick={() => setShowSelectPage(false)} className="back-btn">
-                        ❌
+                        <span className="material-symbols-outlined">arrow_back</span>
                     </button>
                     <SelectPage
                         updateChatList={updateChatList}

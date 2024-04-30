@@ -13,7 +13,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #ccc;
+    background-color: gainsboro;
     height: 70%;
     width: 50%;
     text-align: center;
@@ -25,17 +25,22 @@
     color:black;
     font-family: 'Helvetica', sans-serif;
     font-weight:80;
-    padding-top:50px;
+    padding-top:20px;
+    padding-bottom:0;
+    margin-bottom: 0;
 }
+
 .step-container p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 20px;
     font-weight:200;
     padding-top:10px;
-    padding-bottom:60px;
+    padding-bottom:30px;
+    margin-top:0;
     color:black;
 }
+
 .step-buttons {
     display: flex;
     justify-content: space-between; /* 버튼 사이의 간격을 균등하게 배분합니다. */
@@ -45,6 +50,7 @@
     text-align: center;
     flex: 1; /* 이 div가 가능한 모든 공간을 차지하도록 합니다. */
 }
+
 .step-container button:not(.back-button) {
     display: flex;
     width: 70%;
@@ -61,13 +67,16 @@
     flex-grow: 0; /* 버튼의 크기가 늘어나지 않도록 설정합니다. */
     flex-shrink: 0; /* 버튼의 크기가 줄어들지 않도록 설정합니다. */
 }
+
 .step-container button:hover {
     background-color: #e0e0e0;
 }
+
 .step-container button:focus, .step-container button:active {
     background-color: #007bff;
     color: white;
 }
+
 .confirmation-container {
     margin: 20px;
     padding-top: 20px;
@@ -90,6 +99,7 @@
     font-weight:80;
     padding-top:50px;
 }
+
 .confirmation-summary {
     border: 10px solid white;
     background-color: white;
@@ -106,6 +116,8 @@
     align-items: center; /* 자식 요소들을 가로 중앙에 배치합니다. */
     margin: auto; /* 가로 방향 양쪽에 자동 마진을 설정하여 중앙 정렬 */
 }
+
+
 .confirmation-buttons button {
     width: 120px;
     height:50px;
@@ -115,18 +127,22 @@
     font-weight: bold;
     margin: 0 20px; /* 왼쪽과 오른쪽에 20px의 마진을 추가 */
 }
+
 .no-button {
     background-color: #ff6b6b;
     color: white;
 }
+
 .yes-button {
     background-color: #54a0ff;
     color: white;
 }
+
 .confirmation-buttons {
     display: flex;
     justify-content: center;
 }
+
 .back-button {
     position: absolute; /* 절대 위치 설정 */
     bottom: 20px; /* 아래쪽에서 20px 떨어진 곳에 위치 */
@@ -143,9 +159,11 @@
     align-items: center;
     font-size: 24px; /* 아이콘 크기 적당히 조정 */
 }
+
 .back-button:hover {
     background-color: #d0d0d0;
 }
+
 .back-button i {
     margin: auto; /* 아이콘을 버튼 중앙에 배치 */
 }

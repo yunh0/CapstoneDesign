@@ -1,123 +1,206 @@
-@keyframes colorShift {
-    0% {
-        background: linear-gradient(135deg, #FFFFFF, #E0E0E0);
-        color: black; /* 초기 텍스트 색상 */
-    }
-    50% {
-        background: linear-gradient(135deg, #9E9E9E, #BDBDBD);
-        color: white; /* 중간 텍스트 색상 */
-    }
-    100% {
-        background: linear-gradient(135deg, #FFFFFF, #E0E0E0);
-        color: black; /* 끝 텍스트 색상 */
-    }
-}
-
-/* 모든 요소 기본 스타일 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 폰트 변경 */
-}
-
 .main-container {
     display: flex;
-    height: 100%;
-    background-color: #EFF0F1; /* 배경색 변경 */
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
 }
-.main-content-container {
-    font-size: 100px;
-}
-
-.chat-link {
-    font-size: 40px;
-    right: 5%; /* 왼쪽으로부터 50% 위치에 배치 */
-    bottom: 9%;
-    position: fixed;
-    font-family: 'Roboto Condensed', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 30px 40px;
-    color: white;
-    border-radius: 30px;
-    display: inline-block; /* Add this to make it inline-block */
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    border: none;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-    animation: colorShift 2s infinite; /* 애니메이션 적용 */
-}
-
-.chat-link:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transform: scale(1.05);
-    background: linear-gradient(135deg, #5a4daa, #783CBD);
-}
-
 .left-panel {
-    width: 20%;
-    background-color: #F7F7F7;
-    border-right: 2px solid #E1E1E1;
+    background-color: #F8F9FA;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #333;
-    justify-content: space-between; /* 버튼 간 동일 간격 유지 */
-}
-.spare-panel {
-    height:100%;
-    flex-grow: 1;
-    align-items: center;
-    background-color: black; /* 배경색 변경, 어두운 색상 유지 */
-    color: #ECF0F1; /* 텍스트 색상 변경, 밝은 색상 유지 */
-    padding: 0px;
-    border-left: 2px solid #2C3E50; /* 테두리 색상 및 두께 변경, 어두운 색상 유지 */
+    padding: 20px 0;
+    width: 250px;  /* Fixed width for the left panel */
+    /*border-right: 2px solid #333; !* 사이드바와 메인 컨텐츠 사이에 선 추가 *!*/
 }
 
-.left-panel button, .left-panel a, .logout-btn,chat-btn {
-    margin-bottom: 15px; /* 마진 변경 */
-    font-size: 50px; /* 폰트 크기 변경 */
-    padding: 12px 20px; /* 패딩 변경 */
-    border: 1px solid transparent; /* 테두리 변경 */
-    background-color: #F7F7F7; /* 버튼 배경색 변경, 밝은 아이보리/화이트 계열로 변경 */
+.left-panel button,
+.left-panel a {
+    /*width: 80%;*/
+    padding: 30px 0;
+    margin: 10px 0;
+    border: none;
+    background-color: transparent;
+    text-align: center;
     cursor: pointer;
-    color: #333; /* 텍스트 색상 변경, 어두운 색상으로 변경 */
-    border-radius: 4px; /* 버튼 모서리 둥글게 */
-    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-.home-btn {
-    display: inline-block; /* 이미지를 포함할 수 있도록 display 속성 변경 */
-    width: 250px; /* 로고 이미지의 너비, 필요에 따라 조정 */
-    height: 70px; /* 로고 이미지의 높이, 필요에 따라 조정 */
-    background-image: url('../assets/images/logo.png'); /* 로고 이미지 URL */
-    background-size: cover; /* 이미지가 버튼 크기에 맞게 조정 */
-    background-position: center; /* 이미지가 버튼 중앙에 위치 */
-    background-repeat: no-repeat; /* 이미지가 반복되지 않음 */
-    border: none; /* 버튼의 테두리 제거, 필요에 따라 조정 */
-    padding: 0; /* 내부 패딩 제거 */
-}
-
-/* 아이콘 스타일 변경 유지 */
-.home-btn::before { content: none; }
-.find-btn::before { content: '\1F50D'; }
-.mypage-btn::before { content: '\1F464'; }
-.pinpage-btn::before { content: '\1F4CC'; }
-.chat-btn::before { content: '\1F4AC'; }
-.logout-btn::before { content: '\1F6AA'}
 
 .chat-btn {
-    text-decoration: none; /* 밑줄 없애기 */
-    align-items: center;
+    font-size: 40px;  /* 아이콘의 크기 */
+    color: black;  /* 아이콘 색상 */
+}
+.left-panel button span {
+    font-size: 40px;  /* 아이콘의 크기 */
+    color: black;  /* 아이콘 색상 */
+}
+.left-panel button span:hover,
+.left-panel a:hover {
+    color: whitesmoke;  /* 아이콘 색상 */
+    color: #54a0ff;  /* 아이콘 색상 */
+}
+.spare-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;  /* Takes up all remaining space */
+    background-color: #E1E1E1;
+    position: relative; /* Set position context for absolute children */
+}
+.spare-panel::before {
+    content: "";
+    position: absolute;
+    left: 6%; /* 조정하여 선을 원하는 위치로 이동 */
+    top: 0;
+    bottom: 0;
+    width: 2px; /* 선의 두께 */
+    background-color: #333; /* 선의 색상 */
+    transform: translateX(-50%); /* 선의 중심을 완벽하게 중앙에 맞춤 */
 }
 
-.welcome-message p {
-    font-family: 'Impact', sans-serif; /* 글씨체 변경 */
-    margin: 30px 0; /* 줄 간격 조정 */
-    text-align: left; /* 텍스트 중앙 정렬 */
-    font-size: 120px; /* 글씨 크기 */
-    margin-left:200px;
-    margin-top:100px;
-    margin-bottom:130px;
-    letter-spacing: 11px; /* 자간 조정 */
+
+.content-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top:20px;
+    padding-bottom: 20px; /* 선과 텍스트 사이의 간격을 추가 */
+    border-bottom: 2px solid #333; /* 사이드바와 메인 컨텐츠 사이에 선 추가 */
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-200px); /* 시작 위치 */
+        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+    }
+    to {
+        transform: translateY(0); /* 최종 위치 */
+        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+    }
+}
+@keyframes slideLeft {
+    from {
+        transform: translateX(+400px); /* 시작 위치 */
+        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+    }
+    to {
+        transform: translateX(0); /* 최종 위치 */
+        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+    }
+}
+@keyframes slideUp {
+    from {
+        transform: translateY(+300px); /* 시작 위치 */
+        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+    }
+    to {
+        transform: translateY(0); /* 최종 위치 */
+        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+    }
+}
+
+@keyframes slideRight {
+    from {
+        transform: translateX(-200px); /* 시작 위치 */
+        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+    }
+    to {
+        transform: translateX(0); /* 최종 위치 */
+        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+    }
+}
+
+
+.content-title p {
+    font-family: "PT Serif";
+    font-weight: 900;
+    font-size: 80px;
+    font-style: italic; /* 이탤릭체 적용 */
+    margin: 10px;
+    margin-bottom:0px;
+    color: #333;
+    animation: slideDown 2s ease-out forwards;
+}
+.message-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;  /* Takes up all remaining space */
+    background-color: #E1E1E1;
+    margin-top:20px;
+    margin-left:40px;
+    margin-bottom:40px;
+}
+
+.content-image {
+    background-color: white;
+    width: 300px;
+    margin-top:30px;
+    margin-left: 80px;
+    opacity:0.3;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 그림자 효과 추가 */
+    overflow: hidden; /* 테두리를 넘어가는 이미지 부분을 잘라냄 */
+    background-image: url('../assets/images/bg.png');
+    background-size: cover;
+    background-position: center;
+    animation: slideRight 2s ease-out forwards; /* content-title 애니메이션이 1초 지속되므로, 1초 지연 */
+}
+
+.content-message {
+    width:700px;
+    margin-top:30px;
+    margin-left:80px;
+}
+
+.content-message p {
+    font-size: 20px;
+    line-height: 1.2;
+    margin-bottom:50px;
+    /*font-family: "Bitter";*/
+    font-family: "PT Serif";
+    font-weight:400;
+    animation: slideLeft 2s ease-out forwards; /* content-title 애니메이션이 1초 지속되므로, 1초 지연 */
+}
+
+/*.welcome-message-insurance {*/
+/*    margin-left:100px;*/
+/*    font-family: Didot;*/
+/*    font-weight:bold;*/
+/*    font-size: 80px;*/
+/*    color: #333;*/
+/*}*/
+/*.welcome-message-counseling {*/
+/*    margin-left:400px;*/
+/*    font-family: Didot;*/
+/*    font-weight:bold;*/
+/*    font-size: 80px;*/
+/*    color: #333;*/
+/*}*/
+.chat-link-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    width: 100%; /* Take full width to allow centering */
+    margin-top: auto; /* Push it to the bottom */
+}
+.chat-link {
+    width: 300px;
+    padding: 30px;
+    background-color: transparent;
+    border: 2px solid black;
+    color: black;
+    font-size: 20px;
+    font-family: "Roboto Condensed";
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    animation: slideUp 2s ease-out forwards; /* message 애니메이션이 1초 지속되며, 1초 후 시작하므로 총 2초 후, 추가 0.5초 지연 */
+}
+.chat-link:hover {
+    background-color: #54a0ff;
+    color: white;
+    border: 2px solid #54a0ff;
 }
