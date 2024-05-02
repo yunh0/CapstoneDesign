@@ -69,6 +69,9 @@ const MainPage = () => {
                 </button>
             </div>
             <div className="spare-panel">
+                <div className="main-content-container">
+                    <div className="main-content-style">{content}</div>
+                </div>
                 {currentPage === 'welcome' && (
                     <div>
                         <div className="content-container">
