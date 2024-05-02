@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+import requests
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
@@ -13,18 +14,79 @@ from langchain.agents import AgentExecutor
 
 # Flask 애플리케이션 생성
 app = Flask(__name__)
+os.environ["OPENAI_API_KEY"] = ""
 
 # 파일 경로 저장을 위한 전역 변수
-file_path = None
+file_paths = [
+    "https://storage.googleapis.com/capstone_1971166_bucket/%EB%AC%B4%EB%B0%B0%EB%8B%B9%20%ED%94%84%EB%A1%9C%EB%AF%B8%EB%9D%BC%EC%9D%B4%ED%94%84%20New%20I%60mOK%20%EC%95%94%EB%B3%B4%ED%97%982404.pdf",
+    "https://storage.googleapis.com/capstone_1971166_bucket/%EB%AC%B4%EB%B0%B0%EB%8B%B9%20%ED%94%84%EB%A1%9C%EB%AF%B8%EB%9D%BC%EC%9D%B4%ED%94%84%20New%20I%60mOK%20%EC%95%94%EB%B3%B4%ED%97%982404(TM).pdf",
+    "https://storage.googleapis.com/capstone_1971166_bucket/%EB%AC%B4%EB%B0%B0%EB%8B%B9%20%ED%94%84%EB%A1%9C%EB%AF%B8%EB%9D%BC%EC%9D%B4%ED%94%84%20%EC%B0%B8%EC%A2%8B%EC%9D%80%EC%95%94%EB%B3%B4%ED%97%982404(CM).pdf"
+]
+
+# 벡터 데이터베이스를 저장할 딕셔너리
+vector_stores = {}
+
+
+# 파일 경로를 받아서 벡터스토어에 저장하는 함수
+def store_vectors(file_paths):
+    vector_stores = {}
+    for file_path in file_paths:
+        # 파일 다운로드
+        response = requests.get(file_path)
+        file_name = file_path.split("/")[-1]
+        with open(file_name, "wb") as f:
+            f.write(response.content)
+
+        # 파일로부터 문서 로드
+        loaders = [
+            PyPDFLoader(file_name),
+        ]
+
+        docs = []
+        for loader in loaders:
+            docs.extend(loader.load())
+
+        # 문서를 청크로 분할
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=0,
+        )
+        splits = text_splitter.split_documents(docs)
+
+        # OpenAI API 키 가져오기
+        openai_api_key = os.environ.get("OPENAI_API_KEY")
+
+        # OpenAI 임베딩 모델을 사용하여 텍스트를 벡터로 변환하고, 이를 Chroma 벡터 저장소에 저장
+        embedding = OpenAIEmbeddings(openai_api_key=openai_api_key)
+        vector_store = Chroma.from_documents(documents=splits, embedding=embedding)
+
+        vector_store.persist()
+        print(vector_store._collection.count(), "documents in collection saved.")
+
+        vector_stores[file_name] = vector_store
+
+    return vector_stores
+
+
+# 파일 경로를 받아서 벡터스토어에 저장하는 함수
+vector_stores = store_vectors(file_paths)
 
 
 # 파일 경로를 받아서 벡터스토어에 저장하는 함수
 @app.route('/api/receive', methods=['POST'])
 def receive_file():
     global file_path
+    global vector_stores
     # 파일 경로 받기
     file_path = request.json.get('filePath')
     print(file_path)
+
+    # 파일의 벡터스토어 생성
+    vector_store = store_vectors([file_path])[file_path]
+
+    # 벡터스토어를 딕셔너리에 저장
+    vector_stores[file_path] = vector_store
+
     # 응답 반환
     return jsonify({'message': 'File received successfully.'})
 
@@ -34,6 +96,8 @@ def receive_file():
 def receive_message():
     try:
         global file_path
+        global vector_stores
+
         # JSON 형식으로 데이터 받기
         data = request.get_json()
 
@@ -44,8 +108,12 @@ def receive_message():
         if file_path is None:
             return jsonify({'response': '파일이 업로드되지 않았습니다.'})
 
+        # 가장 최근에 업로드된 파일의 벡터스토어 사용
+        file_path = list(vector_stores.keys())[-1]
+        vector_store = vector_stores[file_path]
+
         # 질문에 대한 답변 생성
-        response = answer_question(question, file_path)
+        response = answer_question(question, vector_store)
         response_data = {"status": "success", "message": response}
         # 답변 반환
         return jsonify(response_data), 200
@@ -56,17 +124,12 @@ def receive_message():
         return jsonify(error_data), 500
 
 
-def answer_question(question, file_path):
-    if file_path is None:
-        return "파일 경로가 잘못되었습니다."
-
-    # 벡터 스토어에 저장하고 반환
-    vectorstore = store_vectors(file_path)
-    if vectorstore is None:
+def answer_question(question, vector_store):
+    if vector_store is None:
         return "파일을 로드하는 동안 오류가 발생했습니다."
 
     # LLM 에이전트가 사용할 수 있도록 retriever 라는 툴로 만들기
-    retriever = vectorstore.as_retriever()
+    retriever = vector_store.as_retriever()
 
     # LLM에이전트가 만약 유저가 내가 업로드한 문서에 관련된 질문을 하면 이 tool을 사용해서 검색을 하게 됨
     tool = create_retriever_tool(
@@ -117,41 +180,10 @@ def answer_question(question, file_path):
         return response
 
 
-# 파일 경로를 받아서 벡터스토어에 저장하는 함수
-def store_vectors(file_path):
-    if file_path is None:
-        return None
-
-    # 파일로부터 문서 로드
-    loaders = [
-        PyPDFLoader(file_path),
-    ]
-
-    docs = []
-    for loader in loaders:
-        docs.extend(loader.load())
-
-    # 문서를 청크로 분할
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=0,
-    )
-    splits = text_splitter.split_documents(docs)
-
-    # OpenAI 임베딩 모델을 사용하여 텍스트를 벡터로 변환하고, 이를 Chroma 벡터 저장소에 저장
-    embedding = OpenAIEmbeddings()
-    vectorstore = Chroma.from_documents(documents=splits, embedding=embedding)
-
-    vectorstore.persist()
-    print(vectorstore._collection.count(), "documents in collection saved.")
-
-    return vectorstore  # 생성된 vectorstore 반환
-
-
 # 애플리케이션 실행
 if __name__ == '__main__':
     # 초기 설정
-    os.environ["OPENAI_API_KEY"] = ""
+
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
     # 애플리케이션 실행
