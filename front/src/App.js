@@ -9,7 +9,7 @@ import SelectPage from './jsxfiles/selectPage'; // 경로는 실제 구조에 �
 import { getUserInfo } from './api/getUserInfo';
 import ReactDOM from 'react-dom';
 import Layout from './components/Layout';
-import SelectPage from "./jsxfiles/selectPage";
+
 function App() {
     const [isLogin, setIsLogin] = useState(false);
 
