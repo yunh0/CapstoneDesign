@@ -51,7 +51,6 @@ public class PinnedAnswerService {
             return false;
         }
     }
-
     public List<PinnedAnswerDto> getPinnedAnswers(Principal principal){
         Long accountId = Long.valueOf(principal.getName());
         Account account = accountRepository.findById(accountId).orElse(null);

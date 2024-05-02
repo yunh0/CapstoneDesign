@@ -49,7 +49,6 @@ def receive_message():
         response_data = {"status": "success", "message": response}
         # 답변 반환
         return jsonify(response_data), 200
-
     except Exception as e:
         # 오류가 발생하면 오류 응답을 반환합니다.
         error_data = {"status": "error", "message": str(e)}
