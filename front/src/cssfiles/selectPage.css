@@ -93,11 +93,11 @@
 }
 .confirmation-container h2{
     text-align: center;
-    font-size:50px;
+    font-size:40px;
     color:black;
     font-family: 'Helvetica', sans-serif;
     font-weight:80;
-    padding-top:50px;
+    padding-top:30px;
 }
 
 .confirmation-summary {
@@ -107,7 +107,7 @@
     color: black;
     padding-top: 20px;
     font-size: 20px;
-    line-height: 80px; /* 줄 간격을 늘립니다 */
+    line-height: 30px; /* 줄 간격을 늘립니다 */
     width:70%;
     text-align: center; /* 텍스트를 가운데 정렬합니다. */
     display: flex; /* 이 컨테이너를 flex 컨테이너로 만듭니다. */
@@ -115,21 +115,22 @@
     justify-content: center; /* 자식 요소들을 컨테이너 내에서 세로 중앙에 배치합니다. */
     align-items: center; /* 자식 요소들을 가로 중앙에 배치합니다. */
     margin: auto; /* 가로 방향 양쪽에 자동 마진을 설정하여 중앙 정렬 */
+    margin-bottom:30px;
 }
 
 
 .confirmation-buttons button {
     width: 120px;
     height:50px;
-    padding: 10px;
     border: none;
     border-radius: 5px;
     font-weight: bold;
     margin: 0 20px; /* 왼쪽과 오른쪽에 20px의 마진을 추가 */
+    cursor: pointer;
 }
 
 .no-button {
-    background-color: #ff6b6b;
+    background-color: #a9a8a8;
     color: white;
 }
 

@@ -355,6 +355,19 @@ const ChatPage = () => {
                         </div>
                         <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
                         <div ref={rightPanelRef} className="chat-panel right">
+                            <div className = "chat-banner">
+                                AI Chatbot
+                                <span className="material-icons help-button">help_outline</span>
+                                <div className="help-modal">
+                                    <div class="help-modal-header">채팅 가이드</div>
+                                    <div className="help-modal-body">
+                                        <p><strong>채팅 시작하기:</strong> 하단의 입력 창에 메시지를 작성하고 엔터 키를 눌러 메시지를 보내세요. 대화가 시작됩니다.</p>
+                                        <p><strong>메시지 핀하기:</strong> 대화 중 중요한 메시지 옆의 📌 아이콘을 클릭하여 메시지를 핀할 수 있습니다.</p>
+                                        <p><strong>핀된 메시지 확인하기:</strong> 모든 핀된 메시지는 사이드바의 '핀된 메시지' 섹션에서 확인할 수 있습니다.</p>
+                                        <p><strong>핀 해제하기:</strong> 핀된 메시지 옆의 📍 아이콘을 다시 클릭하면 핀을 해제할 수 있습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>
@@ -385,7 +398,7 @@ const ChatPage = () => {
                                         }
                                     }}
                                 />
-                                <button type="submit" className="chat-submit-button"  disabled={isLoading}>
+                                <button type="submit" className="chat-submit-button" disabled={isLoading}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </form>
