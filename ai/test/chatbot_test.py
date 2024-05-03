@@ -12,7 +12,7 @@ query = input()
 # 의도 파악
 sys.path.append('C:\\github\\CapstoneDesign\\ai\\models\\intent')
 from IntentModel import IntentModel
-intent = IntentModel(model_name='../models/intent/intent_model.keras', preprocess=p)
+intent = IntentModel(model_name='../models/intent/intent_model2.keras', preprocess=p)
 predict = intent.predict_class(query)
 intent_name = intent.labels[predict]
 

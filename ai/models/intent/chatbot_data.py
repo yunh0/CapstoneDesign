@@ -6,7 +6,7 @@ from tensorflow.keras import preprocessing
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, Dense, Dropout, Conv1D, GlobalMaxPool1D, concatenate
 
-train_file = "train_data.csv"
+train_file = "train_data3.csv"
 data = pd.read_csv(train_file, delimiter=',')
 queries = data['질문'].tolist()
 intents = data['분류 클래스'].tolist()
@@ -99,4 +99,4 @@ print('Accuracy: %f' % (accuracy * 100))
 print('loss: %f' % (loss))
 
 # 모델을 네이티브 Keras 형식으로 저장
-model.save('intent_model.keras')
+model.save('intent_model2.keras')
