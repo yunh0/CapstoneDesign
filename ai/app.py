@@ -10,15 +10,21 @@ from langchain.agents.openai_functions_agent.base import OpenAIFunctionsAgent
 from langchain.schema.messages import SystemMessage
 from langchain.prompts import MessagesPlaceholder
 from langchain.agents import AgentExecutor
+import sys
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')
+from Preprocess import Preprocess
 
 # Flask 애플리케이션 생성
 app = Flask(__name__)
-os.environ["OPENAI_API_KEY"] = ""
+
 
 # 파일 경로 및 벡터스토어를 저장할 전역 변수
 file_path = None
 vectorstores = {}
 
+# 전처리 객체 생성
+p = Preprocess(word2index_dic='C:\\github\\CapstoneDesign\\ai\\train_tools\\dict\\chatbot_dict.bin',
+                userdic='C:\\github\\CapstoneDesign\\ai\\utils\\user_dic.tsv')
 
 # 파일 경로를 받아서 벡터스토어를 불러오는 함수
 def load_vectorstore(file_path):
@@ -156,6 +162,8 @@ def receive_message():
         # 질문 받기
         question = data.get('content')
 
+        question_prediction(question)
+
         # 파일 경로가 없으면 오류 메시지 반환
         if file_path is None:
             return jsonify({'response': '파일이 업로드되지 않았습니다.'})
@@ -171,6 +179,23 @@ def receive_message():
         error_data = {"status": "error", "message": str(e)}
         return jsonify(error_data), 500
 
+def question_prediction(question):
+    global p
+
+    # 원문
+    query = question
+
+    # 의도 파악
+    sys.path.append('C:\\github\\CapstoneDesign\\ai\\models\\intent')
+    from IntentModel import IntentModel
+    intent = IntentModel(model_name='C:\\github\\CapstoneDesign\\ai\\models\\intent\\intent_model2.keras', preprocess=p)
+    predict = intent.predict_class(query)
+    intent_name = intent.labels[predict]
+
+    print("질문 : ", query)
+    print("=" * 40)
+    print("의도 파악 : ", intent_name)
+    print("=" * 40)
 
 # 애플리케이션 실행
 if __name__ == '__main__':
