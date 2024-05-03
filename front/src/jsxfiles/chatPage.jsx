@@ -237,6 +237,7 @@ const ChatPage = () => {
         if (chatList.length > 0) {
             const lastChat = chatList[chatList.length - 1];
             handleButtonClicked(lastChat);
+            messageInputRef.current.value = '';
         }
     }, [chatList.length]);
 
@@ -382,25 +383,23 @@ const ChatPage = () => {
 
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
-            <div className="chat-left-panel"
-                 style={{width: isFolded ? '0%' : '20%', display: isFolded ? 'none' : 'flex'}}>
+            <div className="chat-left-panel">
                 <Link to="/main" className="home-btn">
-                    <span className="material-symbols-outlined" style={{fontSize: '40px'}}>home</span>
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
                 </Link>
-                <button className="newchat-btn" onClick={() => setShowSelectPage(true)}
-                        disabled={isLoading || showSelectPage}>New Chat
+                <button className="newchat-btn" onClick={() => setShowSelectPage(true)} disabled={isLoading || showSelectPage}>New Chat
                     {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
                 </button>
-                <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
+                <div className="chat-room-list" style={{ flexGrow: 1, overflowY: 'auto' }}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button
-                                className="chatroom-button"
+                            <button className="chatroom-button"
                                 onClick={() => {
                                     if (showSelectPage) {
                                         alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
                                     } else {
                                         handleButtonClicked(chat);
+                                        messageInputRef.current.value = '';
                                     }
                                 }}
                                 disabled={isLoading}
@@ -411,7 +410,7 @@ const ChatPage = () => {
                     ))}
                 </div>
                 <button className="logout-btn" onClick={handleLogout}>
-                    <span className="material-symbols-outlined" style={{fontSize: '40px'}}>logout</span>
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>logout</span>
                 </button>
             </div>
             {showSelectPage ? (
@@ -424,7 +423,7 @@ const ChatPage = () => {
                         onChatRoomCreated={() => {
                             setShowSelectPage(false); // SelectPage 숨기기
                             fetchChatRooms(); // 채팅방 목록 새로고침
-                        }}
+                        }}f
                     />
                 </div>
             ) : (
@@ -436,12 +435,21 @@ const ChatPage = () => {
                                 {isFolded ? '펴기' : '접기'}
                             </button>
                         </div>
-                        <div ref={middlePanelRef} className="chat-panel"
-                             style={{width: isFolded ? '80%' : '40%', pointerEvents: isPdfViewerDisabled ? 'none' : 'auto'}}>
-                        {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
-                        </div>
-                        <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
-                        <div ref={rightPanelRef} className="chat-panel right" style={{ width: isFolded ? '80%' : '40%' }}>
+                        <div ref={dividerRef} className="divider" onMouseDown={handleMouseDown}></div>
+                        <div ref={rightPanelRef} className="chat-panel right">
+                            <div className = "chat-banner">
+                                AI Chatbot
+                                <span className="material-icons help-button">help_outline</span>
+                                <div className="help-modal">
+                                    <div class="help-modal-header">채팅 가이드</div>
+                                    <div className="help-modal-body">
+                                        <p><strong>채팅 시작하기:</strong> 하단의 입력 창에 메시지를 작성하고 엔터 키를 눌러 메시지를 보내세요. 대화가 시작됩니다.</p>
+                                        <p><strong>메시지 핀하기:</strong> 대화 중 중요한 메시지 옆의 📌 아이콘을 클릭하여 메시지를 핀할 수 있습니다.</p>
+                                        <p><strong>핀된 메시지 확인하기:</strong> 모든 핀된 메시지는 사이드바의 '핀된 메시지' 섹션에서 확인할 수 있습니다.</p>
+                                        <p><strong>핀 해제하기:</strong> 핀된 메시지 옆의 📍 아이콘을 다시 클릭하면 핀을 해제할 수 있습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
@@ -490,11 +498,6 @@ const ChatPage = () => {
                             )}
 
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
-                                <div className="plus-button">
-                                    <button className="p-button" onClick={handlePlusButtonClick}>
-                                        {isPlusButtonClicked ? '➖' : '➕'}
-                                    </button>
-                                </div>
                                 <textarea
                                     ref={messageInputRef}
                                     className="chat-input"
