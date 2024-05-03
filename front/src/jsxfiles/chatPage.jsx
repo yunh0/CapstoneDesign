@@ -184,6 +184,7 @@ const ChatPage = () => {
         if (isLoading) {
             return;
         }
+        setIsPlusButtonClicked(false);
 
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
@@ -200,7 +201,6 @@ const ChatPage = () => {
 
         // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
-        const sReco = await getsReco(messageText);
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
@@ -213,8 +213,6 @@ const ChatPage = () => {
                 const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
                 // 상태 업데이트 시 함수형 업데이트 사용
                 setMessages(prevMessages => [...prevMessages, newResponse]);
-                console.log(sReco);
-                setSReco(sReco);
                 scrollToBottom2();
             } else {
                 let senderValue = "received";
@@ -357,9 +355,19 @@ const ChatPage = () => {
 
     //////////////////////////////////// PLUS 버튼 ///////////////////////////////////////////
 
-    const handlePlusButtonClick = (e) => {
+    const handlePlusButtonClick = async (e) => {
         e.preventDefault();
-        setIsPlusButtonClicked(!isPlusButtonClicked);
+        if (!isPlusButtonClicked) {
+            const sReco = await getsReco(selectedChatId);
+            console.log(sReco);
+            setSReco(sReco);
+            if(sReco){
+                setIsPlusButtonClicked(!isPlusButtonClicked);
+            }
+        } else {
+            setSReco(null);
+            setIsPlusButtonClicked(!isPlusButtonClicked);
+        }
     }
 
     const handleRightButtonClick = () => {

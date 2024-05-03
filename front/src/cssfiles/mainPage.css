@@ -3,6 +3,7 @@
     min-height: 100vh;
     font-family: 'Arial', sans-serif;
 }
+
 .left-panel {
     background-color: #F8F9FA;
     display: flex;
@@ -36,39 +37,31 @@
     font-size: 40px;  /* 아이콘의 크기 */
     color: black;  /* 아이콘 색상 */
 }
+
 .left-panel button span:hover,
 .left-panel a:hover {
     color: whitesmoke;  /* 아이콘 색상 */
     color: #54a0ff;  /* 아이콘 색상 */
 }
+
 .spare-panel {
     width: 100%;
     display: flex;
     flex-direction: column;
     flex-grow: 1;  /* Takes up all remaining space */
-    background-color: #E1E1E1;
+    background-color: #eae7e5;
+    background-image: url('https://www.transparenttextures.com/patterns/beige-paper.png');
     position: relative; /* Set position context for absolute children */
 }
-.spare-panel::before {
-    content: "";
-    position: absolute;
-    left: 6%; /* 조정하여 선을 원하는 위치로 이동 */
-    top: 0;
-    bottom: 0;
-    width: 2px; /* 선의 두께 */
-    background-color: #333; /* 선의 색상 */
-    transform: translateX(-50%); /* 선의 중심을 완벽하게 중앙에 맞춤 */
-}
-
 
 .content-container {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top:20px;
+    margin-top:5px;
     padding-bottom: 20px; /* 선과 텍스트 사이의 간격을 추가 */
-    border-bottom: 2px solid #333; /* 사이드바와 메인 컨텐츠 사이에 선 추가 */
+    /*border-top: 5px solid #d0d0d0; !* 사이드바와 메인 컨텐츠 사이에 선 추가 *!*/
 }
 
 @keyframes slideDown {
@@ -81,6 +74,7 @@
         opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
     }
 }
+
 @keyframes slideLeft {
     from {
         transform: translateX(+400px); /* 시작 위치 */
@@ -91,6 +85,7 @@
         opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
     }
 }
+
 @keyframes slideUp {
     from {
         transform: translateY(+300px); /* 시작 위치 */
@@ -123,14 +118,17 @@
     margin-bottom:0px;
     color: #333;
     animation: slideDown 2s ease-out forwards;
+    border-bottom: 3px solid #cccccc; /* 사이드바와 메인 컨텐츠 사이에 선 추가 */
 }
+
 .message-container {
     display: flex;
     flex-direction: row;
     flex-grow: 1;  /* Takes up all remaining space */
-    background-color: #E1E1E1;
+    background-color: #eae7e5;
+    background-image: url('https://www.transparenttextures.com/patterns/beige-paper.png');
     margin-top:20px;
-    margin-left:40px;
+    margin-left:20px;
     margin-bottom:40px;
 }
 
@@ -171,6 +169,7 @@
 /*    font-size: 80px;*/
 /*    color: #333;*/
 /*}*/
+
 /*.welcome-message-counseling {*/
 /*    margin-left:400px;*/
 /*    font-family: Didot;*/
@@ -178,12 +177,14 @@
 /*    font-size: 80px;*/
 /*    color: #333;*/
 /*}*/
+
 .chat-link-container {
     display: flex;
     justify-content: center; /* Center horizontally */
     width: 100%; /* Take full width to allow centering */
     margin-top: auto; /* Push it to the bottom */
 }
+
 .chat-link {
     width: 300px;
     padding: 30px;
@@ -199,6 +200,7 @@
     justify-content: center;
     animation: slideUp 2s ease-out forwards; /* message 애니메이션이 1초 지속되며, 1초 후 시작하므로 총 2초 후, 추가 0.5초 지연 */
 }
+
 .chat-link:hover {
     background-color: #54a0ff;
     color: white;
