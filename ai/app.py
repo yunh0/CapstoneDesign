@@ -162,7 +162,7 @@ def receive_message():
         # 질문 받기
         question = data.get('content')
 
-        question_prediction(question)
+        prediction = question_prediction(question)
 
         # 파일 경로가 없으면 오류 메시지 반환
         if file_path is None:
@@ -170,7 +170,7 @@ def receive_message():
 
         # 질문에 대한 답변 생성
         response = answer_question(question, file_path)
-        response_data = {"status": "success", "message": response}
+        response_data = {"status": "success", "message": response, "prediction": prediction}
         # 답변 반환
         return jsonify(response_data), 200
 
@@ -196,6 +196,7 @@ def question_prediction(question):
     print("=" * 40)
     print("의도 파악 : ", intent_name)
     print("=" * 40)
+    return intent_name
 
 # 애플리케이션 실행
 if __name__ == '__main__':

@@ -22,10 +22,10 @@ public class MessageService {
     }
 
     @Transactional
-    public Message saveMessage(Long chatRoomId, MessageType messageType, String content) {
+    public Message saveMessage(Long chatRoomId, MessageType messageType, String content, String prediction) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
         if (chatRoom != null) {
-            Message message = new Message(messageType, content, chatRoom);
+            Message message = new Message(messageType, content, chatRoom, prediction);
             chatRoom.getMessages().add(message);
             return messageRepository.save(message);
         }

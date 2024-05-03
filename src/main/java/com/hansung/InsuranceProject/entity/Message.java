@@ -30,10 +30,13 @@ public class Message extends BaseTimeEntity {
 
     private Boolean pinned;
 
-    public Message(MessageType messageType, String content, ChatRoom chatRoom) {
+    private String prediction;
+
+    public Message(MessageType messageType, String content, ChatRoom chatRoom, String prediction) {
         this.messageType = messageType;
         this.content = content;
         this.chatRoom = chatRoom;
         this.pinned = false;
+        this.prediction = prediction;
     }
 }
