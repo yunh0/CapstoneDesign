@@ -2,23 +2,35 @@
 
 .pin-page {
     color: #333;
-    background-color: #5D5D5E;
-    padding: 20px;
     min-height: 100vh;
     overflow: hidden; /* 필요할 때만 스크롤바 표시 */
 }
 
+.pin-panel {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    min-height: 700px; /* 높이를 최소 500px로 설정 */
+    padding: 20px;
+    margin: 20px;
+    background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
+    backdrop-filter: blur(10px); /* 배경 블러 효과 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
 .pin-page-title {
     font-family: 'Rockwell', sans-serif;
-    font-size:50px;
-    text-align: center;
-    color: #E1E1E1;
+    font-size:40px;
+    color: #000000;
+    margin-left:10px;
     margin-bottom: 30px;
 }
 
 .contracts {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
@@ -73,7 +85,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;

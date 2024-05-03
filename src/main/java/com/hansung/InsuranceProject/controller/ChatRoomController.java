@@ -2,6 +2,7 @@ package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.dto.ChatRoomDto;
 import com.hansung.InsuranceProject.dto.MessageDto;
+import com.hansung.InsuranceProject.dto.PinnedAnswerDto;
 import com.hansung.InsuranceProject.request.ChatRoomRequest;
 import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.service.ChatRoomService;
@@ -68,6 +69,13 @@ public class ChatRoomController {
         List<MessageDto> messages = messageService.getChatRoomMessages(chatroomId);
         return ResponseEntity.ok().body(messages);
     }
+
+    @GetMapping("/user/chatroom/file/{selectedChatId}")
+    public ResponseEntity<String> giveFileType(@PathVariable Long selectedChatId, Principal principal){
+        String fetchedType = chatRoomService.getInsuranceType(selectedChatId);
+        return ResponseEntity.ok().body(fetchedType);
+    }
+
 
     private void sendFilePathToFlask(String filePath) {
         // Flask 서버 URL

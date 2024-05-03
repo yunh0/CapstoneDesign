@@ -22,7 +22,11 @@ public class PinnedAnswer {
     @JoinColumn(name = "messageId")
     private Message message;
 
-    public PinnedAnswer(Message message){
+    @Column(name = "fetched_type")
+    private String fetchedType;
+
+    public PinnedAnswer(Message message, String fetchedType){
         this.message = message;
+        this.fetchedType = fetchedType;
     }
 }

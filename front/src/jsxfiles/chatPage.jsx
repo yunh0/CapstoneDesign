@@ -8,6 +8,8 @@ import { getUserChatRooms} from "../api/getChatRoom";
 import { sendChatRoomClick } from '../api/sendChatRoomClick';
 import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
+import {getInsuranceType} from "../api/getInsuranceType";
+import {getMyType} from "../api/getMyType";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -280,9 +282,11 @@ const ChatPage = () => {
     };
 
     const handlePinMessage = async (msg) => {
-        console.log(msg.backid);
         try {
-            const results = await postPinMessage(msg.backid);
+            const fetchedType = await getMyType(selectedChatId);
+            const results = await postPinMessage(msg.backid, fetchedType);
+
+            // const results = await postPinMessage(msg.backid);
             console.log(results);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
