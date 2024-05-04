@@ -34,7 +34,7 @@ const ChatPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages,setDefaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
-
+        { id: 2, text: "무엇을 도와드릴까요?", sender: "received", backid:1}
     ]);
     const [messages, setMessages] = useState(defaultMessages);
     const [pinnedMessages, setPinnedMessages] = useState([]);

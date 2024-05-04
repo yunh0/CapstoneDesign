@@ -138,6 +138,63 @@
     width: 100%; /* 채팅방 목록 너비 조정 */
 }
 
+.chat-banner {
+    background-color: #abb8c2;
+    color:black;
+    font-family: "Apple SD Gothic Neo";
+    font-size:20px;
+    font-weight:700;
+    text-align: center;
+    padding:20px;
+}
+
+.help-button {
+    position: absolute;
+    right: 15px;
+    top: 4%;
+    transform: translateY(-50%);
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.help-modal {
+    display: none;
+    position: fixed;
+    right: 8%;
+    top: 20%;
+    width: 350px;
+    background-color: #ffffff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 5px 15px rgba(0, 0, 0, 0.22); /* 깊이감 있는 그림자 효과 */
+    padding: 25px;
+    border-radius: 12px; /* 모서리를 더 둥글게 */
+    z-index: 1000;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 경계선 추가 */
+    transition: transform 0.3s ease-out; /* 모달 등장 애니메이션 */
+}
+
+.help-modal-header {
+    font-size: 20px; /* 제목의 크기 */
+    font-weight: 600; /* 제목의 굵기 */
+    color: #333; /* 제목의 색상 */
+    margin-bottom: 15px; /* 제목 아래의 마진 */
+    border-bottom: 1px solid #eee; /* 섹션을 나누는 가벼운 선 */
+    padding-bottom: 10px; /* 선 아래 패딩 */
+}
+
+.help-modal-body {
+    font-size: 15px; /* 본문 텍스트 크기 */
+    font-family: "Apple SD Gothic Neo";
+    color: #666; /* 본문 텍스트 색상 */
+    line-height: 1.5; /* 줄간격 */
+    margin-bottom: 10px; /* 섹션 아래 마진 */
+    text-align: left;
+}
+
+
+.help-button:hover + .help-modal {
+    display: block;
+}
+
 .chat-input-container {
     display: flex;
     align-items: center; /* 세로 중앙 정렬 */
@@ -180,53 +237,68 @@
 }
 
 .chat-submit-button:hover {
-    background-color: #0056b3; /* 마우스 오버 시 버튼 배경색 변경 */
+    background-color: #0056b3;
 }
 
 .chat-messages {
     flex-grow: 1;
     overflow-y: auto;
     padding: 20px;
-    background-color: #f5f0e6; /* 종이의 베이스 컬러 */
-    background-image:
-            linear-gradient(90deg, rgba(255, 255, 255, 0.9) 50%, transparent 50%),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.8) 50%, transparent 50%),
-            linear-gradient(0deg, rgba(255, 255, 255, 0.8) 50%, transparent 50%);
-    background-size:
-            4px 4px, /* 첫 번째 줄 그라디언트 크기 */
-            3px 3px, /* 두 번째 줄 그라디언트 크기 */
-            100% 2px; /* 세로 줄 그라디언트 크기 */
-    background-position:
-            1px 0, /* 첫 번째 줄 위치 */
-            0 1px, /* 두 번째 줄 위치 */
-            0 0; /* 세로 줄 위치 */
-    background-repeat: repeat;
+    background-color: #abb8c2;
 }
 
 .chat-message {
-    overflow: auto;
     overflow-wrap: break-word; /* 단어가 줄 바꿈 되어야 하는 경우 줄 바꿈 */
     white-space: pre-wrap; /* 공백 및 줄 바꿈 유지 */
-    padding: 12px 20px;
-    border-radius: 25px;
-    margin-bottom: 10px;
     max-width: 100%;
     word-wrap: break-word; /* 긴 텍스트 처리 */
-    position: relative; /* 이 부분을 추가 */
+    padding: 10px 20px;
+    border-radius: 20px; /* 둥근 모서리 */
+    margin-bottom: 20px;
+    position: relative; /* 포지셔닝을 위해 */
 }
 
 .chat-message.sent {
     align-self: flex-end;
-    background-color: #007bff;
+    background-color: #187eff;
     color: #ffffff;
+}
+
+.chat-message.sent::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: -10px; /* 오른쪽 끝으로 조정 */
+    border-width: 0px 15px 15px 15px;
+    border-style: solid;
+    border-color: transparent transparent #187eff transparent;
+    border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 둥글지 않게 */
+    display: block;
+    width: 0;
+    transform: rotate(10deg); /* 삼각형을 45도로 회전 */
 }
 
 .chat-message.received {
     align-self: flex-start;
-    background-color: aliceblue;
-    font-family: "Roboto Condensed";
-    color: #000;
+    background-color: #e8e8e8;
+    color: #333;
 }
+
+.chat-message.received::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -10px; /* 오른쪽 끝으로 조정 */
+    border-width: 0px 15px 15px 15px;
+    border-style: solid;
+    border-color: transparent transparent #e8e8e8 transparent;
+    border-bottom-left-radius: 0; /* 왼쪽 아래 모서리 둥글지 않게 */
+    display: block;
+    width: 0;
+    transform: rotate(-10deg); /* 삼각형을 45도로 회전 */
+}
+
+
 .logout-btn {
     font-size: 50px; /* 텍스트 크기를 적절히 조정 */
     cursor: pointer;
@@ -247,19 +319,22 @@
 }
 
 .pin-button {
-    font-size: 24px; /* Adjust size to ensure emojis are clearly visible */
-    cursor: pointer;
+    position: absolute;
+    top: -15px; /* 상단에서 적절한 간격 유지 */
+    left: 0; /* 오른쪽에서 적절한 간격 유지 */
+    font-size: 24px;
     background-color: transparent;
     border: none;
-    margin-left: 10px;
+    cursor: pointer;
+    color: #666; /* 기본 색상 */
 }
 
-.pin-button:hover, .pin-button.pinned {
-    color: #0056b3; /* Darker shade of the color on hover and when pinned */
-    transform: scale(1.1); /* Slightly increase the size on hover and when pinned for a pop effect */
-}
 
-/* Additional style for the pinned state, if you want to differentiate pinned messages even more */
 .pin-button.pinned {
-    color: #dc3545; /* Change color to indicate the pinned state, e.g., a red color */
+    left:-5px;
+    scale:1.1;
+}
+
+.special-message {
+    background-color: lightyellow !important;
 }
