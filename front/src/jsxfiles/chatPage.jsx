@@ -34,7 +34,7 @@ const ChatPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages,setDefaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
-        { id: 2, text: "무엇을 도와드릴까요?", sender: "received", backid:1}
+        { id: 2, text: "", sender: "received", backid:1}
     ]);
     const [messages, setMessages] = useState(defaultMessages);
     const [pinnedMessages, setPinnedMessages] = useState([]);
@@ -498,7 +498,7 @@ const ChatPage = () => {
 
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
                                 <div className="plus-button">
-                                    <button className="p-button" onClick={handlePlusButtonClick}>
+                                    <button className="p-button" onClick={handlePlusButtonClick}  disabled={isLoading}>
                                         {isPlusButtonClicked ? '➖' : '➕'}
                                     </button>
                                 </div>
