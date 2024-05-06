@@ -2,6 +2,8 @@ package com.hansung.InsuranceProject.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -14,11 +16,11 @@ public class QuestionRecommendationDto {
 
     private String third;
 
-    public static final QuestionRecommendationDto convertToDto(){
+    public static final QuestionRecommendationDto convertToDto(List<String> questionRecommendation){
         return QuestionRecommendationDto.builder()
-                .first("첫번째 테스트 추천입니다.")
-                .second("두번째 테스트 추천입니다.")
-                .third("세번째 테스트 추천입니다.")
+                .first(questionRecommendation.get(0))
+                .second(questionRecommendation.get(1))
+                .third(questionRecommendation.get(2))
                 .build();
     }
 }

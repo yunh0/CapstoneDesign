@@ -24,15 +24,18 @@ public class MessageController {
     private MessageService messageService;
     @PostMapping("/user/message/{chatroomId}")
     public ResponseEntity saveMessageAndReturnAiMessage(@PathVariable Long chatroomId, @RequestBody MessageRequest request){
-        Message userMessage = messageService.saveMessage(chatroomId, MessageType.PERSON, request.getContent());
+        //Message userMessage = messageService.saveMessage(chatroomId, MessageType.PERSON, request.getContent());
         // 플라스크에 메세지 보내고 받아온 ai 대답 저장하고 보내는 코드 작성해야함
         String flaskResponse = sendQuestionToFlask(request.getContent());
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             JsonNode jsonResponse = objectMapper.readTree(flaskResponse);
             String messageReceived = jsonResponse.get("message").asText();
+            String predictionReceived = jsonResponse.get("prediction").asText();
             System.out.println("Flask server response: " + messageReceived);
-            Message aiMessage = messageService.saveMessage(chatroomId, MessageType.AI, messageReceived);
+            System.out.println("Flask server response: " + predictionReceived);
+            Message userMessage = messageService.saveMessage(chatroomId, MessageType.PERSON, request.getContent(), predictionReceived);
+            Message aiMessage = messageService.saveMessage(chatroomId, MessageType.AI, messageReceived, null);
             MessageDto messageDto = MessageDto.convertToDto(aiMessage);
             System.out.println(messageDto);
 
