@@ -237,7 +237,7 @@
 }
 
 .chat-submit-button:hover {
-    background-color: #0056b3; /* 마우스 오버 시 버튼 배경색 변경 */
+    background-color: #0056b3;
 }
 
 .chat-messages {
@@ -248,6 +248,10 @@
 }
 
 .chat-message {
+    overflow-wrap: break-word; /* 단어가 줄 바꿈 되어야 하는 경우 줄 바꿈 */
+    white-space: pre-wrap; /* 공백 및 줄 바꿈 유지 */
+    max-width: 100%;
+    word-wrap: break-word; /* 긴 텍스트 처리 */
     padding: 10px 20px;
     border-radius: 20px; /* 둥근 모서리 */
     margin-bottom: 20px;
@@ -324,14 +328,13 @@
     cursor: pointer;
     color: #666; /* 기본 색상 */
 }
-.divider {
-    cursor: ew-resize;
-    width:1px;
-    background-color: #ddd;
-}
 
 
 .pin-button.pinned {
     left:-5px;
     scale:1.1;
+}
+
+.special-message {
+    background-color: lightyellow !important;
 }
