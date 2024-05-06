@@ -314,7 +314,7 @@
 }
 .divider {
     cursor: ew-resize;
-    width:1px;
+    width:2px;
     background-color: #ddd;
 }
 
