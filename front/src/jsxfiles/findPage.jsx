@@ -33,11 +33,13 @@ const FindPage = () => {
 
             <div className="findpage-body">
                 <input
+                    className="findinput"
                     type="text"
                     value={searchTerm}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
                     placeholder="검색어를 입력하세요"
+
                 />
                 <button onClick={handleSearch}>확인</button>
             </div>

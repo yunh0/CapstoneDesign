@@ -42,6 +42,20 @@ const ChatPage = () => {
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
     const [isFolded, setIsFolded] = useState(false);
     const [sReco, setSReco] = useState(null);
+    const totalPages = (() => {
+        if (sReco !== null && sReco !== undefined) {
+            if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
+                return 3;
+            } else if (sReco.third === null) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
+    })();
+
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -359,7 +373,6 @@ const ChatPage = () => {
         e.preventDefault();
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
-            console.log(sReco);
             setSReco(sReco);
             if(sReco){
                 setIsPlusButtonClicked(!isPlusButtonClicked);
@@ -371,13 +384,13 @@ const ChatPage = () => {
     }
 
     const handleRightButtonClick = () => {
-        setCurrentPage(prevPage => (prevPage % 3) + 1);
+        setCurrentPage(prevPage => (prevPage % totalPages) + 1);
     };
 
     const handleLeftButtonClick = () => {
         setCurrentPage(prevPage => {
             if (prevPage === 1) {
-                return 3;
+                return totalPages;
             } else {
                 return prevPage - 1;
             }
@@ -405,12 +418,13 @@ const ChatPage = () => {
                                 className="chatroom-button"
                                 onClick={() => {
                                     if (showSelectPage) {
-                                        alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
+                                        alert('보험을 선택하거나 뒤로가기 버튼을 눌러주세요.');
                                     } else {
                                         handleButtonClicked(chat);
                                     }
                                 }}
                                 disabled={isLoading}
+                                style={{width: '100%', height: '100%', cursor: 'pointer' }}
                             >
                                 {chat.title}
                             </button>
@@ -464,7 +478,8 @@ const ChatPage = () => {
                                     </div>
                                 ))}
                             </div>
-                            {isPlusButtonClicked && sReco && (
+
+                            {isPlusButtonClicked && (sReco.first !== null || sReco.second !== null || sReco.third !== null) && (
                                 <div className="extra-window">
                                     {sReco.first && currentPage === 1 && (
                                         <>
