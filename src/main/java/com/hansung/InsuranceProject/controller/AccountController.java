@@ -17,7 +17,7 @@ import static com.hansung.InsuranceProject.dto.AccountDto.convertToDto;
 public class AccountController {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @GetMapping("/user/info")
     public ResponseEntity getUserInfo(Principal principal) {
