@@ -1,3 +1,13 @@
 .findpage-container {
     height: 100%;
 }
+.findpage-body {
+    display: flex;
+    justify-content: center;
+}
+
+.findpage-body input[type="text"] {
+    width: 500px;
+    height: 40px;
+    text-align: center;
+}

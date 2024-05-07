@@ -19,20 +19,16 @@ public class PinnedAnswerController {
     @Autowired
     private PinnedAnswerService pinnedAnswerService;
 
-    @PostMapping("/savePin/{messageId}")
-    public ResponseEntity savePinnedAnswer(@PathVariable Long messageId){
-        PinnedAnswer pinnedAnswer = pinnedAnswerService.savePinnedAnswer(messageId);
+    @PostMapping("/savePin/{messageId}/{fetchedType}")
+    public void savePinnedAnswer(@PathVariable Long messageId, @PathVariable String fetchedType){
+        PinnedAnswer pinnedAnswer = pinnedAnswerService.savePinnedAnswer(messageId, fetchedType);
 
-        if (pinnedAnswer != null) {
-            return ResponseEntity.ok().body("Pinned answer saved successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save pinned answer.");
-        }
     }
 
     @GetMapping("/getPin")
     public ResponseEntity<List<PinnedAnswerDto>> getPinnedAnswer(Principal principal){
         List<PinnedAnswerDto> pinnedAnswers = pinnedAnswerService.getPinnedAnswers(principal);
+        System.out.println("pinned Answers : " + pinnedAnswers);
         return ResponseEntity.ok().body(pinnedAnswers);
     }
 

@@ -27,12 +27,12 @@ public class PinnedAnswerService {
     }
 
     @Transactional
-    public PinnedAnswer savePinnedAnswer(Long messageId){
+    public PinnedAnswer savePinnedAnswer(Long messageId, String fetchedType){
         Message message = messageRepository.findById(messageId).orElse(null);
 
         if(message != null){
             messageRepository.updateMessageByPinned(messageId, true);
-            PinnedAnswer pinnedAnswer = new PinnedAnswer(message);
+            PinnedAnswer pinnedAnswer = new PinnedAnswer(message, fetchedType);
             message.getPinnedAnswers().add(pinnedAnswer);
             return pinnedAnswerRepository.save(pinnedAnswer);
         }
@@ -51,6 +51,7 @@ public class PinnedAnswerService {
             return false;
         }
     }
+
     public List<PinnedAnswerDto> getPinnedAnswers(Principal principal){
         Long accountId = Long.valueOf(principal.getName());
         Account account = accountRepository.findById(accountId).orElse(null);

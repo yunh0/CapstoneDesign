@@ -10,6 +10,8 @@ import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
+import {getInsuranceType} from "../api/getInsuranceType";
+import {getMyType} from "../api/getMyType";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -42,6 +44,20 @@ const ChatPage = () => {
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
     const [isFolded, setIsFolded] = useState(false);
     const [sReco, setSReco] = useState(null);
+    const totalPages = (() => {
+        if (sReco !== null && sReco !== undefined) {
+            if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
+                return 3;
+            } else if (sReco.third === null) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
+    })();
+
 
 ////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
@@ -334,10 +350,11 @@ const ChatPage = () => {
     };
 
     const handlePinMessage = async (msg) => {
-        console.log(msg.backid);
+
         try {
-            const results = await postPinMessage(msg.backid);
-            console.log(results);
+            const fetchedType = await getMyType(selectedChatId);
+            const results = await postPinMessage(msg.backid, fetchedType);
+
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -359,7 +376,6 @@ const ChatPage = () => {
         e.preventDefault();
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
-            console.log(sReco);
             setSReco(sReco);
             if(sReco){
                 setIsPlusButtonClicked(!isPlusButtonClicked);
@@ -371,13 +387,13 @@ const ChatPage = () => {
     }
 
     const handleRightButtonClick = () => {
-        setCurrentPage(prevPage => (prevPage % 3) + 1);
+        setCurrentPage(prevPage => (prevPage % totalPages) + 1);
     };
 
     const handleLeftButtonClick = () => {
         setCurrentPage(prevPage => {
             if (prevPage === 1) {
-                return 3;
+                return totalPages;
             } else {
                 return prevPage - 1;
             }
@@ -405,12 +421,13 @@ const ChatPage = () => {
                                 className="chatroom-button"
                                 onClick={() => {
                                     if (showSelectPage) {
-                                        alert('보험을 선택하거나 ❌ 버튼을 눌러주세요.');
+                                        alert('보험을 선택하거나 뒤로가기 버튼을 눌러주세요.');
                                     } else {
                                         handleButtonClicked(chat);
                                     }
                                 }}
                                 disabled={isLoading}
+                                style={{width: '100%', height: '100%', cursor: 'pointer' }}
                             >
                                 {chat.title}
                             </button>
@@ -448,10 +465,25 @@ const ChatPage = () => {
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
                         <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
-                        <div ref={rightPanelRef} className="chat-panel right" style={{ width: isFolded ? '80%' : '40%' }}>
+                        <div ref={rightPanelRef} className="chat-panel right" style={{width: isFolded ? '80%' : '40%'}}>
+                            <div className="chat-banner">
+                                AI Chatbot
+                                <span className="material-icons help-button">help_outline</span>
+                                <div className="help-modal">
+                                    <div className="help-modal-header">채팅 가이드</div>
+                                    <div className="help-modal-body">
+                                        <p><strong>채팅 시작하기:</strong> 하단의 입력 창에 메시지를 작성하고 엔터 키를 눌러 메시지를 보내세요. 대화가 시작됩니다.
+                                        </p>
+                                        <p><strong>메시지 핀하기:</strong> 대화 중 중요한 메시지 옆의 📌 아이콘을 클릭하여 메시지를 핀할 수 있습니다.</p>
+                                        <p><strong>핀된 메시지 확인하기:</strong> 모든 핀된 메시지는 사이드바의 '핀된 메시지' 섹션에서 확인할 수 있습니다.</p>
+                                        <p><strong>핀 해제하기:</strong> 핀된 메시지 옆의 📍 아이콘을 다시 클릭하면 핀을 해제할 수 있습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
-                                    <div key={index} className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
+                                    <div key={index}
+                                         className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
                                         {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                             <button
@@ -464,14 +496,19 @@ const ChatPage = () => {
                                     </div>
                                 ))}
                             </div>
-                            {isPlusButtonClicked && sReco && (
+
+                            {isPlusButtonClicked && (sReco.first !== null || sReco.second !== null || sReco.third !== null) && (
                                 <div className="extra-window">
                                     {sReco.first && currentPage === 1 && (
                                         <>
                                             <p className="exfont">{sReco.first}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
-                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -479,8 +516,12 @@ const ChatPage = () => {
                                         <>
                                             <p className="exfont">{sReco.second}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
-                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -488,8 +529,12 @@ const ChatPage = () => {
                                         <>
                                             <p className="exfont">{sReco.third}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
-                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -498,7 +543,7 @@ const ChatPage = () => {
 
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
                                 <div className="plus-button">
-                                    <button className="p-button" onClick={handlePlusButtonClick}  disabled={isLoading}>
+                                    <button className="p-button" onClick={handlePlusButtonClick} disabled={isLoading}>
                                         {isPlusButtonClicked ? '➖' : '➕'}
                                     </button>
                                 </div>

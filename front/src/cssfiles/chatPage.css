@@ -314,7 +314,7 @@
 }
 .divider {
     cursor: ew-resize;
-    width:1px;
+    width:3px;
     background-color: #ddd;
 }
 
@@ -337,4 +337,8 @@
 
 .special-message {
     background-color: lightyellow !important;
+}
+
+.exfont{
+    color: #111111;
 }

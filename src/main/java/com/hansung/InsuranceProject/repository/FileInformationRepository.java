@@ -20,4 +20,7 @@ public interface FileInformationRepository extends JpaRepository<FileInformation
 
     @Query("SELECT f.filePath FROM FileInformation f WHERE f.fileName = ?1")
     List<String> findFilePathByFileName(String fileName);
+
+    @Query("SELECT f.fileType FROM FileInformation f WHERE f.fileId = ?1")
+    String findByFileId(Long fileId);
 }
