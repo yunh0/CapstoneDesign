@@ -43,6 +43,13 @@ public class ChatRoomService {
         return chatRoomRepository.findById(id).orElse(null);
     }
 
+    public String getInsuranceType(Long selectedChatId) {
+        Long fileID = chatRoomRepository.findByChatRoomID(selectedChatId);
+        //fileID로 file테이블에서 file type 가져오기
+        String fileType = fileInformationRepository.findByFileId(fileID);
+        return fileType;
+    }
+
     public List<ChatRoomDto> getUserChatRooms(Long accountId){
         List<ChatRoom> chatRooms = chatRoomRepository.findByAccount_Id(accountId);
         return ChatRoomDto.convertToDtoList(chatRooms);

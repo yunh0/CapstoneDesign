@@ -10,6 +10,8 @@ import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
+import {getInsuranceType} from "../api/getInsuranceType";
+import {getMyType} from "../api/getMyType";
 
 const ChatPage = () => {
     const navigate = useNavigate();
@@ -348,10 +350,11 @@ const ChatPage = () => {
     };
 
     const handlePinMessage = async (msg) => {
-        console.log(msg.backid);
+
         try {
-            const results = await postPinMessage(msg.backid);
-            console.log(results);
+            const fetchedType = await getMyType(selectedChatId);
+            const results = await postPinMessage(msg.backid, fetchedType);
+
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -462,10 +465,25 @@ const ChatPage = () => {
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
                         <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
-                        <div ref={rightPanelRef} className="chat-panel right" style={{ width: isFolded ? '80%' : '40%' }}>
+                        <div ref={rightPanelRef} className="chat-panel right" style={{width: isFolded ? '80%' : '40%'}}>
+                            <div className="chat-banner">
+                                AI Chatbot
+                                <span className="material-icons help-button">help_outline</span>
+                                <div className="help-modal">
+                                    <div className="help-modal-header">채팅 가이드</div>
+                                    <div className="help-modal-body">
+                                        <p><strong>채팅 시작하기:</strong> 하단의 입력 창에 메시지를 작성하고 엔터 키를 눌러 메시지를 보내세요. 대화가 시작됩니다.
+                                        </p>
+                                        <p><strong>메시지 핀하기:</strong> 대화 중 중요한 메시지 옆의 📌 아이콘을 클릭하여 메시지를 핀할 수 있습니다.</p>
+                                        <p><strong>핀된 메시지 확인하기:</strong> 모든 핀된 메시지는 사이드바의 '핀된 메시지' 섹션에서 확인할 수 있습니다.</p>
+                                        <p><strong>핀 해제하기:</strong> 핀된 메시지 옆의 📍 아이콘을 다시 클릭하면 핀을 해제할 수 있습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div ref={chatMessagesRef} className="chat-messages">
                                 {messages.map((msg, index) => (
-                                    <div key={index} className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
+                                    <div key={index}
+                                         className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
                                         {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
                                             <button
@@ -485,8 +503,12 @@ const ChatPage = () => {
                                         <>
                                             <p className="exfont">{sReco.first}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
-                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -494,8 +516,12 @@ const ChatPage = () => {
                                         <>
                                             <p className="exfont">{sReco.second}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
-                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -503,8 +529,12 @@ const ChatPage = () => {
                                         <>
                                             <p className="exfont">{sReco.third}</p>
                                             <div className="extra-window-buttons">
-                                                <button className="extra-window-button left-button" onClick={handleLeftButtonClick}>◀️</button>
-                                                <button className="extra-window-button right-button" onClick={handleRightButtonClick}>▶️</button>
+                                                <button className="extra-window-button left-button"
+                                                        onClick={handleLeftButtonClick}>◀️
+                                                </button>
+                                                <button className="extra-window-button right-button"
+                                                        onClick={handleRightButtonClick}>▶️
+                                                </button>
                                             </div>
                                         </>
                                     )}
@@ -513,7 +543,7 @@ const ChatPage = () => {
 
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
                                 <div className="plus-button">
-                                    <button className="p-button" onClick={handlePlusButtonClick}  disabled={isLoading}>
+                                    <button className="p-button" onClick={handlePlusButtonClick} disabled={isLoading}>
                                         {isPlusButtonClicked ? '➖' : '➕'}
                                     </button>
                                 </div>

@@ -1,6 +1,6 @@
-export const postPinMessage = async (messageId) => {
+export const postPinMessage = async (messageId, fetchedType) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/savePin/${messageId}`;
+    const path = `/api/savePin/${messageId}/${fetchedType}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
