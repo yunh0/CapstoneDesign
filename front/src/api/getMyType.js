@@ -23,4 +23,4 @@ export const getMyType = async (selectedChatId) => {
 
         xhr.send();
     });
-};
+}

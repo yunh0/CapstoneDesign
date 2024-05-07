@@ -248,6 +248,10 @@
 }
 
 .chat-message {
+    overflow-wrap: break-word; /* 단어가 줄 바꿈 되어야 하는 경우 줄 바꿈 */
+    white-space: pre-wrap; /* 공백 및 줄 바꿈 유지 */
+    max-width: 100%;
+    word-wrap: break-word; /* 긴 텍스트 처리 */
     padding: 10px 20px;
     border-radius: 20px; /* 둥근 모서리 */
     margin-bottom: 20px;
@@ -310,7 +314,7 @@
 }
 .divider {
     cursor: ew-resize;
-    width:1px;
+    width:3px;
     background-color: #ddd;
 }
 
@@ -329,4 +333,12 @@
 .pin-button.pinned {
     left:-5px;
     scale:1.1;
+}
+
+.special-message {
+    background-color: lightyellow !important;
+}
+
+.exfont{
+    color: #111111;
 }
