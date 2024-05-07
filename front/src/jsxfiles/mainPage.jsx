@@ -6,6 +6,7 @@ import PinPage from '../jsxfiles/pinPage';
 import SelectPage from "../jsxfiles/selectPage";
 import '../cssfiles/mainPage.css'
 import ChatPage from "../jsxfiles/chatPage";
+
 const MainPage = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);

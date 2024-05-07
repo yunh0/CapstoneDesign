@@ -3,9 +3,19 @@
     display: flex;
     min-height: 100vh;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, rgba(0, 123, 255, 0.8) 10%, rgba(144, 185, 239, 0.8) 40%, rgba(248, 231, 28, 0.8) 60%),
-    linear-gradient(60deg, rgba(144, 182, 239, 0.6) 10%, rgba(0, 123, 255, 0.6) 50%, rgb(255, 234, 167) 90%),
-    linear-gradient(360deg, rgba(250, 234, 110, 0.85) 30%, rgba(0, 123, 255, 0.7) 70%);
+
+    /*연하늘 ~ 상쾌 ~*/
+    /*background: linear-gradient(135deg, rgba(92, 160, 217, 0.8) 10%, rgba(129, 194, 240, 0.8) 40%, rgba(183, 224, 248, 0.8) 60%),*/
+    /*linear-gradient(60deg, rgba(129, 194, 240, 0.6) 10%, rgba(92, 160, 217, 0.6) 50%, rgb(204, 229, 255) 90%),*/
+    /*linear-gradient(360deg, rgba(204, 229, 255, 0.85) 30%, rgba(92, 160, 217, 0.7) 70%);*/
+
+    /*background: linear-gradient(135deg, rgba(0, 102, 204, 0.9) 10%, rgba(51, 153, 255, 0.9) 40%, rgba(122, 179, 236, 0.9) 60%),*/
+    /*linear-gradient(60deg, rgba(51, 153, 255, 0.7) 10%, rgb(152, 199, 255) 50%, rgb(0, 89, 255) 90%),*/
+    /*linear-gradient(360deg, rgba(10, 24, 166, 0.95) 30%, rgba(0, 102, 204, 0.8) 70%);*/
+
+    background: linear-gradient(275deg, rgba(192, 192, 192, 0.9) 10%, rgba(135, 206, 235, 0.9) 40%, rgb(0, 88, 204) 60%),
+    linear-gradient(160deg, rgba(228, 135, 235, 0.7) 10%, rgba(0, 153, 255, 0.7) 50%, rgba(70, 130, 180, 0.7) 90%),
+    linear-gradient(360deg, rgba(70, 130, 180, 0.95) 30%, rgba(150, 60, 60, 0.8) 70%);
     background-blend-mode: screen;
 }
 
@@ -59,36 +69,48 @@
 
 .spare-panel {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;  /* Takes up all remaining space */
-    /*background-color: rgba(255, 255, 255, 0.1); !* 투명도를 가진 흰색 배경 *!*/
-    /*backdrop-filter: blur(10px); !* 배경 블러 효과 *!*/
     position: relative; /* Set position context for absolute children */
+    margin-left:0;
 }
 
-.content-container{
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width:100%;
-    color: #001325;
-    margin-top:40px;
-    font-family: "Didot";
-    font-weight: bolder;
-    font-size: 70px;
-    animation: slideDown 2s ease-out forwards;
+.select-lang {
+
 }
 
 .message-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-grow: 1;  /* Takes up all remaining space */
-    width:100%;
-    margin-top:0px;
-    margin-left:30px;
+    width:80%;
+    margin-top:250px;
+    margin-left:80px;
 }
+
+.msgnphone-container {
+    display:flex;
+    flex-direction: row;
+}
+.content-container{
+    justify-content: center;
+    align-items: flex-start;
+    width:100%;
+    color: #001325;
+    font-family: "Geneva";
+    font-weight: bolder;
+    font-size: 50px;
+    letter-spacing: 2px; /* 글자 사이 간격을 1픽셀로 설정 */
+    animation: slideDown 2s ease-out forwards;
+}
+
+.message-introduction {
+    width:80%;
+    font-family: "Geneva";
+    font-size:20px;
+    margin-top:20px;
+    margin-bottom:50px;
+    text-align:left;
+}
+
 
 .content-message {
     width:640px;
@@ -106,15 +128,15 @@
 }
 
 .phone-container {
-    width: 250px; /* 전체 컨테이너 너비 */
+    width: 330px; /* 전체 컨테이너 너비 */
     height: 500px; /* 전체 컨테이너 높이 */
-    margin-left:100px;
-    margin-top:50px;
+    margin-right:120px;
+    margin-top:120px;
     border-radius: 30px; /* 모서리 둥글게 */
     box-shadow: 0 4px 16px rgba(0,0,0,0.25); /* 그림자 추가 */
     background: transparent; /* 배경색 */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: relative; /* 포지셔닝을 위해 */
     overflow: hidden; /* 내부 요소가 범위를 넘어서지 않도록 */
     border: 3px solid rgba(255, 255, 255, 0.7); /* 경계선 추가 및 투명도 적용 */
@@ -197,12 +219,8 @@
     background-color: #0056b3; /* 호버 시 배경색 변경 */
 }
 
-.chat-link-container {
-    margin-top: 50px;
-}
-
 .chat-link {
-    width: 640px;
+    width: 400px;
     padding: 30px;
     background-color: transparent;
     border: 2px solid black;
