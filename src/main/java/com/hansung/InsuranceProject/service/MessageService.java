@@ -55,6 +55,7 @@ public class MessageService {
         List<Message> allMessages = chatRooms.stream()
                 .map(ChatRoom::getMessages)
                 .flatMap(List::stream)
+                .filter(message -> message.getMessageType() == MessageType.AI)
                 .collect(Collectors.toList());
 
         List<Message> filteredMessages = allMessages.stream()
