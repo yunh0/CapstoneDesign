@@ -11,7 +11,7 @@ from langchain.schema.messages import SystemMessage
 from langchain.prompts import MessagesPlaceholder
 from langchain.agents import AgentExecutor
 import sys
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')
 from Preprocess import Preprocess
 
 # Flask 애플리케이션 생성
@@ -22,8 +22,8 @@ file_path = None
 vectorstores = {}
 
 # 전처리 객체 생성
-p = Preprocess(word2index_dic='C:\\Users\\asce3\\IdeaProjects\\ai\\train_tools\\dict\\chatbot_dict.bin',
-                userdic='C:\\Users\\asce3\\IdeaProjects\\ai\\utils\\user_dic.tsv')
+p = Preprocess(word2index_dic='C:\\github\\CapstoneDesign\\ai\\train_tools\\dict\\chatbot_dict.bin',
+                userdic='C:\\github\\CapstoneDesign\\ai\\utils\\user_dic.tsv')
 
 # 파일 경로를 받아서 벡터스토어를 불러오는 함수
 def load_vectorstore(file_path):
@@ -185,9 +185,9 @@ def question_prediction(question):
     query = question
 
     # 의도 파악
-    sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\models\\intent')
+    sys.path.append('C:\\github\\CapstoneDesign\\ai\\models\\intent')
     from IntentModel import IntentModel
-    intent = IntentModel(model_name='C:\\Users\\asce3\\IdeaProjects\\ai\\models\\intent\\intent_model2.keras', preprocess=p)
+    intent = IntentModel(model_name='C:\\github\\CapstoneDesign\\ai\\models\\intent\\intent_model2.keras', preprocess=p)
     predict = intent.predict_class(query)
     intent_name = intent.labels[predict]
 
