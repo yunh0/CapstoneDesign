@@ -145,7 +145,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
             updateChatList(); // 채팅방 목록을 업데이트하는 함수를 호출
             onChatRoomCreated?.(); // 채팅방 생성 후 콜백 호출
             navigate('/chat', { state: { pdfPath } });
-            console.log("pdf Path is ", pdfPath);
+            console.log("pdf Path is " , pdfPath);
         } else {
             console.error('Failed to post insurance terms.');
         }

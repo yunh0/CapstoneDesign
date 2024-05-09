@@ -73,7 +73,7 @@ const ChatPage = () => {
                 }));
                 setChatList(updatedChatList);
             } else {
-                // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+                console.log("채팅방이 비어있습니다.")
             }
         } catch (error) {
             console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
@@ -119,7 +119,7 @@ const ChatPage = () => {
 
     const handleLogout = () => {
         setIsLogin(false);
-        navigate('/rlogin');
+        navigate('/');
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -376,10 +376,9 @@ const ChatPage = () => {
     };
 
     const delhandlePinMessage = async (msg) => {
-        console.log(msg.backid);
+
         try {
             const results = await delPinMessages(msg.backid);
-            console.log(results);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -392,7 +391,11 @@ const ChatPage = () => {
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
             setSReco(sReco);
-            if(sReco){
+            if(sReco.first==null&&sReco.second==null&&sReco.third==null){
+                alert("질문을 입력해 주세요!");
+                return
+            }
+            else{
                 setIsPlusButtonClicked(!isPlusButtonClicked);
             }
         } else {

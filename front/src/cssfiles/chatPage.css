@@ -90,6 +90,7 @@
     border:none;
     font-family: "Roboto Condensed";
     font-weight:500;
+    overflow: auto;
 }
 
 .newchat-btn {

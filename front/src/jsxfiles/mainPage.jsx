@@ -12,9 +12,10 @@ const MainPage = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
     const [chatList, setChatList] = useState([]);
+
     const handleLogout = () => {
         setIsLogin(false);
-        navigate('/rlogin');
+        navigate('/');
     };
     const handlePageChange = (pageName) => {
         setCurrentPage(pageName);
