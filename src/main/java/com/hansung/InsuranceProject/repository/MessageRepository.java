@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByChatRoom_chatRoomId(Long chatRoomId);
@@ -28,4 +29,12 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query(value = "SELECT m FROM Message m WHERE m.prediction = ?1 ORDER BY RAND()")
     List<Message> findTop3ByPredictionAndOrderByRandom(String prediction);
+
+    @Query(value = "SELECT m.prediction FROM Message m " +
+            "GROUP BY m.prediction " +
+            "ORDER BY COUNT(m.prediction) DESC " +
+            "LIMIT 1", nativeQuery = true)
+    String findMostFrequentPrediction();
+
 }
+

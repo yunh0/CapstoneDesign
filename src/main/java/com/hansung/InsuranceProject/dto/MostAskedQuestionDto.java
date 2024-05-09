@@ -2,23 +2,28 @@ package com.hansung.InsuranceProject.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendationDto {
+public class MostAskedQuestionDto {
     private String first;
 
     private String second;
 
     private String third;
 
-    public static final RecommendationDto convertToDto(){
-        return RecommendationDto.builder()
-                .first("첫번째 테스트 추천입니다.")
-                .second("두번째 테스트 추천입니다.")
-                .third("세번째 테스트 추천입니다.")
+    private String prediction;
+
+    public static final MostAskedQuestionDto convertToDto(List<String> mostAskedQuestion){
+        return MostAskedQuestionDto.builder()
+                .first(mostAskedQuestion.get(1))
+                .second(mostAskedQuestion.get(2))
+                .third(mostAskedQuestion.get(3))
+                .prediction(mostAskedQuestion.get(0))
                 .build();
     }
 }
