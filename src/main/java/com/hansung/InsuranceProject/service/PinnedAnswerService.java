@@ -31,8 +31,11 @@ public class PinnedAnswerService {
         Message message = messageRepository.findById(messageId).orElse(null);
 
         if(message != null){
+            Long chatRoomId = message.getChatRoom().getChatRoomId();
+
             messageRepository.updateMessageByPinned(messageId, true);
-            PinnedAnswer pinnedAnswer = new PinnedAnswer(message, fetchedType);
+
+            PinnedAnswer pinnedAnswer = new PinnedAnswer(message, fetchedType, chatRoomId);
             message.getPinnedAnswers().add(pinnedAnswer);
             return pinnedAnswerRepository.save(pinnedAnswer);
         }

@@ -14,8 +14,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     Message findFirstByChatRoomAndMessageTypeOrderByCreatedDateDesc(ChatRoom chatRoom, MessageType messageType);
 
 
-
-
     @Transactional
     default void updateMessageByPinned(Long messageId, boolean pinned){
         findById(messageId).ifPresent(message -> {

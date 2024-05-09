@@ -28,6 +28,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     outline: none;
     margin-left:30px;
+    margin-right:10px;
     background-color: var(--button-bg-color); /* 통일된 배경색 사용 */
     color: white; /* 통일된 텍스트 색상 사용 */
     font-family: var(--body-font); /* 전체적으로 동일한 폰트 적용 */

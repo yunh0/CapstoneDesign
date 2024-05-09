@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
 import '../cssfiles/pinPage.css';
 import { getPinMessages } from "../api/getPinMessages";
 
 const PinPage = () => {
+    const navigate = useNavigate(); // 이동 함수를 초기화
     const [activeContract, setActiveContract] = useState([]);
     const [expandedId, setExpandedId] = useState(null); // State to keep track of expanded item
     const [contracts, setContracts] = useState({});
@@ -38,7 +40,8 @@ const PinPage = () => {
                     updatedContracts[fileName] = groupedMessages[fileName].map(message => ({
                         content: message.content,
                         detail: message.detail,
-                        fetchedType: message.fetchedType
+                        fetchedType: message.fetchedType,
+                        chatRoomId: message.chatRoomId
                     }));
                 });
 
@@ -92,7 +95,15 @@ const PinPage = () => {
                 {activeContract.map((answer, index) => (
                     <div key={index} className="pinned-answer" onClick={() => toggleExpand(index)}>
                         <p className="pin-icon">📍</p>
-                        <p>{expandedId === index ? answer.content : trimText(answer.content, 150)}</p>
+                        {expandedId === index ? (
+                            <>
+                                <p>{answer.content}</p>
+                                <p className="chat-room-id">Chat Room ID: {answer.chatRoomId}</p>
+                                <button onClick={() => navigate(`/chatroom/${answer.chatRoomId}`)}>Go to Chat Room</button>
+                            </>
+                        ) : (
+                            <p>{trimText(answer.content, 150)}</p>
+                        )}
                     </div>
                 ))}
             </div>
