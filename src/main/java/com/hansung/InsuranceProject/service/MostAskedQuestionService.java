@@ -34,12 +34,12 @@ public class MostAskedQuestionService {
         }
         else{
             mostQuestions.add(prediction.get(0));
-            List<Message> predictionMessages = messageRepository.findByChatRoomFileInformationFileTypeAndPrediction(fileType, prediction.get(0));
+            List<Message> predictionMessages = messageRepository.findByChatRoomFileInformationFileTypeAndPredictionOrderByRandom(fileType, prediction.get(0));
             for(Message predictionMessage : predictionMessages){
                 mostQuestions.add(predictionMessage.getContent());
             }
         }
-        
+
         int remainingNulls = 4 - mostQuestions.size();
         for(int i=0; i<remainingNulls; i++){
             mostQuestions.add(null);
