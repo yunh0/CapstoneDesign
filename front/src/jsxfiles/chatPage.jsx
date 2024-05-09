@@ -299,9 +299,9 @@ const ChatPage = () => {
             const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
 <${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
   
-1. ${(fReco.first)}
-2. ${(fReco.second)}
-3. ${(fReco.third)}`;
+${fReco.first ? `1. ${(fReco.first)}` : '아직 존재하지 않아요....'}
+${fReco.second ? `2. ${(fReco.second)}` : ''}
+${fReco.third ? `3. ${(fReco.third)}` : ''}`;
 
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);

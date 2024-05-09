@@ -40,4 +40,3 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query(value = "SELECT m FROM Message m WHERE m.chatRoom.fileInformation.fileType = :fileType AND m.prediction = :prediction ORDER BY RAND()")
     List<Message> findByChatRoomFileInformationFileTypeAndPredictionOrderByRandom(@Param("fileType") String fileType, @Param("prediction") String prediction);
 }
-
