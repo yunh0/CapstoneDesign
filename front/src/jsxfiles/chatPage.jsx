@@ -14,26 +14,7 @@ import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 
 
-function addIndent(text) {
-    const indent = '        ';
-    const maxLength = 45;
 
-    let result = '';
-    const words = text.split(' ');
-    let currentLineLength = 0;
-
-    for (const word of words) {
-        if (currentLineLength + word.length + indent.length <= maxLength) {
-            result += word + ' ';
-            currentLineLength += word.length + 1;
-        } else {
-            result += '\n' + indent + word + ' ';
-            currentLineLength = indent.length + word.length + 1;
-        }
-    }
-
-    return result.trim();
-}
 const ChatPage = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
@@ -314,13 +295,13 @@ const ChatPage = () => {
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
-            const fReco = await getfReco(selectedChatId);
+            const fReco = await getfReco(id);
             const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
 <${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
   
-    1. ${addIndent(fReco.first)}
-    2. ${addIndent(fReco.second)}
-    3. ${addIndent(fReco.third)}`;
+1. ${(fReco.first)}
+2. ${(fReco.second)}
+3. ${(fReco.third)}`;
 
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);

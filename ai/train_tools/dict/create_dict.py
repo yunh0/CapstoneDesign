@@ -1,5 +1,5 @@
 import sys
-sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')
+sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')
 from Preprocess import Preprocess
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
