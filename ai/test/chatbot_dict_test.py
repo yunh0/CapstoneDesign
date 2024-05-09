@@ -1,6 +1,6 @@
 import pickle
 import sys
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
 from Preprocess import Preprocess
 
 # 단어 사전 불러오기
