@@ -13,6 +13,27 @@ import {getsReco} from "../api/getSecondRecommend";
 import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 
+
+function addIndent(text) {
+    const indent = '        ';
+    const maxLength = 45;
+
+    let result = '';
+    const words = text.split(' ');
+    let currentLineLength = 0;
+
+    for (const word of words) {
+        if (currentLineLength + word.length + indent.length <= maxLength) {
+            result += word + ' ';
+            currentLineLength += word.length + 1;
+        } else {
+            result += '\n' + indent + word + ' ';
+            currentLineLength = indent.length + word.length + 1;
+        }
+    }
+
+    return result.trim();
+}
 const ChatPage = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
@@ -296,10 +317,12 @@ const ChatPage = () => {
             const fReco = await getfReco();
             console.log(fReco);
             const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
-    <${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
-            1. ${fReco.first ?? ''}
-            2. ${fReco.second ?? ''}
-            3. ${fReco.third ?? ''}`;
+<${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
+  
+    1. ${addIndent(fReco.first)}
+    2. ${addIndent(fReco.second)}
+    3. ${addIndent(fReco.third)}`;
+
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);
             setFormattedText(formattedText);
@@ -576,12 +599,16 @@ const ChatPage = () => {
                                     placeholder="메시지 입력..."
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
-                                            e.preventDefault(); // 기본 엔터 동작 방지
-                                            handleSendMessage(); // handleSendMessage 호출
+                                            if (!messageInputRef.current.value.trim()) {
+                                                e.preventDefault();
+                                            } else {
+                                                e.preventDefault();
+                                                handleSendMessage();
+                                            }
                                         }
                                     }}
                                 />
-                                <button type="submit" className="chat-submit-button" disabled={isLoading}>
+                                <button type="submit" className="chat-submit-button"  disabled={isLoading || !messageInputRef.current?.value.trim()}  onClick={handleFormSubmit}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </form>
