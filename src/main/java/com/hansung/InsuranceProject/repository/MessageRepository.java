@@ -36,5 +36,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             "LIMIT 1", nativeQuery = true)
     String findMostFrequentPrediction();
 
+    List<Message> findByChatRoomFileInformationFileType(String fileType);
+
 }
 

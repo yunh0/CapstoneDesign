@@ -2,6 +2,7 @@ package com.hansung.InsuranceProject.service;
 
 import com.hansung.InsuranceProject.constant.MessageType;
 import com.hansung.InsuranceProject.entity.ChatRoom;
+import com.hansung.InsuranceProject.entity.FileInformation;
 import com.hansung.InsuranceProject.entity.Message;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
@@ -27,19 +28,24 @@ public class QuestionRecommendationService {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
         Message message = messageRepository.findFirstByChatRoomAndMessageTypeOrderByCreatedDateDesc(chatRoom, MessageType.PERSON);
 
+        FileInformation fileInformation = chatRoom.getFileInformation();
+        String fileType = fileInformation.getFileType();
 
         if (message == null) {
             for (int i = 0; i < 3; i++) {
                 recommendations.add(null);
             }
         } else {
-            // 메시지가 null이 아니면 해당 메시지의 예측값 가져오기
             String prediction = message.getPrediction();
 
-            List<Message> similarMessages = messageRepository.findTop3ByPredictionAndOrderByRandom(prediction);
+            List<Message> sameFileTypeMessages = messageRepository.findByChatRoomFileInformationFileType(fileType);
 
-            for (Message similarMessage : similarMessages) {
-                recommendations.add(similarMessage.getContent());
+            for(Message sameFileTypeMessage : sameFileTypeMessages){
+                if(sameFileTypeMessage.getPrediction() != null){
+                    if(sameFileTypeMessage.getPrediction().equals(prediction)){
+                        recommendations.add(sameFileTypeMessage.getContent());
+                    }
+                }
             }
 
             // 현재 저장된 추천 질문이 0개, 1개 또는 2개일 경우, 나머지는 null로 채움
