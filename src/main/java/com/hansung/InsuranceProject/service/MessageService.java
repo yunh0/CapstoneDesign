@@ -11,7 +11,9 @@ import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,13 +57,29 @@ public class MessageService {
         List<Message> allMessages = chatRooms.stream()
                 .map(ChatRoom::getMessages)
                 .flatMap(List::stream)
-                .filter(message -> message.getMessageType() == MessageType.AI)
+                .filter(message -> message.getMessageType() == MessageType.PERSON)
                 .collect(Collectors.toList());
 
-        List<Message> filteredMessages = allMessages.stream()
+        List<Message> questionMessages = allMessages.stream()
                 .filter(message -> message.getContent().contains(keyWord))
                 .collect(Collectors.toList());
 
+        List<Message> filteredMessages = new ArrayList<>();
+
+        for (Message message : questionMessages) {
+            Long chatRoomId = message.getChatRoom().getChatRoomId();
+            Long messageId = message.getMessageId();
+            List<Message> nextMessages = messageRepository.findNextMessage(chatRoomId, messageId);
+
+            if (!nextMessages.isEmpty()) {
+                Message nextMessage = nextMessages.get(0);
+
+                if (nextMessage.getMessageType() == MessageType.AI) {
+                    filteredMessages.add(message);
+                    filteredMessages.add(nextMessage);
+                }
+            }
+        }
         return MessageDto.convertToDtoList(filteredMessages);
     }
 }
