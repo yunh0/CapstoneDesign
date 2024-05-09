@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
+import { useNavigate } from 'react-router-dom';
 import '../cssfiles/pinPage.css';
 import { getPinMessages } from "../api/getPinMessages";
 
 const PinPage = () => {
-    const navigate = useNavigate(); // 이동 함수를 초기화
+    const navigate = useNavigate();
     const [activeContract, setActiveContract] = useState([]);
-    const [expandedId, setExpandedId] = useState(null); // State to keep track of expanded item
+    const [expandedId, setExpandedId] = useState(null);
     const [contracts, setContracts] = useState({});
-    const [selectedType, setSelectedType] = useState("all");  // 계약서 유형 선택 상태 추가
+    const [selectedType, setSelectedType] = useState("all");
 
     const handleClick = (fileName) => {
         setActiveContract(contracts[fileName]);
+        setExpandedId(null); // 선택된 타입이 바뀔 때 확장된 ID를 초기화
     };
+
     const trimText = (text, maxChars = 150) => {
         return text.length > maxChars ? text.slice(0, maxChars) + '...' : text;
     };
@@ -76,10 +78,8 @@ const PinPage = () => {
                 <option value="자동차 보험">자동차 보험</option>
             </select>
             <div className="contracts">
-                {/* contracts 객체의 각 키에 대해 계약서 버튼을 표시 */}
                 {Object.keys(contracts).map((fileName, index) => {
                     const contractsWithSelectedType = contracts[fileName].filter(contract => contract.fetchedType === selectedType);
-                    // 선택된 fetchedType인 계약서만 표시
                     if (selectedType === "all" || contractsWithSelectedType.length > 0) {
                         return (
                             <button key={index} onClick={() => handleClick(fileName)} className="contract-button">
@@ -87,7 +87,7 @@ const PinPage = () => {
                             </button>
                         );
                     } else {
-                        return null; // 선택된 fetchedType에 해당하지 않는 경우 표시하지 않음
+                        return null;
                     }
                 })}
             </div>
@@ -98,8 +98,7 @@ const PinPage = () => {
                         {expandedId === index ? (
                             <>
                                 <p>{answer.content}</p>
-                                <p className="chat-room-id">Chat Room ID: {answer.chatRoomId}</p>
-                                <button onClick={() => navigate(`/chatroom/${answer.chatRoomId}`)}>Go to Chat Room</button>
+                                <button className="goChatRoomButton" onClick={() => navigate(`/chatroom/${answer.chatRoomId}`)}>Go to Chat Room</button>
                             </>
                         ) : (
                             <p>{trimText(answer.content, 150)}</p>

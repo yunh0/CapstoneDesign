@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useParams} from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
 import SelectPage from "./selectPage";
@@ -14,6 +14,7 @@ import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 
 const ChatPage = () => {
+    const { id } = useParams();  // This extracts the "id" param from the URL.
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const location = useLocation();
@@ -88,6 +89,41 @@ const ChatPage = () => {
         const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
         setChatList(updatedChatRooms);
     };
+
+    useEffect(() => {
+        const fetchChatRooms = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const chatRooms = await getUserChatRooms(token);
+                if (chatRooms && chatRooms.length > 0) {
+                    const updatedChatList = chatRooms.map(chatRoom => ({
+                        id: chatRoom.chatRoomId,
+                        title: chatRoom.chatRoomName,
+                        pdfUrl: chatRoom.filePath,
+                    }));
+                    setChatList(updatedChatList);
+                } else {
+                    // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+                }
+            } catch (error) {
+                console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
+                alert('채팅방 목록을 불러오는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            }
+        };
+        fetchChatRooms();
+    }, []);
+
+    useEffect(() => {
+        if (chatList.length > 0 && id) {
+            // URL에서 가져온 id와 일치하는 채팅방을 자동 선택
+            const selectedRoom = chatList.find(room => room.id.toString() === id);
+            if (selectedRoom) {
+                handleButtonClicked(selectedRoom);
+            } else {
+                console.log("No matching chat room found for the provided ID.");
+            }
+        }
+    }, [chatList, id]);  // chatList와 id가 변경될 때마다 실행됩니다.
 
 
     useEffect(() => {
@@ -199,7 +235,6 @@ const ChatPage = () => {
             return;
         }
         setIsPlusButtonClicked(false);
-
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
 
@@ -207,9 +242,10 @@ const ChatPage = () => {
         if (!messageText.trim()) {
             return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
         }
-        //채팅 메시지를 추가합니다.
+
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
+        setMessages(prevMessages => [...prevMessages, newMessage]); // 첫 번째 추가
+
         const loadingMessage = {
             id: messages.length + 1,
             text: <div className="lds-default">
@@ -229,12 +265,13 @@ const ChatPage = () => {
             sender: "received",
             backid: 3
         };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
+        setMessages(prevMessages => [...prevMessages, loadingMessage]);
         scrollToBottom();
         const success = await postChatContent(messageText, chatroomId);
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
+
             if (success) {
                 let senderValue = "received";
                 if (success.messageType === "PERSON") {
@@ -250,7 +287,10 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 console.error('Failed to get chat response from the backend');
             }
+
+
         }
+
         messageInputRef.current.value = '';
         setIsLoading(false);
 
@@ -259,11 +299,26 @@ const ChatPage = () => {
     /////////////////////////////////버튼 생성 후 /////////////////////////////////////
 
     useEffect(() => {
+        scrollToBottom();
+    }, [messages]);  // messages 배열이 변경될 때마다 scrollToBottom 함수를 호출
+
+    useEffect(() => {
         if (chatList.length > 0) {
             const lastChat = chatList[chatList.length - 1];
             handleButtonClicked(lastChat);
         }
     }, [chatList.length]);
+
+    useEffect(() => {
+        if (selectedChatId) {
+            scrollToBottom();
+        }
+    }, [selectedChatId]);  // selectedChatId가 변경될 때마다 scrollToBottom 함수를 호출
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [isPlusButtonClicked]);  // messages 배열이 변경될 때마다 scrollToBottom 함수를 호출
+
 
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
@@ -391,7 +446,11 @@ const ChatPage = () => {
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
             setSReco(sReco);
-            if(sReco){
+            if(sReco.first==null&&sReco.second==null&&sReco.third==null){
+                alert("질문을 입력해 주세요!");
+                return
+            }
+            else{
                 setIsPlusButtonClicked(!isPlusButtonClicked);
             }
         } else {
@@ -400,18 +459,22 @@ const ChatPage = () => {
         }
     }
 
-    const handleRightButtonClick = () => {
-        setCurrentPage(prevPage => (prevPage % totalPages) + 1);
+    const handleLeftButtonClick = () => {
+        if (sReco.second !== null || sReco.third !== null) {
+            setCurrentPage(prevPage => {
+                if (prevPage === 1) {
+                    return totalPages;
+                } else {
+                    return prevPage - 1;
+                }
+            });
+        }
     };
 
-    const handleLeftButtonClick = () => {
-        setCurrentPage(prevPage => {
-            if (prevPage === 1) {
-                return totalPages;
-            } else {
-                return prevPage - 1;
-            }
-        });
+    const handleRightButtonClick = () => {
+        if (sReco.second !== null || sReco.third !== null) {
+            setCurrentPage(prevPage => (prevPage % totalPages) + 1);
+        }
     };
 
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
@@ -432,15 +495,15 @@ const ChatPage = () => {
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
                             <button className="chatroom-button"
-                                onClick={() => {
-                                    if (showSelectPage) {
-                                        alert('보험을 선택하거나 뒤로가기 버튼을 눌러주세요.');
-                                    } else {
-                                        handleButtonClicked(chat);
-                                    }
-                                }}
-                                disabled={isLoading}
-                                style={{width: '100%', height: '100%', cursor: 'pointer' }}
+                                    onClick={() => {
+                                        if (showSelectPage) {
+                                            alert('보험을 선택하거나 뒤로가기 버튼을 눌러주세요.');
+                                        } else {
+                                            handleButtonClicked(chat);
+                                        }
+                                    }}
+                                    disabled={isLoading}
+                                    style={{width: '100%', height: '100%', cursor: 'pointer' }}
                             >
                                 {chat.title}
                             </button>
@@ -467,10 +530,11 @@ const ChatPage = () => {
             ) : (
                 <>
                     <Fragment>
-                        <div style={{width: "20px"}}>
-                            <button className="foldbtn" style={{width: "100%", height: "100%",  border: 'none'}}
-                                    onClick={handleFoldButtonClick}>
-                                {isFolded ? '펴기' : '접기'}
+                        <div className = "fold-container">
+                            <button className="foldbtn" onClick={handleFoldButtonClick}>
+                                {isFolded ?
+                                    <span className="material-symbols-outlined"> chevron_right </span>
+                                    : <span className="material-symbols-outlined"> chevron_left </span>}
                             </button>
                         </div>
                         <div ref={middlePanelRef} className="chat-panel"
@@ -478,7 +542,7 @@ const ChatPage = () => {
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
                         <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
-                        <div ref={rightPanelRef} className="chat-panel right" style={{width: isFolded ? '80%' : '40%'}}>
+                        <div ref={rightPanelRef} className="chat-panel-right" style={{width: isFolded ? '80%' : '40%'}}>
                             <div className="chat-banner">
                                 AI Chatbot
                                 <span className="material-icons help-button">help_outline</span>
@@ -555,9 +619,12 @@ const ChatPage = () => {
                             )}
 
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
-                                <div className="plus-button">
+                                <div>
                                     <button className="p-button" onClick={handlePlusButtonClick} disabled={isLoading}>
-                                        {isPlusButtonClicked ? '➖' : '➕'}
+                                        {isPlusButtonClicked ?
+                                            <span className="material-symbols-outlined"> remove </span> :
+                                            <span className="material-symbols-outlined"> add </span>
+                                        }
                                     </button>
                                 </div>
                                 <textarea
