@@ -428,20 +428,23 @@ const ChatPage = () => {
         }
     }
 
-    const handleRightButtonClick = () => {
-        setCurrentPage(prevPage => (prevPage % totalPages) + 1);
-    };
-
     const handleLeftButtonClick = () => {
-        setCurrentPage(prevPage => {
-            if (prevPage === 1) {
-                return totalPages;
-            } else {
-                return prevPage - 1;
-            }
-        });
+        if (sReco.second !== null || sReco.third !== null) {
+            setCurrentPage(prevPage => {
+                if (prevPage === 1) {
+                    return totalPages;
+                } else {
+                    return prevPage - 1;
+                }
+            });
+        }
     };
 
+    const handleRightButtonClick = () => {
+        if (sReco.second !== null || sReco.third !== null) {
+            setCurrentPage(prevPage => (prevPage % totalPages) + 1);
+        }
+    };
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
