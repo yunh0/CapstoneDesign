@@ -8,18 +8,16 @@ const PinPage = () => {
     const [contracts, setContracts] = useState({});
     const [selectedType, setSelectedType] = useState("all");  // 계약서 유형 선택 상태 추가
 
-    const trimText = (text, maxChars = 300) => {
+    const handleClick = (fileName) => {
+        setActiveContract(contracts[fileName]);
+    };
+    const trimText = (text, maxChars = 150) => {
         return text.length > maxChars ? text.slice(0, maxChars) + '...' : text;
     };
 
     const toggleExpand = (index) => {
         setExpandedId(expandedId === index ? null : index);
     };
-
-    const handleClick = (fileName) => {
-        setActiveContract(contracts[fileName]);
-    };
-
 
     const getPinM = async () => {
         try {
@@ -67,7 +65,7 @@ const PinPage = () => {
         <div className="pin-page">
             <h2 className="pin-page-title">Pinned Answers</h2>
             <select value={selectedType} onChange={handleTypeChange} className="dropdown-select">
-                <option value="all">All</option>
+                <option value="all">전체</option>
                 <option value="암 보험">암 보험</option>
                 <option value="화재 보험">화재 보험</option>
                 <option value="연금 보험">연금 보험</option>
@@ -90,11 +88,11 @@ const PinPage = () => {
                     }
                 })}
             </div>
-
             <div className="gallery-view">
                 {activeContract.map((answer, index) => (
                     <div key={index} className="pinned-answer" onClick={() => toggleExpand(index)}>
-                        <p>{expandedId === index ? answer.content : trimText(answer.content, 300)}</p>
+                        <p className="pin-icon">📍</p>
+                        <p>{expandedId === index ? answer.content : trimText(answer.content, 150)}</p>
                     </div>
                 ))}
             </div>
