@@ -29,12 +29,18 @@ public class MostAskedQuestionService {
         String fileType = fileInformation.getFileType();
 
         List<String> prediction = messageRepository.findMostFrequentPredictionByFileType(fileType);
-        mostQuestions.add(prediction.get(0));
-
-        List<Message> predictionMessages = messageRepository.findByChatRoomFileInformationFileTypeAndPrediction(fileType, prediction.get(0));
-
-        for(Message predictionMessage : predictionMessages){
-            mostQuestions.add(predictionMessage.getContent());
+        System.out.println("=========");
+        System.out.println(prediction);
+        System.out.println("=========");
+        if(prediction.isEmpty() || prediction.get(0) == null) {
+            mostQuestions.add(null);
+        }
+        else{
+            mostQuestions.add(prediction.get(0));
+            List<Message> predictionMessages = messageRepository.findByChatRoomFileInformationFileTypeAndPredictionOrderByRandom(fileType, prediction.get(0));
+            for(Message predictionMessage : predictionMessages){
+                mostQuestions.add(predictionMessage.getContent());
+            }
         }
 
         int remainingNulls = 4 - mostQuestions.size();
@@ -42,6 +48,11 @@ public class MostAskedQuestionService {
             mostQuestions.add(null);
         }
 
+        for(int i=0; i<mostQuestions.size(); i++){
+            System.out.println("===========");
+            System.out.println(mostQuestions.get(i));
+            System.out.println("===========");
+        }
         return mostQuestions;
     }
 }
