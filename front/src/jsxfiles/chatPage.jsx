@@ -314,8 +314,7 @@ const ChatPage = () => {
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
-            const fReco = await getfReco();
-            console.log(fReco);
+            const fReco = await getfReco(selectedChatId);
             const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
 <${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
   
@@ -429,20 +428,23 @@ const ChatPage = () => {
         }
     }
 
-    const handleRightButtonClick = () => {
-        setCurrentPage(prevPage => (prevPage % totalPages) + 1);
-    };
-
     const handleLeftButtonClick = () => {
-        setCurrentPage(prevPage => {
-            if (prevPage === 1) {
-                return totalPages;
-            } else {
-                return prevPage - 1;
-            }
-        });
+        if (sReco.second !== null || sReco.third !== null) {
+            setCurrentPage(prevPage => {
+                if (prevPage === 1) {
+                    return totalPages;
+                } else {
+                    return prevPage - 1;
+                }
+            });
+        }
     };
 
+    const handleRightButtonClick = () => {
+        if (sReco.second !== null || sReco.third !== null) {
+            setCurrentPage(prevPage => (prevPage % totalPages) + 1);
+        }
+    };
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 

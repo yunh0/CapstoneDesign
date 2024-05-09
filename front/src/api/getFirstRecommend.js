@@ -1,10 +1,10 @@
-export const getfReco = async () => {
+export const getfReco = async (chatRoomId) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/freCo`;
+    const path = `/api/freCo/${chatRoomId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
-            method: 'GET',
+            method: 'POST',
             credentials: 'include',
             headers: {
                 Accept: 'application/json',
