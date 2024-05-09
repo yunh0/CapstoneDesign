@@ -23,13 +23,6 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @PostMapping("/user/message/search")
-    public ResponseEntity<List<MessageDto>> getSearchMessages(@RequestBody SearchMessageRequest searchMessageRequest, Principal principal){
-
-        List<MessageDto> searchMessages = messageService.getSearchMessages(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
-        return ResponseEntity.ok().body(searchMessages);
-    }
-
     @PostMapping("/user/message/{chatroomId}")
     public ResponseEntity saveMessageAndReturnAiMessage(@PathVariable Long chatroomId, @RequestBody MessageRequest request){
 
