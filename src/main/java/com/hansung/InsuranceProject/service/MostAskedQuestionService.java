@@ -1,6 +1,9 @@
 package com.hansung.InsuranceProject.service;
 
+import com.hansung.InsuranceProject.entity.ChatRoom;
+import com.hansung.InsuranceProject.entity.FileInformation;
 import com.hansung.InsuranceProject.entity.Message;
+import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,19 +14,24 @@ import java.util.List;
 @Service
 public class MostAskedQuestionService {
     private final MessageRepository messageRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
-    public MostAskedQuestionService(MessageRepository messageRepository) {
+    public MostAskedQuestionService(MessageRepository messageRepository, ChatRoomRepository chatRoomRepository) {
         this.messageRepository = messageRepository;
+        this.chatRoomRepository = chatRoomRepository;
     }
 
     @Transactional
-    public List<String> getMostQuestions(){
+    public List<String> getMostQuestions(Long chatRoomId){
         List<String> mostQuestions = new ArrayList<>();
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
+        FileInformation fileInformation = chatRoom.getFileInformation();
+        String fileType = fileInformation.getFileType();
 
-        String prediction = messageRepository.findMostFrequentPrediction();
-        mostQuestions.add(prediction);
+        List<String> prediction = messageRepository.findMostFrequentPredictionByFileType(fileType);
+        mostQuestions.add(prediction.get(0));
 
-        List<Message> predictionMessages = messageRepository.findTop3ByPredictionAndOrderByRandom(prediction);
+        List<Message> predictionMessages = messageRepository.findByChatRoomFileInformationFileTypeAndPrediction(fileType, prediction.get(0));
 
         for(Message predictionMessage : predictionMessages){
             mostQuestions.add(predictionMessage.getContent());
