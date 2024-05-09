@@ -30,11 +30,12 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query(value = "SELECT m FROM Message m WHERE m.prediction = ?1 ORDER BY RAND()")
     List<Message> findTop3ByPredictionAndOrderByRandom(String prediction);
 
-    @Query(value = "SELECT m.prediction FROM Message m " +
-            "GROUP BY m.prediction " +
-            "ORDER BY COUNT(m.prediction) DESC " +
-            "LIMIT 1", nativeQuery = true)
-    String findMostFrequentPrediction();
+    @Query(value = "SELECT m.prediction FROM Message m WHERE m.chatRoom.fileInformation.fileType = :fileType " +
+            "GROUP BY m.prediction ORDER BY COUNT(m.prediction) DESC")
+    List<String> findMostFrequentPredictionByFileType(@Param("fileType") String fileType);
 
+    List<Message> findByChatRoomFileInformationFileType(String fileType);
+
+    List<Message> findByChatRoomFileInformationFileTypeAndPrediction(String fileType, String prediction);
 }
 

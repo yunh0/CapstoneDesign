@@ -12,10 +12,10 @@ queries = data['질문'].tolist()
 intents = data['분류 클래스'].tolist()
 
 import sys
-sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
+sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
 from Preprocess import Preprocess
 p = Preprocess(word2index_dic='../../train_tools/dict/chatbot_dict.bin',
-                userdic='../../utils/user_dic.tsv')
+               userdic='../../utils/user_dic.tsv')
 
 # 단어 시퀀스 생성
 sequences = []
@@ -27,7 +27,7 @@ for sentence in queries:
 
 # 단어 인덱스 시퀀스 벡터 생성
 # 단어 시퀀스 벡터 크기
-sys.path.append('C:\\github\\CapstoneDesign\\ai\\config')
+sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\config')
 from GlobalParams import MAX_SEQ_LEN
 padded_seqs = preprocessing.sequence.pad_sequences(sequences, maxlen=MAX_SEQ_LEN, padding='post')
 
@@ -87,8 +87,8 @@ predictions = Dense(NUM_CLASSES, activation=tf.nn.softmax)(logits)
 # 모델 생성
 model = Model(inputs=input_layer, outputs=predictions)
 model.compile(optimizer='adam',
-                loss='sparse_categorical_crossentropy',
-                metrics=['accuracy'])
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
 
 # 모델 학습
 model.fit(train_ds, validation_data=val_ds, epochs=EPOCH, verbose=1)
