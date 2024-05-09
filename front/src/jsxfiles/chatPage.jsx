@@ -13,6 +13,27 @@ import {getsReco} from "../api/getSecondRecommend";
 import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 
+
+function addIndent(text) {
+    const indent = '        ';
+    const maxLength = 45;
+
+    let result = '';
+    const words = text.split(' ');
+    let currentLineLength = 0;
+
+    for (const word of words) {
+        if (currentLineLength + word.length + indent.length <= maxLength) {
+            result += word + ' ';
+            currentLineLength += word.length + 1;
+        } else {
+            result += '\n' + indent + word + ' ';
+            currentLineLength = indent.length + word.length + 1;
+        }
+    }
+
+    return result.trim();
+}
 const ChatPage = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +94,7 @@ const ChatPage = () => {
                 }));
                 setChatList(updatedChatList);
             } else {
-                // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+                console.log("채팅방이 비어있습니다.")
             }
         } catch (error) {
             console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
@@ -119,7 +140,7 @@ const ChatPage = () => {
 
     const handleLogout = () => {
         setIsLogin(false);
-        navigate('/rlogin');
+        navigate('/');
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -194,7 +215,6 @@ const ChatPage = () => {
     };
 
     const handleSendMessage = async () => {
-        // textarea 요소의 값 가져오기
         const messageText = messageInputRef.current.value;
         const chatroomId = selectedChatId;
         if (isLoading) {
@@ -205,31 +225,46 @@ const ChatPage = () => {
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
 
-        // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
-            return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
+            return;
         }
-        //채팅 메시지를 추가합니다.
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
-
+        const loadingMessage = {
+            id: messages.length + 1,
+            text: <div className="lds-default">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>,
+            sender: "received",
+            backid: 3
+        };
+        setMessages(prevMessages => [...prevMessages, loadingMessage]);
         scrollToBottom();
-
-        // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
-            // 백엔드로부터 대답 받아오기
+
             if (success) {
                 let senderValue = "received";
                 if (success.messageType === "PERSON") {
                     senderValue = "sent";
                 }
                 const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
-                // 상태 업데이트 시 함수형 업데이트 사용
-                setMessages(prevMessages => [...prevMessages, newResponse]);
+                setMessages(prevMessages => prevMessages.filter(msg => msg.backid !== loadingMessage.backid));
                 scrollToBottom2();
+                setMessages(prevMessages => [...prevMessages, newResponse]);
             } else {
                 let senderValue = "received";
                 const newResponse = { id: messages.length + 2, text: 'Failed to get chat response from the backend', sender: senderValue };
@@ -239,6 +274,7 @@ const ChatPage = () => {
 
 
         }
+
         messageInputRef.current.value = '';
         setIsLoading(false);
 
@@ -279,10 +315,14 @@ const ChatPage = () => {
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
             const fReco = await getfReco();
-            const formattedText = `사용자들이 많이 검색한 질문이에요!
-            1. ${fReco.first ?? ''}
-            2. ${fReco.second ?? ''}
-            3. ${fReco.third ?? ''}`;
+            console.log(fReco);
+            const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
+<${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
+  
+    1. ${addIndent(fReco.first)}
+    2. ${addIndent(fReco.second)}
+    3. ${addIndent(fReco.third)}`;
+
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);
             setFormattedText(formattedText);
@@ -361,10 +401,9 @@ const ChatPage = () => {
     };
 
     const delhandlePinMessage = async (msg) => {
-        console.log(msg.backid);
+
         try {
             const results = await delPinMessages(msg.backid);
-            console.log(results);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -377,7 +416,11 @@ const ChatPage = () => {
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
             setSReco(sReco);
-            if(sReco){
+            if(sReco.first==null&&sReco.second==null&&sReco.third==null){
+                alert("질문을 입력해 주세요!");
+                return
+            }
+            else{
                 setIsPlusButtonClicked(!isPlusButtonClicked);
             }
         } else {
@@ -485,7 +528,7 @@ const ChatPage = () => {
                                     <div key={index}
                                          className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
-                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
+                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received"  && msg.backid != 3 && (
                                             <button
                                                 className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
                                                 onClick={() => handlePinClick(msg)}
@@ -556,12 +599,16 @@ const ChatPage = () => {
                                     placeholder="메시지 입력..."
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
-                                            e.preventDefault(); // 기본 엔터 동작 방지
-                                            handleSendMessage(); // handleSendMessage 호출
+                                            if (!messageInputRef.current.value.trim()) {
+                                                e.preventDefault();
+                                            } else {
+                                                e.preventDefault();
+                                                handleSendMessage();
+                                            }
                                         }
                                     }}
                                 />
-                                <button type="submit" className="chat-submit-button" disabled={isLoading}>
+                                <button type="submit" className="chat-submit-button"  disabled={isLoading || !messageInputRef.current?.value.trim()}  onClick={handleFormSubmit}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </form>
