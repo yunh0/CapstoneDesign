@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/savePin/**").permitAll()
                 .antMatchers("/api/getPin").permitAll()
                 .antMatchers("/api/deletePin/**").permitAll()
+                .antMatchers("/selectPage").authenticated() // "/selectPage" 경로에 대한 접근은 인증이 필요합니다.
                 .antMatchers("/api/freCo").permitAll()
                 .antMatchers("/api/sreCo/**").permitAll()
                 .anyRequest().authenticated();

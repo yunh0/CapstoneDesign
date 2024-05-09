@@ -193,7 +193,6 @@ const ChatPage = () => {
     };
 
     const handleSendMessage = async () => {
-        // textarea 요소의 값 가져오기
         const messageText = messageInputRef.current.value;
         const chatroomId = selectedChatId;
         if (isLoading) {
@@ -211,32 +210,46 @@ const ChatPage = () => {
         //채팅 메시지를 추가합니다.
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
-
+        const loadingMessage = {
+            id: messages.length + 1,
+            text: <div className="lds-default">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>,
+            sender: "received",
+            backid: 3
+        };
+        setMessages(prevMessages => [...prevMessages, newMessage]);
         scrollToBottom();
-
-        // 백엔드로 채팅 내용 전송
         const success = await postChatContent(messageText, chatroomId);
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
-            // 백엔드로부터 대답 받아오기
             if (success) {
                 let senderValue = "received";
                 if (success.messageType === "PERSON") {
                     senderValue = "sent";
                 }
                 const newResponse = { id: messages.length + 2, text: success.content, sender: senderValue, backid: success.messageId };
-                // 상태 업데이트 시 함수형 업데이트 사용
-                setMessages(prevMessages => [...prevMessages, newResponse]);
+                setMessages(prevMessages => prevMessages.filter(msg => msg.backid !== loadingMessage.backid));
                 scrollToBottom2();
+                setMessages(prevMessages => [...prevMessages, newResponse]);
             } else {
                 let senderValue = "received";
                 const newResponse = { id: messages.length + 2, text: 'Failed to get chat response from the backend', sender: senderValue };
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 console.error('Failed to get chat response from the backend');
             }
-
-
         }
         messageInputRef.current.value = '';
         setIsLoading(false);
@@ -485,7 +498,7 @@ const ChatPage = () => {
                                     <div key={index}
                                          className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
-                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && (
+                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received"  && msg.backid != 3 && (
                                             <button
                                                 className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
                                                 onClick={() => handlePinClick(msg)}

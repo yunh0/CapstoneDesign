@@ -1,5 +1,5 @@
 import sys
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')
+sys.path.append('/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/utils')
 from Preprocess import Preprocess
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -12,7 +12,7 @@ def read_corpus_data(filename):
         data = data[1:]
     return data
 
-corpus_data = read_corpus_data('./corpus.txt')
+corpus_data = read_corpus_data('/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/train_tools/dict/corpus.txt')
 
 p = Preprocess()
 dict = []

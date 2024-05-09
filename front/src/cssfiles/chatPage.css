@@ -314,7 +314,7 @@
 }
 .divider {
     cursor: ew-resize;
-    width:3px;
+    width:1px;
     background-color: #ddd;
 }
 
@@ -329,14 +329,13 @@
     color: #666; /* 기본 색상 */
 }
 
-
 .pin-button.pinned {
     left:-5px;
     scale:1.1;
 }
 
 .special-message {
-    background-color: lightyellow !important;
+    background-color: #e8e8e8 !important;
 }
 
 .exfont{
