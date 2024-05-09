@@ -31,12 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/api/getPin")
                 .ignoringAntMatchers("/api/deletePin/**")
                 .ignoringAntMatchers("/api/freCo")
-                .ignoringAntMatchers("/api/sreCo/**");
+                .ignoringAntMatchers("/api/sreCo/**")
+                .ignoringAntMatchers("/api/user/info/**");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers("/api/oauth/login").permitAll()
-                .antMatchers("api/insurance/terms").permitAll()
+                .antMatchers("/api/insurance/terms").permitAll()
                 .antMatchers("/api/user/chatrooms").permitAll()
                 .antMatchers("/api/user/chatroom/**").permitAll()
                 .antMatchers("/api/user/message/**").permitAll()
@@ -45,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/deletePin/**").permitAll()
                 .antMatchers("/api/freCo").permitAll()
                 .antMatchers("/api/sreCo/**").permitAll()
+                .antMatchers("/api/user/info/**").permitAll()
                 .anyRequest().authenticated();
     }
 }
