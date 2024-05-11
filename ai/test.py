@@ -21,12 +21,11 @@ vectorstores = {}
 
 
 # 파일 경로를 받아서 벡터스토어를 불러오는 함수
-def load_vectorstore(file_path):
-    global vectorstores
-
-    # 이미 불러온 벡터스토어가 있는지 확인
-    if file_path in vectorstores:
-        return vectorstores[file_path]
+def load_vectorstore(file_path, cache={}):
+    # 이미 저장된 벡터스토어가 있는지 확인하고 있다면 바로 반환
+    if file_path in cache:
+        print(f"{file_path} 벡터스토어 이미 존재. 반환합니다.")
+        return cache[file_path]
 
     # 파일로부터 문서 로드
     loaders = [
@@ -48,11 +47,12 @@ def load_vectorstore(file_path):
     embedding = OpenAIEmbeddings()
     vectorstore = Chroma.from_documents(documents=splits, embedding=embedding)
 
-    # 생성된 벡터스토어 저장
-    vectorstores[file_path] = vectorstore
+    # 생성된 벡터스토어 캐시에 저장
+    cache[file_path] = vectorstore
 
-    print(f"{file_path} 벡터스토어 생성 및 저장 완료.")
+    print(f"{file_path} 벡터스토어 생성 및 캐시에 저장 완료.")
     return vectorstore
+
 
 
 # 40개의 파일을 미리 임베딩하여 벡터스토어에 저장하는 함수
@@ -161,6 +161,11 @@ def receive_message():
         # 파일 경로가 없으면 오류 메시지 반환
         if file_path is None:
             return jsonify({'response': '파일이 업로드되지 않았습니다.'})
+
+        # 벡터 스토어 불러오기
+        vectorstore = load_vectorstore(file_path)
+        if vectorstore is None:
+            return "파일을 로드하는 동안 오류가 발생했습니다."
 
         # 질문에 대한 답변 생성
         response = answer_question(question, file_path)
