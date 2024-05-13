@@ -46,6 +46,11 @@ public class MessageService {
     }
 
     @Transactional
+    public void deleteMessagesByChatRoomId(Long chatRoomId) {
+        messageRepository.deleteByChatRoom_ChatRoomId(chatRoomId);
+    }
+
+    @Transactional
     public List<MessageDto> getSearchMessages(Long accountId, String keyWord){
         Account account = accountRepository.findById(accountId).orElse(null);
         if (account == null) {

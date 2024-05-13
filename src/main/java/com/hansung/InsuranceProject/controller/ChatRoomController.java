@@ -7,6 +7,7 @@ import com.hansung.InsuranceProject.request.ChatRoomRequest;
 import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.service.ChatRoomService;
 import com.hansung.InsuranceProject.service.MessageService;
+import com.hansung.InsuranceProject.service.PinnedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,9 @@ public class ChatRoomController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private PinnedAnswerService pinnedAnswerService;
 
     // 채팅방 새로 생성 시 반영하여 내 채팅방 목록 반환
     @PostMapping("/insurance/terms")
@@ -69,6 +73,19 @@ public class ChatRoomController {
         List<MessageDto> messages = messageService.getChatRoomMessages(chatroomId);
         return ResponseEntity.ok().body(messages);
     }
+
+    @DeleteMapping("/user/chatroom/{chatroomId}")
+    public ResponseEntity<String> deleteChatRoom(@PathVariable Long chatroomId) {
+
+        pinnedAnswerService.deletePinnedAnswersByChatRoomId(chatroomId);
+
+        messageService.deleteMessagesByChatRoomId(chatroomId);
+
+        chatRoomService.deleteChatRoom(chatroomId);
+
+        return ResponseEntity.ok().body("Chat room and related messages and pinned messages deleted successfully.");
+    }
+
 
     @GetMapping("/user/chatroom/file/{selectedChatId}")
     public ResponseEntity<String> giveFileType(@PathVariable Long selectedChatId, Principal principal){

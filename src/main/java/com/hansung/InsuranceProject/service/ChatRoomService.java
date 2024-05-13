@@ -54,4 +54,9 @@ public class ChatRoomService {
         List<ChatRoom> chatRooms = chatRoomRepository.findByAccount_Id(accountId);
         return ChatRoomDto.convertToDtoList(chatRooms);
     }
+
+    @Transactional
+    public void deleteChatRoom(Long chatRoomId){
+        chatRoomRepository.deleteById(chatRoomId);
+    }
 }
