@@ -86,6 +86,19 @@ public class ChatRoomController {
         return ResponseEntity.ok().body("Chat room and related messages and pinned messages deleted successfully.");
     }
 
+    @PutMapping("/user/chatroom/{chatroomId}")
+    public ResponseEntity<String> updateChatRoomName(@PathVariable Long chatroomId, @RequestBody Map<String, String> requestBody) {
+
+        String newChatRoomName = requestBody.get("newChatRoomName");
+        if (newChatRoomName == null || newChatRoomName.isEmpty()) {
+            return ResponseEntity.badRequest().body("New chat room name is required.");
+        }
+
+        chatRoomService.updateChatRoomName(chatroomId, newChatRoomName);
+
+        return ResponseEntity.ok().body("Chat room name updated successfully.");
+    }
+
 
     @GetMapping("/user/chatroom/file/{selectedChatId}")
     public ResponseEntity<String> giveFileType(@PathVariable Long selectedChatId, Principal principal){
