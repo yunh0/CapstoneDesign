@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers("/api/oauth/login")
+                .ignoringAntMatchers("/api/oauth/logout")
                 .ignoringAntMatchers("/api/insurance/terms")
                 .ignoringAntMatchers("/api/user/chatrooms")
                 .ignoringAntMatchers("/api/user/chatroom/**")
@@ -37,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers("/api/oauth/login").permitAll()
+                .antMatchers("/api/oauth/logout").permitAll()
                 .antMatchers("/api/insurance/terms").permitAll()
                 .antMatchers("/api/user/chatrooms").permitAll()
                 .antMatchers("/api/user/chatroom/**").permitAll()

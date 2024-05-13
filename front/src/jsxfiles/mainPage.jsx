@@ -6,6 +6,7 @@ import PinPage from '../jsxfiles/pinPage';
 import SelectPage from "../jsxfiles/selectPage";
 import '../cssfiles/mainPage.css'
 import ChatPage from "../jsxfiles/chatPage";
+import {postLogoutToken} from "../api/postLogoutToken";
 
 const MainPage = () => {
     const navigate = useNavigate();
@@ -13,9 +14,14 @@ const MainPage = () => {
     const [currentPage, setCurrentPage] = useState('welcome');
     const [chatList, setChatList] = useState([]);
 
-    const handleLogout = () => {
-        setIsLogin(false);
-        navigate('/');
+    const handleLogout = async () => {
+        const success = await postLogoutToken();
+        if (success) {
+            setIsLogin(false);
+            navigate('/');
+        } else {
+            console.error('로그아웃 요청 실패');
+        }
     };
     const handlePageChange = (pageName) => {
         setCurrentPage(pageName);
