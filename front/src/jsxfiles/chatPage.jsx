@@ -411,6 +411,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
         e.preventDefault();
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
+            console.log(sReco)
             setSReco(sReco);
             if(sReco.first==null&&sReco.second==null&&sReco.third==null){
                 alert("질문을 입력해 주세요!");

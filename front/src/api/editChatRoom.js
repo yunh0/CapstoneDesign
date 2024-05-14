@@ -1,6 +1,6 @@
-export const editChatRoom = async (chatroomId, newChatRoomName) => {
+export const editChatRoom = async (chatRoomId, newChatRoomName) => {
     const API_URL = process.env.REACT_APP_API_URL;
-    const path = `/api/user/chatroom/${chatroomId}`;
+    const path = `/api/user/chatroom/${chatRoomId}`;
 
     try {
         const response = await fetch(`${API_URL}${path}`, {
@@ -15,7 +15,7 @@ export const editChatRoom = async (chatroomId, newChatRoomName) => {
         if (!response.ok) throw new Error('Failed to send message to the backend');
         return response.json();
     } catch (error) {
-        console.error('editChatRoom Error: ', error.message);
+        console.error('delChatRoom Error: ', error.message);
         return false;
     }
 };

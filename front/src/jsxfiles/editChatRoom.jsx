@@ -8,6 +8,27 @@ const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
     const [name, setName] = useState("");
     const [chatList, setChatList] = useState([]);
 
+    const updateChatList = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const chatRooms = await getUserChatRooms(token);
+            if (chatRooms && chatRooms.length > 0) {
+                // Map the fetched chat rooms to the structure expected by your state
+                const updatedChatList = chatRooms.map(chatRoom => ({
+                    id: chatRoom.chatRoomId,
+                    title: chatRoom.chatRoomName,
+                    pdfUrl: chatRoom.filePath,
+                }));
+                setChatList(updatedChatList);
+            } else {
+                // If no chat rooms are fetched, you might want to clear the current state
+                // or handle this case differently based on your application's needs.
+                setChatList([]);
+            }
+        } catch (error) {
+            console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
+        }
+    };
 
     const handleDeleteClick = () => {
         setEditingMode('delete');
@@ -22,21 +43,23 @@ const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
             const results = await delChatRoom(actionId);
             console.log(results);
             onClose();
+            window.location.reload()
         }
         setEditingMode(null);
     };
 
     const handleEditClick = async () => {
-
         if (editingMode === 'editName') {
-            if(name == ''){return}
+            if(name === '') return;
             const results = await editChatRoom(actionId, name);
             console.log(results);
-            setName('')
+            setName('');
             onClose();
+            window.location.reload();
         }
         setEditingMode(null);
     };
+
 
     const handleClose = () => {
         setEditingMode(null);

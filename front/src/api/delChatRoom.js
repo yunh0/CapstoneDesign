@@ -11,7 +11,7 @@ export const delChatRoom = async (chatRoomId) => {
                 'Content-Type': 'application/json',
             },
         });
-        if (!response.ok) throw new Error('Failed to delete chat room');
+        if (!response.ok) throw new Error('Failed to send message to the backend');
         return response.json();
     } catch (error) {
         console.error('delChatRoom Error: ', error.message);
