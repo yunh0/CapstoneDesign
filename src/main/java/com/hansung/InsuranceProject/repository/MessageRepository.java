@@ -24,6 +24,8 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
         });
     }
 
+    void deleteByChatRoom_ChatRoomId(Long chatRoomId);
+
     @Query("SELECT m FROM Message m WHERE m.chatRoom.chatRoomId = :chatRoomId AND m.messageId > :messageId ORDER BY m.messageId ASC")
     List<Message> findNextMessage(@Param("chatRoomId") Long chatRoomId, @Param("messageId") Long messageId);
 

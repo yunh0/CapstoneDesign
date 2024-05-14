@@ -12,6 +12,7 @@ import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
 import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
+import {postLogoutToken} from "../api/postLogoutToken";
 
 
 
@@ -119,9 +120,14 @@ const ChatPage = () => {
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
-    const handleLogout = () => {
-        setIsLogin(false);
-        navigate('/');
+    const handleLogout = async () => {
+        const success = await postLogoutToken();
+        if (success) {
+            setIsLogin(false);
+            navigate('/');
+        } else {
+            console.error('로그아웃 요청 실패');
+        }
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
