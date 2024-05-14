@@ -28,7 +28,7 @@ const FindPage = () => {
     return (
         <div className="findpage-container">
             <div>
-                <h2>찾기 페이지</h2>
+                <h2>SEARCH</h2>
             </div>
 
             <div className="findpage-body">
@@ -41,7 +41,9 @@ const FindPage = () => {
                     placeholder="검색어를 입력하세요"
 
                 />
-                <button onClick={handleSearch}>확인</button>
+                <button className="findpage-button" onClick={handleSearch}>
+                    <span className="material-symbols-outlined">search</span>
+                </button>
             </div>
             {searchResult.length > 0 && (
                 <table>

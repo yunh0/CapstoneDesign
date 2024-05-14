@@ -12,15 +12,17 @@
     min-height: 100vh;
     overflow: hidden; /* 필요할 때만 스크롤바 표시 */
     font-family: var(--body-font);
+    margin: 50px;
 }
 
 
 .pin-page-title {
-    font-size:40px;
-    font-family: var(--title-font);
+    font-size:30px;
+    font-family: 'Roboto Condensed';
     color: var(--text-color);
     margin-left:10px;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .dropdown-select {

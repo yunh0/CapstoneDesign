@@ -483,7 +483,7 @@ const ChatPage = () => {
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel"
-                 style={{width: isFolded ? '0%' : '20%', display: isFolded ? 'none' : 'flex'}}>
+                 style={{width: isFolded ? '0px' : '265px', display: isFolded ? 'none' : 'flex'}}>
                 <Link to="/main" className="home-btn">
                     <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
                 </Link>

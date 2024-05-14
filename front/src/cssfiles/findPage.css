@@ -1,13 +1,54 @@
+/* findPage.css */
+
 .findpage-container {
-    height: 100%;
-}
-.findpage-body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
-.findpage-body input[type="text"] {
-    width: 500px;
-    height: 40px;
-    text-align: center;
+.findpage-body {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.findinput {
+    padding: 15px;
+    width: 350px;
+    border: 2.5px solid #cccccc;
+    border-radius: 4px;
+}
+
+findpage-button {
+    padding: 7px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+findpage-button:hover {
+    background-color: #45a049;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #dddddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
 }
