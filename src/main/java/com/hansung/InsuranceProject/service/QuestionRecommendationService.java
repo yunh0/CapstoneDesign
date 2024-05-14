@@ -38,7 +38,7 @@ public class QuestionRecommendationService {
         } else {
             String prediction = message.getPrediction();
 
-            List<Message> sameFileTypeMessages = messageRepository.findByChatRoomFileInformationFileTypeOrderByRandom(fileType);
+            List<Message> sameFileTypeMessages = messageRepository.findByChatRoomFileInformationFileType(fileType);
 
             for(Message sameFileTypeMessage : sameFileTypeMessages){
                 if(sameFileTypeMessage.getPrediction() != null){

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')
 from Preprocess import Preprocess
 
 # 전처리 객체 생성
@@ -10,7 +10,7 @@ p = Preprocess(word2index_dic='../train_tools/dict/chatbot_dict.bin',
 query = input()
 
 # 의도 파악
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\models\\intent')
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\models\\intent')
 from IntentModel import IntentModel
 intent = IntentModel(model_name='../models/intent/intent_model2.keras', preprocess=p)
 predict = intent.predict_class(query)
