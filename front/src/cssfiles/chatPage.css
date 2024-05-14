@@ -438,3 +438,31 @@
         transform: scale(1.5);
     }
 }
+
+
+.action-background {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 액션 창보다 위에 표시 */
+}
+
+.btninbtn {
+    color:black;
+    background-color: transparent;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+}
+
+.btninbtn:hover {
+    color: whitesmoke;
+    color: #54a0ff;
+}
+
+

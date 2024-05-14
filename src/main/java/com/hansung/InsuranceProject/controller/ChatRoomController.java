@@ -83,7 +83,7 @@ public class ChatRoomController {
 
         chatRoomService.deleteChatRoom(chatroomId);
 
-        return ResponseEntity.ok().body("Chat room and related messages and pinned messages deleted successfully.");
+        return ResponseEntity.ok().body("{\"message\": \"Chat room and related messages and pinned messages deleted successfully.\"}");
     }
 
     @PutMapping("/user/chatroom/{chatroomId}")
@@ -91,12 +91,14 @@ public class ChatRoomController {
 
         String newChatRoomName = requestBody.get("newChatRoomName");
         if (newChatRoomName == null || newChatRoomName.isEmpty()) {
-            return ResponseEntity.badRequest().body("New chat room name is required.");
+            return ResponseEntity.badRequest().body("{\"error\": \"New chat room name is required.\"}");
+
         }
 
         chatRoomService.updateChatRoomName(chatroomId, newChatRoomName);
 
-        return ResponseEntity.ok().body("Chat room name updated successfully.");
+        return ResponseEntity.ok().body("{\"message\": \"Chat room name updated successfully.\"}");
+
     }
 
 

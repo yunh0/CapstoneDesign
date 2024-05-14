@@ -10,9 +10,9 @@ import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
-import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 import {postLogoutToken} from "../api/postLogoutToken";
+import EditChatModal from "./editChatRoom";
 
 
 
@@ -36,6 +36,8 @@ const ChatPage = () => {
     const messageInputRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [formattedText, setFormattedText] = useState("");
+    const [EditchatRoom, setEditchatRoom] = useState("");
+    const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages,setDefaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
@@ -47,6 +49,9 @@ const ChatPage = () => {
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
     const [isFolded, setIsFolded] = useState(false);
     const [sReco, setSReco] = useState(null);
+    const [actionId, setactionId] = useState(null);
+    const [actionTitle, setactionTitle] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
     const totalPages = (() => {
         if (sReco !== null && sReco !== undefined) {
             if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
@@ -88,8 +93,13 @@ const ChatPage = () => {
     }, []);
 
     const updateChatList = async () => {
-        const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
-        setChatList(updatedChatRooms);
+        try {
+            const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
+            setChatList(updatedChatRooms);
+        } catch (error) {
+            console.error('채팅방 목록을 업데이트하는 중 오류가 발생했습니다:', error.message);
+            alert('채팅방 목록을 업데이트하는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+        }
     };
 
 
@@ -401,6 +411,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
         e.preventDefault();
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
+            console.log(sReco)
             setSReco(sReco);
             if(sReco.first==null&&sReco.second==null&&sReco.third==null){
                 alert("질문을 입력해 주세요!");
@@ -432,6 +443,22 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             setCurrentPage(prevPage => (prevPage % totalPages) + 1);
         }
     };
+
+
+
+    ////////////////////////////////////채팅창 삭제 및 수정/////////////////////////////////////
+    const handleChatRoomClick = (e,chat) => {
+        e.stopPropagation();
+        setEditchatRoom(chat.title)
+        setactionId(chat.id)
+        setactionTitle(chat.title)
+        setModalOpen(true);
+    };
+
+   const handleCloseModal = () => {
+        setModalOpen(false);
+    }
+
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -459,8 +486,15 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                     }
                                 }}
                                 disabled={isLoading}
-                                style={{width: '100%', height: '100%', cursor: 'pointer' }}
+                                style={{width: '100%', height: '100%', cursor: 'pointer'}}
                             >
+                                <span
+                                    className="btninbtn"
+                                    onClick={(e) => handleChatRoomClick(e, chat)}
+                                >
+                                    =
+                                </span>
+
                                 {chat.title}
                             </button>
                         </div>
@@ -487,16 +521,20 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                 <>
                     <Fragment>
                         <div style={{width: "20px"}}>
-                            <button className="foldbtn" style={{width: "100%", height: "100%",  border: 'none'}}
+                            <button className="foldbtn" style={{width: "100%", height: "100%", border: 'none'}}
                                     onClick={handleFoldButtonClick}>
                                 {isFolded ? '펴기' : '접기'}
                             </button>
                         </div>
                         <div ref={middlePanelRef} className="chat-panel"
-                             style={{width: isFolded ? '80%' : '40%', pointerEvents: isPdfViewerDisabled ? 'none' : 'auto'}}>
+                             style={{
+                                 width: isFolded ? '80%' : '40%',
+                                 pointerEvents: isPdfViewerDisabled ? 'none' : 'auto'
+                             }}>
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
-                        <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
+                        <div ref={dividerRef} className="divider" onMouseMove={handleMouseMove}
+                             onMouseDown={handleMouseDown}></div>
                         <div ref={rightPanelRef} className="chat-panel right" style={{width: isFolded ? '80%' : '40%'}}>
                             <div className="chat-banner">
                                 AI Chatbot
@@ -517,7 +555,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                     <div key={index}
                                          className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
-                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received"  && msg.backid != 3 && (
+                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && msg.backid != 3 && (
                                             <button
                                                 className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
                                                 onClick={() => handlePinClick(msg)}
@@ -597,14 +635,19 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                         }
                                     }}
                                 />
-                                <button type="submit" className="chat-submit-button"  disabled={isLoading || !messageInputRef.current?.value.trim()}  onClick={handleFormSubmit}>
+                                <button type="submit" className="chat-submit-button"
+                                        disabled={isLoading || !messageInputRef.current?.value.trim()}
+                                        onClick={handleFormSubmit}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </form>
                         </div>
+
                     </Fragment>
+                    <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
                 </>
             )}
+
         </div>
     );
 };

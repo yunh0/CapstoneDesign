@@ -76,7 +76,22 @@ const SelectPage = ({ onChatRoomCreated }) => {
         }
     };
     const handleTitleInput = (e) => {
-        setTitle(e.target.value);
+        const inputTitle = e.target.value;
+        const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        const englishRegex = /[a-zA-Z]/;
+        const numberRegex = /[0-9]/;
+
+        let maxLength = 20;
+
+        if (inputTitle.match(koreanRegex) && (inputTitle.match(englishRegex) || inputTitle.match(numberRegex))) {
+            maxLength = 15;
+        } else if (inputTitle.match(koreanRegex)) {
+            maxLength = 14;
+        }
+
+        if (inputTitle.length <= maxLength) {
+            setTitle(inputTitle);
+        }
     };
 
     const selectType = async (type) => {
