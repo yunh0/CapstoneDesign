@@ -6,13 +6,13 @@ from tensorflow.keras import preprocessing
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, Dense, Dropout, Conv1D, GlobalMaxPool1D, concatenate
 
-train_file = "train_data3.csv"
+train_file = "train_data.csv"
 data = pd.read_csv(train_file, delimiter=',')
 queries = data['질문'].tolist()
 intents = data['분류 클래스'].tolist()
 
 import sys
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
 from Preprocess import Preprocess
 p = Preprocess(word2index_dic='../../train_tools/dict/chatbot_dict.bin',
                userdic='../../utils/user_dic.tsv')
@@ -27,7 +27,7 @@ for sentence in queries:
 
 # 단어 인덱스 시퀀스 벡터 생성
 # 단어 시퀀스 벡터 크기
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\config')
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\config')
 from GlobalParams import MAX_SEQ_LEN
 padded_seqs = preprocessing.sequence.pad_sequences(sequences, maxlen=MAX_SEQ_LEN, padding='post')
 
@@ -99,4 +99,4 @@ print('Accuracy: %f' % (accuracy * 100))
 print('loss: %f' % (loss))
 
 # 모델을 네이티브 Keras 형식으로 저장
-model.save('intent_model2.keras')
+model.save('intent_model.keras')

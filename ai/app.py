@@ -21,6 +21,7 @@ app = Flask(__name__)
 file_path = None
 vectorstores = {}
 
+
 # 전처리 객체 생성
 p = Preprocess(word2index_dic='C:\\github\\CapstoneDesign\\ai\\train_tools\\dict\\chatbot_dict.bin',
                 userdic='C:\\github\\CapstoneDesign\\ai\\utils\\user_dic.tsv')
@@ -187,7 +188,7 @@ def question_prediction(question):
     # 의도 파악
     sys.path.append('C:\\github\\CapstoneDesign\\ai\\models\\intent')
     from IntentModel import IntentModel
-    intent = IntentModel(model_name='C:\\github\\CapstoneDesign\\ai\\models\\intent\\intent_model2.keras', preprocess=p)
+    intent = IntentModel(model_name='C:\\github\\CapstoneDesign\\ai\\models\\intent\\intent_model.keras', preprocess=p)
     predict = intent.predict_class(query)
     intent_name = intent.labels[predict]
 
