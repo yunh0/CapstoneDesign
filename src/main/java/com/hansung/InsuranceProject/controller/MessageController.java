@@ -3,29 +3,29 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hansung.InsuranceProject.constant.MessageType;
 import com.hansung.InsuranceProject.dto.MessageDto;
-import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.entity.Message;
 import com.hansung.InsuranceProject.request.MessageRequest;
-import com.hansung.InsuranceProject.service.ChatRoomService;
+import com.hansung.InsuranceProject.request.SearchMessageRequest;
 import com.hansung.InsuranceProject.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 public class MessageController {
     @Autowired
     private MessageService messageService;
+
     @PostMapping("/user/message/{chatroomId}")
     public ResponseEntity saveMessageAndReturnAiMessage(@PathVariable Long chatroomId, @RequestBody MessageRequest request){
-        //Message userMessage = messageService.saveMessage(chatroomId, MessageType.PERSON, request.getContent());
-        // 플라스크에 메세지 보내고 받아온 ai 대답 저장하고 보내는 코드 작성해야함
+
         String flaskResponse = sendQuestionToFlask(request.getContent());
         ObjectMapper objectMapper = new ObjectMapper();
         try{

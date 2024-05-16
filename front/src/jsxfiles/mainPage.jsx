@@ -6,6 +6,7 @@ import PinPage from '../jsxfiles/pinPage';
 import SelectPage from "../jsxfiles/selectPage";
 import '../cssfiles/mainPage.css'
 import ChatPage from "../jsxfiles/chatPage";
+import {postLogoutToken} from "../api/postLogoutToken";
 
 const MainPage = () => {
     const navigate = useNavigate();
@@ -14,19 +15,18 @@ const MainPage = () => {
     const [chatList, setChatList] = useState([]);
     const [isScrolledDown, setIsScrolledDown] = useState(false); // 스크롤 상태 관리
 
-    const handleLogout = () => {
-        setIsLogin(false);
-        navigate('/rlogin');
+    const handleLogout = async () => {
+        const success = await postLogoutToken();
+        if (success) {
+            setIsLogin(false);
+            navigate('/');
+        } else {
+            console.error('로그아웃 요청 실패');
+        }
     };
     const handlePageChange = (pageName) => {
         setCurrentPage(pageName);
     };
-    // const scrollDown = () => {
-    //     window.scrollTo({
-    //         top: document.body.scrollHeight,
-    //         behavior: 'smooth'
-    //     });
-    // };
 
     const toggleScroll = () => {
         if (isScrolledDown) {

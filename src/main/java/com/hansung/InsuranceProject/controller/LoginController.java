@@ -32,4 +32,19 @@ public class LoginController {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        // 쿠키 삭제
+        System.out.println("======요청 들어옵니다=====");
+        ResponseCookie cookie = ResponseCookie.from("AUTH-TOKEN", "")
+                .maxAge(0)
+                .httpOnly(true)
+                .path("/")
+                .secure(false)
+                .build();
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok().build();
+    }
 }

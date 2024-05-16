@@ -76,7 +76,22 @@ const SelectPage = ({ onChatRoomCreated }) => {
         }
     };
     const handleTitleInput = (e) => {
-        setTitle(e.target.value);
+        const inputTitle = e.target.value;
+        const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        const englishRegex = /[a-zA-Z]/;
+        const numberRegex = /[0-9]/;
+
+        let maxLength = 20;
+
+        if (inputTitle.match(koreanRegex) && (inputTitle.match(englishRegex) || inputTitle.match(numberRegex))) {
+            maxLength = 15;
+        } else if (inputTitle.match(koreanRegex)) {
+            maxLength = 14;
+        }
+
+        if (inputTitle.length <= maxLength) {
+            setTitle(inputTitle);
+        }
     };
 
     const selectType = async (type) => {
@@ -145,7 +160,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
             updateChatList(); // 채팅방 목록을 업데이트하는 함수를 호출
             onChatRoomCreated?.(); // 채팅방 생성 후 콜백 호출
             navigate('/chat', { state: { pdfPath } });
-            console.log("pdf Path is ", pdfPath);
+            console.log("pdf Path is " , pdfPath);
         } else {
             console.error('Failed to post insurance terms.');
         }

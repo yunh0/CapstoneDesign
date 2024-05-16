@@ -15,6 +15,8 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     Message findFirstByChatRoomAndMessageTypeOrderByCreatedDateDesc(ChatRoom chatRoom, MessageType messageType);
 
 
+
+
     @Transactional
     default void updateMessageByPinned(Long messageId, boolean pinned){
         findById(messageId).ifPresent(message -> {
@@ -23,10 +25,14 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
         });
     }
 
+    void deleteByChatRoom_ChatRoomId(Long chatRoomId);
+
     @Query("SELECT m FROM Message m WHERE m.chatRoom.chatRoomId = :chatRoomId AND m.messageId > :messageId ORDER BY m.messageId ASC")
     List<Message> findNextMessage(@Param("chatRoomId") Long chatRoomId, @Param("messageId") Long messageId);
+
     @Query(value = "SELECT m FROM Message m WHERE m.prediction = ?1 ORDER BY RAND()")
     List<Message> findTop3ByPredictionAndOrderByRandom(String prediction);
+
     @Query(value = "SELECT m.prediction FROM Message m WHERE m.chatRoom.fileInformation.fileType = :fileType " +
             "GROUP BY m.prediction ORDER BY COUNT(m.prediction) DESC")
     List<String> findMostFrequentPredictionByFileType(@Param("fileType") String fileType);

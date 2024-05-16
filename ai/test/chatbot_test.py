@@ -10,9 +10,9 @@ p = Preprocess(word2index_dic='/Users/leedayoung/Desktop/캡스토�
 query = input()
 
 # 의도 파악
-sys.path.append('C:\\Users\\asce3\\IdeaProjects\\ai\\models\\intent')
+sys.path.append('/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/models/intent')
 from IntentModel import IntentModel
-intent = IntentModel(model_name='/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/models/intent/intent_model2.keras', preprocess=p)
+intent = IntentModel(model_name='/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/models/intent/intent_model.keras', preprocess=p)
 predict = intent.predict_class(query)
 intent_name = intent.labels[predict]
 

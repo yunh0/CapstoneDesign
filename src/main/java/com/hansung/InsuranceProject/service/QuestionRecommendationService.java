@@ -41,20 +41,21 @@ public class QuestionRecommendationService {
 
             List<Message> sameFileTypeMessages = messageRepository.findByChatRoomFileInformationFileTypeOrderByRandom(fileType);
 
-            for (Message sameFileTypeMessage : sameFileTypeMessages) {
-                if (sameFileTypeMessage.getPrediction() != null) {
-                    if (sameFileTypeMessage.getPrediction().equals(prediction)) {
+            for(Message sameFileTypeMessage : sameFileTypeMessages){
+                if(sameFileTypeMessage.getPrediction() != null){
+                    if(sameFileTypeMessage.getPrediction().equals(prediction)){
                         recommendations.add(sameFileTypeMessage.getContent());
                     }
                 }
+            }
 
-                // 현재 저장된 추천 질문이 0개, 1개 또는 2개일 경우, 나머지는 null로 채움
-                int remainingNulls = 3 - recommendations.size();
-                for (int i = 0; i < remainingNulls; i++) {
-                    recommendations.add(null);
-                }
+            // 현재 저장된 추천 질문이 0개, 1개 또는 2개일 경우, 나머지는 null로 채움
+            int remainingNulls = 3 - recommendations.size();
+            for (int i = 0; i < remainingNulls; i++) {
+                recommendations.add(null);
             }
         }
+
         return recommendations;
     }
 }

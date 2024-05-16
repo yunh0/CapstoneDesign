@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers("/api/oauth/login")
+                .ignoringAntMatchers("/api/oauth/logout")
                 .ignoringAntMatchers("/api/insurance/terms")
                 .ignoringAntMatchers("/api/user/chatrooms")
                 .ignoringAntMatchers("/api/user/chatroom/**")
@@ -30,22 +31,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/api/savePin/**")
                 .ignoringAntMatchers("/api/getPin")
                 .ignoringAntMatchers("/api/deletePin/**")
-                .ignoringAntMatchers("/api/freCo")
-                .ignoringAntMatchers("/api/sreCo/**");
+                .ignoringAntMatchers("/api/freCo/**")
+                .ignoringAntMatchers("/api/sreCo/**")
+                .ignoringAntMatchers("/api/user/info/**");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers("/api/oauth/login").permitAll()
-                .antMatchers("api/insurance/terms").permitAll()
+                .antMatchers("/api/oauth/logout").permitAll()
+                .antMatchers("/api/insurance/terms").permitAll()
                 .antMatchers("/api/user/chatrooms").permitAll()
                 .antMatchers("/api/user/chatroom/**").permitAll()
                 .antMatchers("/api/user/message/**").permitAll()
                 .antMatchers("/api/savePin/**").permitAll()
                 .antMatchers("/api/getPin").permitAll()
                 .antMatchers("/api/deletePin/**").permitAll()
-                .antMatchers("/selectPage").authenticated() // "/selectPage" 경로에 대한 접근은 인증이 필요합니다.
-                .antMatchers("/api/freCo").permitAll()
+                .antMatchers("/api/freCo/**").permitAll()
                 .antMatchers("/api/sreCo/**").permitAll()
+                .antMatchers("/api/user/info/**").permitAll()
                 .anyRequest().authenticated();
     }
 }

@@ -6,7 +6,7 @@ from tensorflow.keras import preprocessing
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, Dense, Dropout, Conv1D, GlobalMaxPool1D, concatenate
 
-train_file = "train_data3.csv"
+train_file = "train_data.csv"
 data = pd.read_csv(train_file, delimiter=',')
 queries = data['질문'].tolist()
 intents = data['분류 클래스'].tolist()
@@ -87,8 +87,8 @@ predictions = Dense(NUM_CLASSES, activation=tf.nn.softmax)(logits)
 # 모델 생성
 model = Model(inputs=input_layer, outputs=predictions)
 model.compile(optimizer='adam',
-                loss='sparse_categorical_crossentropy',
-                metrics=['accuracy'])
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
 
 # 모델 학습
 model.fit(train_ds, validation_data=val_ds, epochs=EPOCH, verbose=1)
@@ -99,4 +99,4 @@ print('Accuracy: %f' % (accuracy * 100))
 print('loss: %f' % (loss))
 
 # 모델을 네이티브 Keras 형식으로 저장
-model.save('intent_model2.keras')
+model.save('intent_model.keras')

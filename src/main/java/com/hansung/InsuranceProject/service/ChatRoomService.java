@@ -54,4 +54,18 @@ public class ChatRoomService {
         List<ChatRoom> chatRooms = chatRoomRepository.findByAccount_Id(accountId);
         return ChatRoomDto.convertToDtoList(chatRooms);
     }
+
+    @Transactional
+    public void deleteChatRoom(Long chatRoomId){
+        chatRoomRepository.deleteById(chatRoomId);
+    }
+
+    @Transactional
+    public void updateChatRoomName(Long chatRoomId, String newChatRoomName) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new RuntimeException("Chat room not found"));
+
+        chatRoom.setChatRoomName(newChatRoomName);
+        chatRoomRepository.save(chatRoom);
+    }
 }

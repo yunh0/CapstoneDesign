@@ -13,7 +13,7 @@ import java.util.List;
 public class QuestionRecommendationController {
 
     @Autowired
-    QuestionRecommendationService questionRecommendationService;
+    private QuestionRecommendationService questionRecommendationService;
 
     @PostMapping("/sreCo/{chatRoomId}")
     public ResponseEntity userQuestionRecommendation(@PathVariable Long chatRoomId){

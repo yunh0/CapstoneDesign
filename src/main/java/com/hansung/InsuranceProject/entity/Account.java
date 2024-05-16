@@ -32,6 +32,10 @@ public class Account extends BaseTimeEntity{
     @OneToMany(mappedBy = "account")
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "account")
+    private List<SearchKeyWord> searchKeyWords = new ArrayList<>();
+
     public Account(String firstName, String lastName, String email, String pictureUrl) {
         this.firstName = firstName;
         this.lastName = lastName;

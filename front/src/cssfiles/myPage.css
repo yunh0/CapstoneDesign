@@ -21,11 +21,12 @@
 
 .mypage-content {
     width: 100%;
+    height: 450px;
     max-width: 640px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    padding: 30px;
+    padding: 50px;
     border: 1px solid #dddddd;
 }
 
@@ -81,14 +82,25 @@
 
 .mypage-search-box {
     width: 100%;
-    height: 45px;
+    height: 250px;
     border: 2px solid #BDC3C7;
     border-radius: 8px;
     padding: 10px;
     transition: border-color 0.3s;
+    overflow: auto;
 }
 
 .mypage-search-box:focus {
     border-color: #3498DB;
     outline: none;
+}
+
+.search-keyword{
+    font-size: 22px;
+    color: #2C3E50;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.search-keyword:nth-child(even) {
+    background-color: lightblue;
 }

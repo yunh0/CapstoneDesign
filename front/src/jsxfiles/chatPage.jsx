@@ -12,6 +12,10 @@ import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
 import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
+import {postLogoutToken} from "../api/postLogoutToken";
+import EditChatModal from "./editChatRoom";
+
+
 
 const ChatPage = () => {
     const { id } = useParams();  // This extracts the "id" param from the URL.
@@ -34,6 +38,8 @@ const ChatPage = () => {
     const messageInputRef = useRef(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [formattedText, setFormattedText] = useState("");
+    const [EditchatRoom, setEditchatRoom] = useState("");
+    const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [defaultMessages,setDefaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
@@ -45,6 +51,9 @@ const ChatPage = () => {
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
     const [isFolded, setIsFolded] = useState(false);
     const [sReco, setSReco] = useState(null);
+    const [actionId, setactionId] = useState(null);
+    const [actionTitle, setactionTitle] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
     const totalPages = (() => {
         if (sReco !== null && sReco !== undefined) {
             if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
@@ -86,8 +95,13 @@ const ChatPage = () => {
     }, []);
 
     const updateChatList = async () => {
-        const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
-        setChatList(updatedChatRooms);
+        try {
+            const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
+            setChatList(updatedChatRooms);
+        } catch (error) {
+            console.error('채팅방 목록을 업데이트하는 중 오류가 발생했습니다:', error.message);
+            alert('채팅방 목록을 업데이트하는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+        }
     };
 
     useEffect(() => {
@@ -153,9 +167,14 @@ const ChatPage = () => {
 
     ////////////////////////////////////로그아웃///////////////////////////////////////////
 
-    const handleLogout = () => {
-        setIsLogin(false);
-        navigate('/rlogin');
+    const handleLogout = async () => {
+        const success = await postLogoutToken();
+        if (success) {
+            setIsLogin(false);
+            navigate('/');
+        } else {
+            console.error('로그아웃 요청 실패');
+        }
     };
 
     //////////////////////////////////경계선 이동/////////////////////////////////////////
@@ -174,6 +193,7 @@ const ChatPage = () => {
     };
 
     const handleMouseMove = (e) => {
+
         if (dragging) {
             const dx = e.clientX - positionX;
             setPositionX(e.clientX);
@@ -229,12 +249,14 @@ const ChatPage = () => {
     };
 
     const handleSendMessage = async () => {
+        // textarea 요소의 값 가져오기
         const messageText = messageInputRef.current.value;
         const chatroomId = selectedChatId;
         if (isLoading) {
             return;
         }
         setIsPlusButtonClicked(false);
+
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
 
@@ -345,11 +367,14 @@ const ChatPage = () => {
 
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
-            const fReco = await getfReco();
-            const formattedText = `사용자들이 많이 검색한 질문이에요!
-         ${fReco.first ? `1. ${(fReco.first)}` : '아직 존재하지 않아요....'}
+            const fReco = await getfReco(id);
+            const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
+<${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
+  
+${fReco.first ? `1. ${(fReco.first)}` : '아직 존재하지 않아요....'}
 ${fReco.second ? `2. ${(fReco.second)}` : ''}
 ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
+
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);
             setFormattedText(formattedText);
@@ -417,7 +442,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     };
 
     const handlePinMessage = async (msg) => {
-        console.log(msg.backid);
+
         try {
             const fetchedType = await getMyType(selectedChatId);
             const results = await postPinMessage(msg.backid, fetchedType);
@@ -430,7 +455,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     };
 
     const delhandlePinMessage = async (msg) => {
-        console.log(msg.backid);
+
         try {
             const results = await delPinMessages(msg.backid);
             console.log(results);
@@ -445,6 +470,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
         e.preventDefault();
         if (!isPlusButtonClicked) {
             const sReco = await getsReco(selectedChatId);
+            console.log(sReco)
             setSReco(sReco);
             if(sReco.first==null&&sReco.second==null&&sReco.third==null){
                 alert("질문을 입력해 주세요!");
@@ -477,6 +503,21 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
         }
     };
 
+
+
+    ////////////////////////////////////채팅창 삭제 및 수정/////////////////////////////////////
+    const handleChatRoomClick = (e,chat) => {
+        e.stopPropagation();
+        setEditchatRoom(chat.title)
+        setactionId(chat.id)
+        setactionTitle(chat.title)
+        setModalOpen(true);
+    };
+
+   const handleCloseModal = () => {
+        setModalOpen(false);
+    }
+
     ////////////////////////////////////화면 UI///////////////////////////////////////////////
 
 
@@ -505,6 +546,13 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                     disabled={isLoading}
                                     style={{width: '100%', height: '100%', cursor: 'pointer' }}
                             >
+                                <span
+                                    className="btninbtn"
+                                    onClick={(e) => handleChatRoomClick(e, chat)}
+                                >
+                                    =
+                                </span>
+
                                 {chat.title}
                             </button>
                         </div>
@@ -636,17 +684,24 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                     placeholder="메시지 입력..."
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
-                                            e.preventDefault(); // 기본 엔터 동작 방지
-                                            handleSendMessage(); // handleSendMessage 호출
+                                            if (!messageInputRef.current.value.trim()) {
+                                                e.preventDefault();
+                                            } else {
+                                                e.preventDefault();
+                                                handleSendMessage();
+                                            }
                                         }
                                     }}
                                 />
-                                <button type="submit" className="chat-submit-button" disabled={isLoading}>
+                                <button type="submit" className="chat-submit-button"
+                                        disabled={isLoading || !messageInputRef.current?.value.trim()}
+                                        onClick={handleFormSubmit}>
                                     <i className="fas fa-paper-plane"></i>
                                 </button>
                             </form>
                         </div>
                     </Fragment>
+                    <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
                 </>
             )}
         </div>

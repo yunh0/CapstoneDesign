@@ -55,6 +55,12 @@ public class PinnedAnswerService {
         }
     }
 
+    @Transactional
+    public void deletePinnedAnswersByChatRoomId(Long chatRoomId) {
+        List<PinnedAnswer> pinnedAnswers = pinnedAnswerRepository.findByMessage_ChatRoom_ChatRoomId(chatRoomId);
+        pinnedAnswerRepository.deleteAll(pinnedAnswers);
+    }
+
     public List<PinnedAnswerDto> getPinnedAnswers(Principal principal){
         Long accountId = Long.valueOf(principal.getName());
         Account account = accountRepository.findById(accountId).orElse(null);
