@@ -15,6 +15,6 @@ HSU 2024 Capstone Project
 ## 📌기술 스택
 
 ## 🖻시스템 구조도
-![image](https://github.com/yunh0/CapstoneDesign/assets/114940378/d55bd6eb-583d-4601-8f6e-20c364e30097)
+![image](https://github.com/yunh0/CapstoneDesign/assets/114940378/a6332a4e-d222-4200-a5d9-bdac062084d2)
 ## 📸주요 화면
 ## 👩‍👩‍👧‍👦팀 정보
