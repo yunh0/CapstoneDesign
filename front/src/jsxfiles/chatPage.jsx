@@ -74,7 +74,7 @@ const ChatPage = () => {
                 }));
                 setChatList(updatedChatList);
             } else {
-                // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+                console.log("채팅방이 비어있습니다.")
             }
         } catch (error) {
             console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
@@ -347,9 +347,9 @@ const ChatPage = () => {
             setPdfUrl(pdfUrl);
             const fReco = await getfReco();
             const formattedText = `사용자들이 많이 검색한 질문이에요!
-            1. ${fReco.first ?? ''}
-            2. ${fReco.second ?? ''}
-            3. ${fReco.third ?? ''}`;
+         ${fReco.first ? `1. ${(fReco.first)}` : '아직 존재하지 않아요....'}
+${fReco.second ? `2. ${(fReco.second)}` : ''}
+${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);
             setFormattedText(formattedText);
