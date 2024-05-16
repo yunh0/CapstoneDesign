@@ -74,7 +74,8 @@
 </table>
 
 ## 🖻시스템 구조도
-![image](https://github.com/yunh0/CapstoneDesign/assets/114940378/a6332a4e-d222-4200-a5d9-bdac062084d2)
+![11조_이미지_주요 적용 기술 및 구조](https://github.com/yunh0/CapstoneDesign/assets/114940378/0426c4c9-a48a-41b5-9f26-5ad16c6375c0)
+
 ## 📸주요 화면
 ## 👩‍👩‍👧‍👦팀 정보
 <table>
