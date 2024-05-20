@@ -68,7 +68,7 @@ const PinPage = () => {
 
     return (
         <div className="pin-page">
-            <h2 className="pin-page-title">Pinned Answers</h2>
+            <h2 className="pin-page-title">PINNED ANSWERS</h2>
             <select value={selectedType} onChange={handleTypeChange} className="dropdown-select">
                 <option value="all">전체</option>
                 <option value="암 보험">암 보험</option>

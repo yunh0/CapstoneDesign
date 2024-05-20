@@ -101,9 +101,6 @@ const MainPage = () => {
                 </div>
                 {currentPage === 'welcome' && (
                     <div>
-                        <div className="select-lang">
-                            Eng | Kor
-                        </div>
                         <div className="msgnphone-container">
                             <div className="message-container">
                                 <div className="content-container">
@@ -140,45 +137,47 @@ const MainPage = () => {
                                 </span>
                             </button>
                         </div>
+
+                        <div className="spare-panel">
+                            <div>
+                                <div className="msgnphone-container">
+                                    <div className="phone-container-guide">
+                                        <div className="screen">
+                                            <div className="status-bar">
+                                                <span>AI Chatbot</span>
+                                            </div>
+                                            <div className="screen-messages">
+                                                <div className="message sent">Hello!</div>
+                                                <div className="message received">Hi, how can I help you?</div>
+                                            </div>
+                                            <form className="message-input-container">
+                                                <input type="text" className="message-input" placeholder="Type your message..." />
+                                                <button className="send-btn">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div className="phone-container-guide">
+                                        <div className="screen">
+                                            <div className="status-bar">
+                                                <span>AI Chatbot</span>
+                                            </div>
+                                            <div className="screen-messages">
+                                                <div className="message sent">Hello!</div>
+                                                <div className="message received">Hi, how can I help you?</div>
+                                            </div>
+                                            <form className="message-input-container">
+                                                <input type="text" className="message-input" placeholder="Type your message..." />
+                                                <button className="send-btn">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
-            <div className="spare-panel">
-                <div>
-                    <div className="msgnphone-container">
-                        <div className="phone-container-guide">
-                            <div className="screen">
-                                <div className="status-bar">
-                                    <span>AI Chatbot</span>
-                                </div>
-                                <div className="screen-messages">
-                                    <div className="message sent">Hello!</div>
-                                    <div className="message received">Hi, how can I help you?</div>
-                                </div>
-                                <form className="message-input-container">
-                                    <input type="text" className="message-input" placeholder="Type your message..." />
-                                    <button className="send-btn">Send</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div className="phone-container-guide">
-                            <div className="screen">
-                                <div className="status-bar">
-                                    <span>AI Chatbot</span>
-                                </div>
-                                <div className="screen-messages">
-                                    <div className="message sent">Hello!</div>
-                                    <div className="message received">Hi, how can I help you?</div>
-                                </div>
-                                <form className="message-input-container">
-                                    <input type="text" className="message-input" placeholder="Type your message..." />
-                                    <button className="send-btn">Send</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     );
 };

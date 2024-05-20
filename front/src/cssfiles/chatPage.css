@@ -23,16 +23,14 @@
     flex-direction: column;
     align-items: center;
     padding: 20px 0;
-    width: 170px;  /* Fixed width for the left panel */
 
-    margin-top:15px;
+    margin-top:20px;
     margin-bottom:15px;
-    margin-left:10px;
+    margin-left:15px;
 
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
     border-radius: 10px;
-    border: 3px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: #fff;
     text-align: center;
@@ -42,7 +40,8 @@
     color:black;
     background-color: transparent;
     padding: 15px 10px; /* 내부 여백 조정 */
-    margin-top:18px;
+    margin-left:3px;
+    margin-top:16px;
     cursor: pointer;
 }
 
@@ -118,8 +117,8 @@
 
 .chatroom-button {
     background-color: transparent;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    margin-right:10px;
     border:none;
     font-family: "Roboto Condensed";
     font-weight:500;
@@ -154,6 +153,7 @@
 
 .chat-panel-right {
     width: 40%;
+    margin: 10px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     border-radius: 30px;
@@ -177,7 +177,6 @@
 
 .chat-banner {
     background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
     color:black;
     font-family: "Apple SD Gothic Neo";
     font-size:20px;
@@ -194,7 +193,7 @@
 .help-button {
     position: absolute;
     right: 15px;
-    top: 48%;
+    top: 4%;
     transform: translateY(-50%);
     font-size: 27px;
     cursor: pointer;
@@ -203,14 +202,14 @@
 .help-modal {
     display: none;
     position: fixed;
-    right: 8%;
-    top: 20%;
+    right: 14%;
+    top: 39%;
     width: 350px;
     background-color: #ffffff;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 5px 15px rgba(0, 0, 0, 0.22); /* 깊이감 있는 그림자 효과 */
     padding: 25px;
     border-radius: 12px; /* 모서리를 더 둥글게 */
-    z-index: 1000;
+    z-index: 100000000;
     border: 1px solid rgba(0, 0, 0, 0.1); /* 경계선 추가 */
     transition: transform 0.3s ease-out; /* 모달 등장 애니메이션 */
 }
@@ -361,7 +360,6 @@
     transition: all 0.3s ease;
     border:none;
     background-color: transparent;
-    margin-top:20px;
 }
 
 .logout-btn:hover {
@@ -393,6 +391,7 @@
 .special-message {
     background-color: #e8e8e8 !important;
 }
+
 
 .extra-window {
     background: rgba(255, 255, 255, 0.3);
@@ -561,3 +560,73 @@
         transform: scale(1.5);
     }
 }
+
+.action-background {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 액션 창보다 위에 표시 */
+}
+
+.btninbtn {
+    color:black;
+    background-color: transparent;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-size:10px;
+}
+
+.btninbtn span {
+    font-size:18px;
+}
+
+.btninbtn:hover {
+    color: whitesmoke;
+    color: #54a0ff;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better focus */
+    z-index: 1550; /* Ensure it's above other elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
+}
+
+.modal-backdrop:not(.hidden) {
+    opacity: 1;
+    visibility: visible; /* Make backdrop visible when modal is active */
+}
+
+
+
+.modal-backdrop:not(.hidden) .modal-content {
+    transform: translateY(0) scale(1); /* End at natural position, fully scaled */
+}
+
+/* Responsive adjustments for better mobile experience */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%; /* Utilize more screen width on smaller devices */
+        padding: 20px; /* Optimal padding for smaller screens */
+    }
+}
+
+.hidden {
+    display: none; /* Hide when not in use */
+}
+

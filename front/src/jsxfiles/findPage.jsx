@@ -5,10 +5,12 @@ import { postFind } from "../api/findHistory";
 const FindPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [modalContent, setModalContent] = useState('');
+    const [expandedRow, setExpandedRow] = useState(null); // 아코디언 확장 상태 관리
 
     const handleSearch = async () => {
         try {
+            // Reset the expanded row state before executing a new search
+            setExpandedRow(null);
             const response = await postFind(searchTerm);
             setSearchResult(response);
         } catch (error) {
@@ -26,68 +28,65 @@ const FindPage = () => {
         }
     };
 
-    const handleModalOpen = (content) => {
-        setModalContent(content);
-    };
-
-    const handleModalClose = () => {
-        setModalContent('');
+    const toggleAccordion = (index) => {
+        setExpandedRow(expandedRow === index ? null : index); // 이미 확장된 행을 클릭하면 닫힘
     };
 
     return (
-        <div className="findpage-container">
+        <div className="find-container">
             <div>
                 <h2>SEARCH</h2>
             </div>
-
-            <div className="findpage-body">
+            <div className="find-body">
                 <input
-                    className="findinput"
+                    className="find-input"
                     type="text"
                     value={searchTerm}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
                     placeholder="검색어를 입력하세요"
-
                 />
-                <button className="findpage-button" onClick={handleSearch}>
+                <button className="find-button" onClick={handleSearch}>
                     <span className="material-symbols-outlined">search</span>
                 </button>
             </div>
             {searchResult.length > 0 && (
-                <table className="findtable">
+                <table className="find-table">
                     <thead>
                     <tr>
-                        <th className="findth">검색 결과</th>
+                        <th className="find-th">검색 결과</th>
                     </tr>
                     </thead>
                     <tbody>
                     {searchResult.map((result, index) => (
                         index % 2 === 0 && (
-                            <tr key={index}>
-                                <td className="findtd">
-                                    <button className="fresultbutton" onClick={() => handleModalOpen(searchResult[index + 1].content)}>
-                                        {result.content}
-                                    </button>
-                                </td>
-                            </tr>
+                            <React.Fragment key={index}>
+                                <tr>
+                                    <td className="find-td">
+                                        <div className="find-content-button-wrapper">
+                                            <span className="find-content">{result.content}</span>
+                                            <button className="find-result-button" onClick={() => toggleAccordion(index)}>
+                                                <span className="material-symbols-outlined">expand_circle_down</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {expandedRow === index && (
+                                    <tr>
+                                        <td className="find-td-expanded">
+                                            {searchResult[index + 1].content}
+                                        </td>
+                                    </tr>
+                                )}
+                            </React.Fragment>
                         )
                     ))}
+
                     </tbody>
                 </table>
             )}
-            {modalContent && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={handleModalClose}>&times;</span>
-                        <p>{modalContent}</p>
-                    </div>
-                </div>
-            )}
         </div>
-
     );
-
 };
 
 export default FindPage;

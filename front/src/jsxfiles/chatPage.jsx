@@ -54,6 +54,7 @@ const ChatPage = () => {
     const [actionId, setactionId] = useState(null);
     const [actionTitle, setactionTitle] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+
     const totalPages = (() => {
         if (sReco !== null && sReco !== undefined) {
             if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
@@ -524,7 +525,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel"
-                 style={{width: isFolded ? '0px' : '265px', display: isFolded ? 'none' : 'flex'}}>
+                 style={{width: isFolded ? '0px' : '250px', display: isFolded ? 'none' : 'flex'}}>
                 <Link to="/main" className="home-btn">
                     <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
                 </Link>
@@ -532,7 +533,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                         disabled={isLoading || showSelectPage}>New Chat
                     {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
                 </button>
-                <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
+                <div className="chat-room-list" style={{flexGrow: 0.94, overflowY: 'auto'}}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
                             <button className="chatroom-button"
@@ -546,13 +547,9 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                     disabled={isLoading}
                                     style={{width: '100%', height: '100%', cursor: 'pointer' }}
                             >
-                                <span
-                                    className="btninbtn"
-                                    onClick={(e) => handleChatRoomClick(e, chat)}
-                                >
-                                    =
+                                <span className="btninbtn" onClick={(e) => handleChatRoomClick(e, chat)}>
+                                    <span className="material-symbols-outlined">info</span>
                                 </span>
-
                                 {chat.title}
                             </button>
                         </div>
@@ -701,7 +698,11 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                             </form>
                         </div>
                     </Fragment>
-                    <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
+                    <div className={`modal-backdrop ${modalOpen ? '' : 'hidden'}`} onClick={handleCloseModal}>
+                        <div className="modal-content-edit" onClick={e => e.stopPropagation()}> {/* Prevents click inside the modal from closing it */}
+                            <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
+                        </div>
+                    </div>
                 </>
             )}
         </div>

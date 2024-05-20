@@ -1,88 +1,157 @@
-.findpage-container {
-    height: 100%;
-    margin: 20px;
+/* findPage.css - Modern and Integrated Search Design */
+
+.find-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 50px;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: transparent; /* Lighter background for better readability */
+    min-height: 100vh;
+    width: 100%;
+    border-radius: 8px; /* Added rounding to container */
+}
+
+.find-container h2 {
+    color: #333;
     font-family: 'Roboto Condensed', sans-serif;
-}
-
-.findpage-body {
-    display: flex;
-    gap: 10px;
     margin-bottom: 20px;
-}
-
-.findinput {
-    padding: 15px;
-    width: 350px;
-    border: 2.5px solid #cccccc;
-    border-radius: 4px;
-}
-
-findpage-button {
-    padding: 7px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-findpage-button:hover {
-    background-color: #45a049;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #dddddd;
-}
-
-.findpage-body input[type="text"] {
-    width: 500px;
-    height: 40px;
     text-align: center;
+    font-size: 30px;
+    margin-right:10px;
 }
-.findbutton {
-    padding: 8px 16px;
-    background-color: #007bff;
+
+.find-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.find-input {
+    padding: 10px 10px 10px 35px;
+    height: 24px;
+    font-size: 16px;
+    border: 1px solid #a9a8a8;
+    border-radius: 25px;
+    width: 60%; /* Increased width for more text */
+    transition: all 0.3s;
+    position: relative;
+    background-color: #f8f8f8; /* Slightly off-white background */
+}
+
+.find-input:focus {
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 3px 8px rgba(0, 86, 179, 0.25);
+}
+
+.find-button {
+    position: absolute;
+    right: calc(20% - 43px); /* Adjusted for the increased input width */
+    padding: 10px;
+    background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.findtable {
-    border-collapse: collapse;
-    width: 100%;
+.find-button:hover, .find-button:focus {
+    background-color: #0056b3;
+    box-shadow: 0 5px 10px rgba(0, 86, 179, 0.3);
+    outline: none; /* Remove focus border */
+}
+
+.find-table {
     margin-top: 20px;
+    width: 65%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.findth, .findtd {
-    border: 1px solid #f0f0f0;
-    padding: 8px;
+.find-th {
+    background-color: #007BFF;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    padding: 12px 15px;
     text-align: left;
 }
 
-.findth {
-    background-color: #007bff;
-    color: white;
+.find-td {
+    background-color: #f1f1f1; /* 질문에 대한 배경색 변경 */
+    color: #333;
+    padding: 12px 15px;
+    border-bottom: 2px dashed #ccc; /* 점선 테두리로 시각적 구분 */
+    font-weight: bold; /* 질문 글꼴 굵게 */
 }
 
-.fresultbutton{
-    border: none;
-    font-size: 1.5em;
-    background: none;
-    width:100%;
-    height:100%;
+.find-td-expanded {
+    background-color: #ffffff; /* 답변에 대한 배경색 변경 */
+    color: #555;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    line-height: 130%;
 }
-.fresultbutton:hover{
-    background-color: #54a0ff;
-    color: #f5f5f5;
+
+.find-content-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.find-content {
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.find-result-button {
+    margin-left: auto;
+    margin-right: 15px;
+    background: none;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+    text-align: left;
+    padding: 0;
+    font-size: 16px;
+}
+
+.find-input::before {
+    content: "search";
+    font-family: 'Material Icons';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bbb;
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .find-input {
+        width: 80%;
+    }
+
+    .find-button {
+        right: 10%;
+    }
+
+    .find-table {
+        width: 90%;
+        max-width: none;
+    }
 }

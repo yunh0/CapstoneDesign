@@ -1,7 +1,7 @@
 :root {
     --main-bg-color: #f4f4f8;
-    --button-bg-color: #5c67f2;
-    --button-hover-color: #434bc9;
+    --button-bg-color: #007BFF;
+    --button-hover-color: #0051ff;
     --text-color: #333;
     --title-font: 'Roboto', sans-serif;
     --body-font: 'Open Sans', sans-serif;
@@ -12,7 +12,10 @@
     min-height: 100vh;
     overflow: hidden; /* 필요할 때만 스크롤바 표시 */
     font-family: var(--body-font);
-    margin: 50px;
+    margin:50px;
+    margin-left:100px;
+    margin-bottom:0px;
+    justify-content: center;
 }
 
 
@@ -25,17 +28,50 @@
     text-align: center;
 }
 
+/* Dropdown Select Styling */
 .dropdown-select {
-    padding: 10px 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    outline: none;
-    margin-left:30px;
-    margin-right:10px;
-    background-color: var(--button-bg-color); /* 통일된 배경색 사용 */
-    color: white; /* 통일된 텍스트 색상 사용 */
-    font-family: var(--body-font); /* 전체적으로 동일한 폰트 적용 */
-    border:none;
-    border-radius: 5px; /* 통일된 테두리 반경 */
+    width: 20%; /* 드롭다운 너비 전체 사용 */
+    padding: 12px 15px; /* 적당한 패딩으로 편안한 클릭 가능 영역 확보 */
+    font-size: 16px; /* 적당한 폰트 크기 */
+    font-family: 'Open Sans', sans-serif; /* 일관된 폰트 스타일 적용 */
+    border: 1px solid #ccc; /* 섬세한 테두리 */
+    border-radius: 5px; /* 모던한 라운드 테두리 */
+    content: '▼'; /* 드롭다운 아이콘 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    appearance: none; /* 기본 브라우저 스타일 제거 */
+    background-color: white; /* 밝은 배경색 */
+    color: #333; /* 기본 텍스트 색상 */
+    cursor: pointer; /* 클릭 가능한 요소임을 나타내는 커서 스타일 */
+    outline: none; /* 포커스 아웃라인 제거 */
+    position: relative; /* 드롭다운 화살표 포지셔닝을 위한 설정 */
+}
+
+/* 화살표 스타일 */
+.dropdown-select::after {
+    content: '▼'; /* 드롭다운 아이콘 */
+    font-size: 12px; /* 아이콘 크기 조정 */
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 0.5em); /* 중앙 정렬 */
+    pointer-events: none; /* 클릭 이벤트 제외 */
+    color: #333; /* 아이콘 색상 */
+}
+
+/* 호버 및 포커스 효과 */
+.dropdown-select:hover {
+    border-color: #888; /* 호버 시 테두리 색상 변경 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강조 */
+}
+
+.dropdown-select:focus {
+    border-color: #555; /* 포커스 시 테두리 색상 강조 */
+}
+
+/* 옵션 스타일 */
+option {
+    padding: 10px; /* 옵션의 패딩 */
+    background-color: white; /* 옵션 배경색 */
+    color: #333; /* 옵션 텍스트 색상 */
 }
 
 .contracts {
