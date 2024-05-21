@@ -1,11 +1,11 @@
 import sys
-sys.path.append('/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/utils')
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')
 from Preprocess import Preprocess
 
 sent = input()
 
 # 전처리 객체 생성
-p = Preprocess(userdic='/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/utils/user_dic.tsv')
+p = Preprocess(userdic='C:\\github\\CapstoneDesign\\ai\\utils\\user_dic.tsv')
 
 # 형태소 분석기 실행
 pos = p.pos(sent)
