@@ -37,20 +37,10 @@ public class ChatRoomController {
     // 채팅방 새로 생성 시 반영하여 내 채팅방 목록 반환
     @PostMapping("/insurance/terms")
     public ResponseEntity createChatRoom(@RequestBody ChatRoomRequest request, Principal principal) {
-
         ChatRoom chatRoom = chatRoomService.createChatRoom(Long.valueOf(principal.getName()), request.getTitle(), request.getInsuranceTerms());
         ChatRoomDto chatRoomDto = ChatRoomDto.convertToDto(chatRoom);
 
         List<ChatRoomDto> chatRooms = chatRoomService.getUserChatRooms(Long.valueOf(principal.getName()));
-
-        //아래 5줄은 테스트 코드임. 완성되면 지울 것
-        System.out.println("User's Chat Rooms:");
-        for (ChatRoomDto chatRoom2 : chatRooms) {
-            System.out.println("Chat Room id : " + chatRoom2.getChatRoomId());
-            System.out.println("Chat Room Name: " + chatRoom2.getChatRoomName());
-            System.out.println("File Path: " + chatRoom2.getFilePath());
-            System.out.println("--------");
-        }
 
         return ResponseEntity.ok().body(chatRooms);
     }
@@ -59,6 +49,7 @@ public class ChatRoomController {
     @GetMapping("/user/chatrooms")
     public ResponseEntity<List<ChatRoomDto>> giveUserChatRooms(Principal principal){
         List<ChatRoomDto> chatRooms = chatRoomService.getUserChatRooms(Long.valueOf(principal.getName()));
+
         return ResponseEntity.ok().body(chatRooms);
     }
 
@@ -71,12 +62,12 @@ public class ChatRoomController {
         sendFilePathToFlask(chatRoomDto.getFilePath());
 
         List<MessageDto> messages = messageService.getChatRoomMessages(chatroomId);
+
         return ResponseEntity.ok().body(messages);
     }
 
     @DeleteMapping("/user/chatroom/{chatroomId}")
     public ResponseEntity<String> deleteChatRoom(@PathVariable Long chatroomId) {
-
         pinnedAnswerService.deletePinnedAnswersByChatRoomId(chatroomId);
 
         messageService.deleteMessagesByChatRoomId(chatroomId);
@@ -88,47 +79,37 @@ public class ChatRoomController {
 
     @PutMapping("/user/chatroom/{chatroomId}")
     public ResponseEntity<String> updateChatRoomName(@PathVariable Long chatroomId, @RequestBody Map<String, String> requestBody) {
-
         String newChatRoomName = requestBody.get("newChatRoomName");
         if (newChatRoomName == null || newChatRoomName.isEmpty()) {
             return ResponseEntity.badRequest().body("{\"error\": \"New chat room name is required.\"}");
-
         }
 
         chatRoomService.updateChatRoomName(chatroomId, newChatRoomName);
 
         return ResponseEntity.ok().body("{\"message\": \"Chat room name updated successfully.\"}");
-
     }
-
 
     @GetMapping("/user/chatroom/file/{selectedChatId}")
     public ResponseEntity<String> giveFileType(@PathVariable Long selectedChatId, Principal principal){
         String fetchedType = chatRoomService.getInsuranceType(selectedChatId);
+
         return ResponseEntity.ok().body(fetchedType);
     }
 
-
     private void sendFilePathToFlask(String filePath) {
-        // Flask 서버 URL
         String flaskServerUrl = "http://localhost:5000/api/receive";
 
-        // HTTP 요청 헤더
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // 데이터 준비
         Map<String, String> data = new HashMap<>();
         data.put("filePath", filePath);
 
-        // HTTP 요청 엔터티
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(data, headers);
 
-        // HTTP POST 요청 만들기
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(flaskServerUrl, requestEntity, String.class);
 
-        // 필요한 경우 응답 처리
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             System.out.println("데이터를 Flask 서버로 성공적으로 전송했습니다");
         } else {

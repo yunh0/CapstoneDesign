@@ -22,6 +22,7 @@ public class AccountController {
     @GetMapping("/user/info")
     public ResponseEntity getUserInfo(Principal principal) {
         Account account = accountService.getAccount(Long.valueOf(principal.getName()));
+
         return ResponseEntity.ok().body(convertToDto(account));
     }
 }

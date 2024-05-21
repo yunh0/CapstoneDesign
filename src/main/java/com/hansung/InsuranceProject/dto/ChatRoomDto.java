@@ -12,11 +12,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomDto {
+
     private Long chatRoomId;
 
     private String chatRoomName;
 
     private String filePath;
+
     private static Long fileId;
 
     public static final ChatRoomDto convertToDto(ChatRoom chatRoom){
@@ -32,5 +34,4 @@ public class ChatRoomDto {
                 .map(ChatRoomDto::convertToDto)
                 .collect(Collectors.toList());
     }
-
 }

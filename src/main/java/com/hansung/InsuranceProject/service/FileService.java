@@ -4,8 +4,10 @@ import com.hansung.InsuranceProject.repository.FileInformationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class FileService {
+
     private final FileInformationRepository fileInformationRepository;
 
     public FileService(FileInformationRepository fileInformationRepository) {

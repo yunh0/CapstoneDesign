@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionRecommendationDto {
+
     private String first;
 
     private String second;

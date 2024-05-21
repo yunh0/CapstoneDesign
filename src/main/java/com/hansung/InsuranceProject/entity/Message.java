@@ -1,13 +1,11 @@
 package com.hansung.InsuranceProject.entity;
 
 import com.hansung.InsuranceProject.constant.MessageType;
-import com.hansung.InsuranceProject.entity.BaseTimeEntity;
-import com.hansung.InsuranceProject.entity.ChatRoom;
-import com.hansung.InsuranceProject.entity.PinnedAnswer;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,15 +13,20 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "message")
 public class Message extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
+
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
+
     private String content;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "chatRoomId")
     private ChatRoom chatRoom;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "message", fetch = FetchType.EAGER)
     private List<PinnedAnswer> pinnedAnswers = new ArrayList<>();

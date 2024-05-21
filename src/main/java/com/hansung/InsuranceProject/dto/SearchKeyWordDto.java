@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchKeyWordDto {
+
     private Long keyWordId;
 
     private String keyWord;
 
     public static final SearchKeyWordDto convertToDto(SearchKeyWord searchKeyWord){
-
         return SearchKeyWordDto.builder()
                 .keyWordId(searchKeyWord.getKeyWordId())
                 .keyWord(searchKeyWord.getKeyWord())

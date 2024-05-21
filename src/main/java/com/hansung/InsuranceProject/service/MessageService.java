@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
+
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final AccountRepository accountRepository;
@@ -34,6 +34,7 @@ public class MessageService {
         if (chatRoom != null) {
             Message message = new Message(messageType, content, chatRoom, prediction);
             chatRoom.getMessages().add(message);
+
             return messageRepository.save(message);
         }
         return null;
@@ -42,6 +43,7 @@ public class MessageService {
     @Transactional
     public List<MessageDto> getChatRoomMessages(Long chatRoomId){
         List<Message> messages = messageRepository.findByChatRoom_chatRoomId(chatRoomId);
+
         return MessageDto.convertToDtoList(messages);
     }
 

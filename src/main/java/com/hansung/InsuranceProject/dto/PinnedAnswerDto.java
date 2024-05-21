@@ -6,15 +6,13 @@ import com.hansung.InsuranceProject.entity.Message;
 import com.hansung.InsuranceProject.entity.PinnedAnswer;
 import lombok.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PinnedAnswerDto {
+
     private Long chatRoomId;
 
     private String chatRoomName;
@@ -24,7 +22,7 @@ public class PinnedAnswerDto {
     private Long pinnedAnswerId;
 
     private String content;
-    @Getter
+
     private String fetchedType;
 
     public static final PinnedAnswerDto convertToDto(ChatRoom chatRoom, FileInformation fileInformation, PinnedAnswer pinnedAnswer, Message message){
@@ -34,7 +32,7 @@ public class PinnedAnswerDto {
                 .fileName(fileInformation.getFileName())
                 .pinnedAnswerId(pinnedAnswer.getPinnedAnswerId())
                 .content(message.getContent())
-                .fetchedType(pinnedAnswer.getFetchedType()) // fetchedType 설정 추가
+                .fetchedType(pinnedAnswer.getFetchedType())
                 .build();
     }
 }

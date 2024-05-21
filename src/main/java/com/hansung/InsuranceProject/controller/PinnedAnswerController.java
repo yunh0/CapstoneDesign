@@ -1,7 +1,6 @@
 package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.dto.PinnedAnswerDto;
-import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.entity.PinnedAnswer;
 import com.hansung.InsuranceProject.service.PinnedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +21,13 @@ public class PinnedAnswerController {
     @PostMapping("/savePin/{messageId}/{fetchedType}")
     public void savePinnedAnswer(@PathVariable Long messageId, @PathVariable String fetchedType){
         PinnedAnswer pinnedAnswer = pinnedAnswerService.savePinnedAnswer(messageId, fetchedType);
-
     }
 
     @GetMapping("/getPin")
     public ResponseEntity<List<PinnedAnswerDto>> getPinnedAnswer(Principal principal){
         List<PinnedAnswerDto> pinnedAnswers = pinnedAnswerService.getPinnedAnswers(principal);
         System.out.println("pinned Answers : " + pinnedAnswers);
+
         return ResponseEntity.ok().body(pinnedAnswers);
     }
 
@@ -42,5 +41,4 @@ public class PinnedAnswerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail");
         }
     }
-
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class QuestionRecommendationService {
+
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
 
@@ -36,7 +37,6 @@ public class QuestionRecommendationService {
                 recommendations.add(null);
             }
         } else {
-            // 메시지가 null이 아니면 해당 메시지의 예측값 가져오기
             String prediction = message.getPrediction();
 
             List<Message> sameFileTypeMessages = messageRepository.findByChatRoomFileInformationFileTypeOrderByRandom(fileType);
@@ -49,7 +49,6 @@ public class QuestionRecommendationService {
                 }
             }
 
-            // 현재 저장된 추천 질문이 0개, 1개 또는 2개일 경우, 나머지는 null로 채움
             int remainingNulls = 3 - recommendations.size();
             for (int i = 0; i < remainingNulls; i++) {
                 recommendations.add(null);

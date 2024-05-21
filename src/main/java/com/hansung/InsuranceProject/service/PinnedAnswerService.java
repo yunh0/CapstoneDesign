@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PinnedAnswerService {
+
     private final PinnedAnswerRepository pinnedAnswerRepository;
     private final MessageRepository messageRepository;
     private final AccountRepository accountRepository;
@@ -37,6 +38,7 @@ public class PinnedAnswerService {
 
             PinnedAnswer pinnedAnswer = new PinnedAnswer(message, fetchedType, chatRoomId);
             message.getPinnedAnswers().add(pinnedAnswer);
+
             return pinnedAnswerRepository.save(pinnedAnswer);
         }
         return null;
@@ -66,6 +68,7 @@ public class PinnedAnswerService {
         Account account = accountRepository.findById(accountId).orElse(null);
 
         List<PinnedAnswer> pinnedAnswers = pinnedAnswerRepository.findByMessage_ChatRoom_Account(account);
+
         return pinnedAnswers.stream()
                 .map(pinnedAnswer -> PinnedAnswerDto.convertToDto(
                         pinnedAnswer.getMessage().getChatRoom(),

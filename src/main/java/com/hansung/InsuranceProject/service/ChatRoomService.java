@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class ChatRoomService {
+
     private final ChatRoomRepository chatRoomRepository;
     private final AccountRepository accountRepository;
     private final FileInformationRepository fileInformationRepository;
@@ -27,15 +28,14 @@ public class ChatRoomService {
     @Transactional
     public ChatRoom createChatRoom(Long accountId, String chatRoomName, String fileName) {
         Account creator = accountRepository.findById(accountId).orElse(null);
-        System.out.println("fileName : " + fileName);
         FileInformation file = fileInformationRepository.findByFileName(fileName).orElse(null);
+
         if (creator != null) {
             ChatRoom chatRoom = new ChatRoom(chatRoomName, creator, file);
-            System.out.println("chat room name: " + chatRoomName + ", " + "creator: " + creator + "file :" + file);
             creator.getChatRooms().add(chatRoom);
+
             return chatRoomRepository.save(chatRoom);
         }
-
         return null;
     }
 
@@ -45,13 +45,14 @@ public class ChatRoomService {
 
     public String getInsuranceType(Long selectedChatId) {
         Long fileID = chatRoomRepository.findByChatRoomID(selectedChatId);
-        //fileID로 file테이블에서 file type 가져오기
         String fileType = fileInformationRepository.findByFileId(fileID);
+
         return fileType;
     }
 
     public List<ChatRoomDto> getUserChatRooms(Long accountId){
         List<ChatRoom> chatRooms = chatRoomRepository.findByAccount_Id(accountId);
+
         return ChatRoomDto.convertToDtoList(chatRooms);
     }
 

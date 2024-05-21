@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MostAskedQuestionDto {
+
     private String first;
 
     private String second;

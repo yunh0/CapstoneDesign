@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FileInformationRepository extends JpaRepository<FileInformation, Long> {
+
     Optional<FileInformation> findByFileName(String fileName);
+
     @Query("SELECT DISTINCT f.fileType FROM FileInformation f")
     List<String> findAllDistinctFileTypes();
 

@@ -14,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "pinnedAnswer")
 public class PinnedAnswer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pinnedAnswerId;
@@ -27,7 +28,6 @@ public class PinnedAnswer {
 
     @Column(name = "chatRoomId")
     private Long chatRoomId;
-
 
     public PinnedAnswer(Message message, String fetchedType, Long chatRoomId){
         this.message = message;

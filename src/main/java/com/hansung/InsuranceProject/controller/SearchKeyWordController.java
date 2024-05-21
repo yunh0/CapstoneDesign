@@ -17,29 +17,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class SearchKeyWordController {
+
     @Autowired
     private MessageService messageService;
+
     @Autowired
     private SearchKeyWordService searchKeyWordService;
 
     @PostMapping("/user/message/search")
     public ResponseEntity<List<MessageDto>> getSearchMessages(@RequestBody SearchMessageRequest searchMessageRequest, Principal principal){
-
         SearchKeyWord searchKeyWord = searchKeyWordService.saveKeyWord(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
-
         List<MessageDto> searchMessages = messageService.getSearchMessages(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
+
         return ResponseEntity.ok().body(searchMessages);
     }
 
     @GetMapping("/user/info/search")
     public ResponseEntity<List<SearchKeyWordDto>> giveSearchKeyWords(Principal principal){
         List<SearchKeyWordDto> keyWords = searchKeyWordService.getSearchKeyWords(Long.valueOf(principal.getName()));
+
         return ResponseEntity.ok().body(keyWords);
     }
 
     @DeleteMapping("user/info/search/delete/{keyWordId}")
     public ResponseEntity deleteKeyWord(@PathVariable Long keyWordId){
         boolean deleted = searchKeyWordService.deleteSearchKeyword(keyWordId);
+
         if (deleted) {
             return ResponseEntity.ok().body("success");
         } else {

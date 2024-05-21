@@ -44,6 +44,7 @@ public class AccountService {
             throw new IllegalArgumentException();
         }
         account = createOrUpdateUser(account);
+
         return jwtUtils.createToken(account, false);
     }
 
@@ -55,10 +56,12 @@ public class AccountService {
             accountRepository.save(account);
             return account;
         }
+
         existingAccount.setFirstName(account.getFirstName());
         existingAccount.setLastName(account.getLastName());
         existingAccount.setPictureUrl(account.getPictureUrl());
         accountRepository.save(existingAccount);
+
         return existingAccount;
     }
 
@@ -69,6 +72,7 @@ public class AccountService {
                 return null;
             }
             GoogleIdToken.Payload payload = idTokenObj.getPayload();
+
             String firstName = (String) payload.get("given_name");
             String lastName = (String) payload.get("family_name");
             String email = payload.getEmail();

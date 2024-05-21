@@ -17,7 +17,6 @@ public class QuestionRecommendationController {
 
     @PostMapping("/sreCo/{chatRoomId}")
     public ResponseEntity userQuestionRecommendation(@PathVariable Long chatRoomId){
-
         List<String> questionRecommendation = questionRecommendationService.getRecommendations(chatRoomId);
         QuestionRecommendationDto questionRecommendationDto = QuestionRecommendationDto.convertToDto(questionRecommendation);
 

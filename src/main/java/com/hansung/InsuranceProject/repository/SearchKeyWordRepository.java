@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SearchKeyWordRepository extends JpaRepository<SearchKeyWord, Long> {
+
     List<SearchKeyWord> findByAccount_Id(Long accountId);
 
     SearchKeyWord findByKeyWordId(Long keyWordId);
