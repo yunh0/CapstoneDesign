@@ -8,13 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByChatRoom_chatRoomId(Long chatRoomId);
-
     Message findFirstByChatRoomAndMessageTypeOrderByCreatedDateDesc(ChatRoom chatRoom, MessageType messageType);
+
+
+
 
     @Transactional
     default void updateMessageByPinned(Long messageId, boolean pinned){

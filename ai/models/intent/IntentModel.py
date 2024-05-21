@@ -27,7 +27,7 @@ class IntentModel:
         keywords = self.p.get_keywords(pos, without_tag=True)
         sequences = [self.p.get_wordidx_sequence(keywords)]
 
-        sys.path.append('C:\\github\\CapstoneDesign\\ai\\config')
+        sys.path.append('/Users/leedayoung/Desktop/캡스톤 디자인/CapstoneDesign/ai/config')
         from GlobalParams import MAX_SEQ_LEN
 
         # 패딩 처리

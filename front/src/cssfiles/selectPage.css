@@ -69,7 +69,8 @@
 }
 
 .step-container button:hover {
-    background-color: #e0e0e0;
+    background-color: #54a0ff;
+    color:white;
 }
 
 .step-container button:focus, .step-container button:active {

@@ -6,7 +6,6 @@ import com.hansung.InsuranceProject.entity.Message;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

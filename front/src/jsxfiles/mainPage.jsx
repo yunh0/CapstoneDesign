@@ -13,6 +13,7 @@ const MainPage = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
     const [chatList, setChatList] = useState([]);
+    const [isScrolledDown, setIsScrolledDown] = useState(false); // 스크롤 상태 관리
 
     const handleLogout = async () => {
         const success = await postLogoutToken();
@@ -26,6 +27,24 @@ const MainPage = () => {
     const handlePageChange = (pageName) => {
         setCurrentPage(pageName);
     };
+
+    const toggleScroll = () => {
+        if (isScrolledDown) {
+            // 현재 아래로 스크롤된 상태면, 위로 스크롤
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            // 현재 위로 스크롤된 상태면, 아래로 스크롤
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        setIsScrolledDown(!isScrolledDown); // 스크롤 상태 업데이트
+    };
+
     let content;
     switch (currentPage) {
         case 'find':
@@ -82,9 +101,6 @@ const MainPage = () => {
                 </div>
                 {currentPage === 'welcome' && (
                     <div>
-                        <div className="select-lang">
-                            Eng | Kor
-                        </div>
                         <div className="msgnphone-container">
                             <div className="message-container">
                                 <div className="content-container">
@@ -114,11 +130,54 @@ const MainPage = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="scroll-down">
+                            <button onClick={toggleScroll}>
+                                <span className="material-symbols-outlined">
+                                    {isScrolledDown ? "arrow_upward" : "arrow_downward"}
+                                </span>
+                            </button>
+                        </div>
 
+                        <div className="spare-panel">
+                            <div>
+                                <div className="msgnphone-container">
+                                    <div className="phone-container-guide">
+                                        <div className="screen">
+                                            <div className="status-bar">
+                                                <span>AI Chatbot</span>
+                                            </div>
+                                            <div className="screen-messages">
+                                                <div className="message sent">Hello!</div>
+                                                <div className="message received">Hi, how can I help you?</div>
+                                            </div>
+                                            <form className="message-input-container">
+                                                <input type="text" className="message-input" placeholder="Type your message..." />
+                                                <button className="send-btn">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div className="phone-container-guide">
+                                        <div className="screen">
+                                            <div className="status-bar">
+                                                <span>AI Chatbot</span>
+                                            </div>
+                                            <div className="screen-messages">
+                                                <div className="message sent">Hello!</div>
+                                                <div className="message received">Hi, how can I help you?</div>
+                                            </div>
+                                            <form className="message-input-container">
+                                                <input type="text" className="message-input" placeholder="Type your message..." />
+                                                <button className="send-btn">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 )}
             </div>
+
         </div>
     );
 };

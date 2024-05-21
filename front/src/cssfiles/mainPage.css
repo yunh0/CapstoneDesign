@@ -2,6 +2,11 @@
     display: flex;
     min-height: 100vh;
     font-family: 'Arial', sans-serif;
+    flex-direction: column;
+
+    background-color: #888888;
+    /*background-color: slategray;*/
+    /*background-color: #0A2353;*/
 
     /*연하늘 ~ 상쾌 ~*/
     /*background: linear-gradient(135deg, rgba(92, 160, 217, 0.8) 10%, rgba(129, 194, 240, 0.8) 40%, rgba(183, 224, 248, 0.8) 60%),*/
@@ -12,9 +17,11 @@
     /*linear-gradient(60deg, rgba(51, 153, 255, 0.7) 10%, rgb(152, 199, 255) 50%, rgb(0, 89, 255) 90%),*/
     /*linear-gradient(360deg, rgba(10, 24, 166, 0.95) 30%, rgba(0, 102, 204, 0.8) 70%);*/
 
-    background: linear-gradient(275deg, rgba(192, 192, 192, 0.9) 10%, rgba(135, 206, 235, 0.9) 40%, rgb(0, 88, 204) 60%),
-    linear-gradient(160deg, rgba(228, 135, 235, 0.7) 10%, rgba(0, 153, 255, 0.7) 50%, rgba(70, 130, 180, 0.7) 90%),
-    linear-gradient(360deg, rgba(70, 130, 180, 0.95) 30%, rgba(150, 60, 60, 0.8) 70%);
+    /*background:*/
+    /*        linear-gradient(120deg, rgba(13, 13, 39, 0.9) 0%, rgba(25, 20, 100, 0.85) 50%, rgba(5, 5, 30, 0.9) 100%),*/
+    /*        linear-gradient(240deg, rgba(10, 10, 45, 0.4) 10%, rgba(60, 50, 120, 0.6) 50%, rgba(20, 20, 70, 0.4) 90%),*/
+    /*        linear-gradient(360deg, rgba(15, 15, 55, 0.5) 20%, rgba(40, 35, 90, 0.65) 70%);*/
+
     background-blend-mode: screen;
 }
 
@@ -23,14 +30,19 @@
     flex-direction: column;
     align-items: center;
     padding: 10px 0;
-    margin: 15px;
-    width: 250px;  /* Fixed width for the left panel */
-    /*border-right: 2px solid #333; !* 사이드바와 메인 컨텐츠 사이에 선 추가 *!*/
+    margin-top: 15px; /* Adjust margin if necessary */
+    width: 250px; /* Fixed width for the left panel */
 
-    background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
-    backdrop-filter: blur(10px); /* 배경 블러 효과 */
+    height: calc(100vh - 60px); /* Adjust height to take full view height minus any top margin */
+    position: fixed; /* Keep the panel fixed at the side */
+    top: 5px; /* Distance from the top of the viewport */
+    left: 15px; /* Distance from the left of the viewport */
+    bottom:5px;
+    z-index: 100; /* Ensure it stays on top of other content */
+
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: #fff;
     text-align: center;
@@ -67,9 +79,10 @@
 }
 
 .spare-panel {
-    width: 100%;
     position: relative; /* Set position context for absolute children */
-    margin-left:0;
+    margin-top:10px;
+    margin-left:240px;
+    min-height: 100vh;
 }
 
 .select-lang {
@@ -93,7 +106,7 @@
     justify-content: center;
     align-items: flex-start;
     width:100%;
-    color: #001325;
+    color: #e0e0e0;
     font-family: "Geneva";
     font-weight: bolder;
     font-size: 50px;
@@ -102,7 +115,8 @@
 }
 
 .message-introduction {
-    width:80%;
+    width:81%;
+    color: #e0e0e0;
     font-family: "Geneva";
     font-size:20px;
     margin-top:20px;
@@ -129,6 +143,21 @@
 .phone-container {
     width: 330px; /* 전체 컨테이너 너비 */
     height: 500px; /* 전체 컨테이너 높이 */
+    margin-right:80px;
+    margin-top:120px;
+    border-radius: 30px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25); /* 그림자 추가 */
+    background: transparent; /* 배경색 */
+    display: flex;
+    flex-direction: row;
+    position: relative; /* 포지셔닝을 위해 */
+    overflow: hidden; /* 내부 요소가 범위를 넘어서지 않도록 */
+    border: 3px solid rgba(255, 255, 255, 0.7); /* 경계선 추가 및 투명도 적용 */
+}
+
+.phone-container-guide {
+    width: 330px; /* 전체 컨테이너 너비 */
+    height: 500px; /* 전체 컨테이너 높이 */
     margin-right:120px;
     margin-top:120px;
     border-radius: 30px; /* 모서리 둥글게 */
@@ -151,48 +180,43 @@
 
 .status-bar {
     height: 25px; /* 상태바 높이 */
-    background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
-    backdrop-filter: blur(10px); /* 배경 블러 효과 */
+    background: rgba(255, 255, 255, 0.3); /* 투명도가 있는 흰색 배경 */
     color: white; /* 텍스트 색상 */
     display: flex;
     /*justify-content: space-between;*/
     justify-content: center;
-    font-family: "Roboto Condensed";
-    font-size: 20px; /* 글씨 크기 */
+    font-family: "Ubuntu";
+    font-size: 18px; /* 글씨 크기 */
     padding: 15px; /* 상하 좌우 마진 추가 */
+    padding-top:20px;
 }
 
 .screen-messages {
     flex-grow: 1; /* 남은 공간 모두 사용 */
+    font-size:14px;
     padding: 10px; /* 패딩 */
     overflow-y: auto; /* 스크롤 */
     background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
-    backdrop-filter: blur(10px); /* 배경 블러 효과 */
 }
 
 .message {
     margin: 5px 0; /* 메시지 간격 */
+    margin-left:7px;
     padding: 10px; /* 메시지 패딩 */
     background: #007BFF; /* 메시지 배경색 */
     color: white; /* 메시지 글자색 */
     border-radius: 10px; /* 모서리 둥글게 */
     width: fit-content; /* 내용에 맞게 너비 조정 */
+    height: fit-content;
     max-width: 80%; /* 최대 너비 */
-}
-
-.message.sent {
-    align-self: flex-end; /* 오른쪽 정렬 */
-}
-
-.message.received {
     align-self: flex-start; /* 왼쪽 정렬 */
 }
+
 
 .message-input-container {
     display: flex;
     padding: 10px; /* 패딩 */
     background: rgba(255, 255, 255, 0.2); /* 투명도 있는 배경 */
-    backdrop-filter: blur(5px); /* 블러 효과 */
 }
 
 .message-input {
@@ -222,8 +246,8 @@
     width: 400px;
     padding: 30px;
     background-color: transparent;
-    border: 2px solid black;
-    color: black;
+    border: 2px solid #e0e0e0;
+    color: #e0e0e0;
     font-size: 20px;
     font-family: "Roboto Condensed";
     font-weight: bold;
@@ -236,6 +260,28 @@
     background-color: #54a0ff;
     color: white;
     border: 2px solid #54a0ff;
+}
+
+.scroll-down {
+    position: fixed;
+    right: 20px;   /* Adjust this value to increase or decrease distance from the right edge */
+    bottom: 20px;  /* Adjust this value to increase or decrease distance from the bottom edge */
+    z-index: 1000; /* Ensures the button stays on top of other content */
+}
+
+.scroll-down button {
+    border: none;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 24px; /* Adjust font size as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;  /* Adjust width as needed */
+    height: 50px; /* Adjust height as needed */
+    border-radius: 50%; /* Gives the button a rounded shape */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Optional: adds shadow for better visibility */
 }
 
 @keyframes slideDown {

@@ -1,75 +1,140 @@
+:root {
+    --main-bg-color: #f4f4f8;
+    --button-bg-color: #007BFF;
+    --button-hover-color: #0051ff;
+    --text-color: #333;
+    --title-font: 'Roboto', sans-serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
 .pin-page {
     color: #333;
     min-height: 100vh;
     overflow: hidden; /* 필요할 때만 스크롤바 표시 */
-}
-
-.pin-panel {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    min-height: 700px; /* 높이를 최소 500px로 설정 */
-    padding: 20px;
-    margin: 20px;
-    background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
-    backdrop-filter: blur(10px); /* 배경 블러 효과 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: var(--body-font);
+    margin:50px;
+    margin-left:100px;
+    margin-bottom:0px;
+    justify-content: center;
 }
 
 
 .pin-page-title {
-    font-family: 'Rockwell', sans-serif;
-    font-size:40px;
-    color: #000000;
+    font-size:30px;
+    font-family: 'Roboto Condensed';
+    color: var(--text-color);
     margin-left:10px;
     margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Dropdown Select Styling */
+.dropdown-select {
+    width: 20%; /* 드롭다운 너비 전체 사용 */
+    padding: 12px 15px; /* 적당한 패딩으로 편안한 클릭 가능 영역 확보 */
+    font-size: 16px; /* 적당한 폰트 크기 */
+    font-family: 'Open Sans', sans-serif; /* 일관된 폰트 스타일 적용 */
+    border: 1px solid #ccc; /* 섬세한 테두리 */
+    border-radius: 5px; /* 모던한 라운드 테두리 */
+    content: '▼'; /* 드롭다운 아이콘 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    appearance: none; /* 기본 브라우저 스타일 제거 */
+    background-color: white; /* 밝은 배경색 */
+    color: #333; /* 기본 텍스트 색상 */
+    cursor: pointer; /* 클릭 가능한 요소임을 나타내는 커서 스타일 */
+    outline: none; /* 포커스 아웃라인 제거 */
+    position: relative; /* 드롭다운 화살표 포지셔닝을 위한 설정 */
+}
+
+/* 화살표 스타일 */
+.dropdown-select::after {
+    content: '▼'; /* 드롭다운 아이콘 */
+    font-size: 12px; /* 아이콘 크기 조정 */
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 0.5em); /* 중앙 정렬 */
+    pointer-events: none; /* 클릭 이벤트 제외 */
+    color: #333; /* 아이콘 색상 */
+}
+
+/* 호버 및 포커스 효과 */
+.dropdown-select:hover {
+    border-color: #888; /* 호버 시 테두리 색상 변경 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강조 */
+}
+
+.dropdown-select:focus {
+    border-color: #555; /* 포커스 시 테두리 색상 강조 */
+}
+
+/* 옵션 스타일 */
+option {
+    padding: 10px; /* 옵션의 패딩 */
+    background-color: white; /* 옵션 배경색 */
+    color: #333; /* 옵션 텍스트 색상 */
 }
 
 .contracts {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-start; /* 모든 항목 간에 균등한 공간을 제공 */
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin: 20px;
+    gap: 10px; /* 항목 사이의 간격 설정 */
+    padding: 10px; /* 내부 패딩 추가 */
 }
 
 .contract-button {
-    background-color: #ecf0f1;
+    background-color: var(--button-bg-color);
+    color: white;
     border: none;
     padding: 10px 20px;
     margin: 5px;
     border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: "Apple SD Gothic Neo";
 }
 
 .contract-button:hover {
-    background-color: #bdc3c7;
+    background-color: var(--button-hover-color);
 }
 
 .gallery-view {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    background-color: transparent;
+}
+
+.pin-icon {
+    position: absolute;
+    top:-7px;
+    font-size:20px;
+    left: 2%;
+    color: #d35400; /* 기본 색상 */
 }
 
 .pinned-answer {
-    width:40%;
-    font-family: 'Rockwell', sans-serif;
-    background-color: #ecf0f1;
-    padding: 15px;
+    width: 40%;
+    height: auto; /* Change from fixed height to auto to accommodate varying content sizes */
+    overflow: hidden;
+    font-family: "Apple SD Gothic Neo";
+    font-size: 15px;
+    line-height: 20px;
+    background:white;
+    border: 1px solid #ccc;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
     margin: 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
-    flex-direction: column; /* 카드 내용을 세로로 정렬 */
-}
-
-.pinned-answer strong {
-    font-size: 18px; /* 제목을 더 강조 */
-    color: #2c3e50;
-    margin-bottom: 5px; /* 제목과 상세 정보 사이의 공간 추가 */
+    flex-direction: column;
+    justify-content: flex-start; /* Adjusted for better alignment */
+    align-items: center;
 }
 
 .pinned-answer:hover {
@@ -77,32 +142,15 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
+.goChatRoomButton {
+    background-color: var(--button-bg-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
     border-radius: 5px;
-    position: relative;
-    width: 90%;
-    max-width: 500px;
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: "Apple SD Gothic Neo";
 }

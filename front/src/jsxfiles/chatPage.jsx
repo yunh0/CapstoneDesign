@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useParams} from 'react-router-dom';
 import '../cssfiles/chatPage.css';
 import PdfViewer from '../jsxfiles/pdfViewer';
 import SelectPage from "./selectPage";
@@ -10,6 +10,7 @@ import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
+import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 import {postLogoutToken} from "../api/postLogoutToken";
 import EditChatModal from "./editChatRoom";
@@ -17,6 +18,7 @@ import EditChatModal from "./editChatRoom";
 
 
 const ChatPage = () => {
+    const { id } = useParams();  // This extracts the "id" param from the URL.
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const location = useLocation();
@@ -52,6 +54,7 @@ const ChatPage = () => {
     const [actionId, setactionId] = useState(null);
     const [actionTitle, setactionTitle] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+
     const totalPages = (() => {
         if (sReco !== null && sReco !== undefined) {
             if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
@@ -101,6 +104,41 @@ const ChatPage = () => {
             alert('채팅방 목록을 업데이트하는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         }
     };
+
+    useEffect(() => {
+        const fetchChatRooms = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const chatRooms = await getUserChatRooms(token);
+                if (chatRooms && chatRooms.length > 0) {
+                    const updatedChatList = chatRooms.map(chatRoom => ({
+                        id: chatRoom.chatRoomId,
+                        title: chatRoom.chatRoomName,
+                        pdfUrl: chatRoom.filePath,
+                    }));
+                    setChatList(updatedChatList);
+                } else {
+                    // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
+                }
+            } catch (error) {
+                console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
+                alert('채팅방 목록을 불러오는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            }
+        };
+        fetchChatRooms();
+    }, []);
+
+    useEffect(() => {
+        if (chatList.length > 0 && id) {
+            // URL에서 가져온 id와 일치하는 채팅방을 자동 선택
+            const selectedRoom = chatList.find(room => room.id.toString() === id);
+            if (selectedRoom) {
+                handleButtonClicked(selectedRoom);
+            } else {
+                console.log("No matching chat room found for the provided ID.");
+            }
+        }
+    }, [chatList, id]);  // chatList와 id가 변경될 때마다 실행됩니다.
 
 
     useEffect(() => {
@@ -212,6 +250,7 @@ const ChatPage = () => {
     };
 
     const handleSendMessage = async () => {
+        // textarea 요소의 값 가져오기
         const messageText = messageInputRef.current.value;
         const chatroomId = selectedChatId;
         if (isLoading) {
@@ -222,11 +261,14 @@ const ChatPage = () => {
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
 
+        // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
-            return;
+            return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
         }
+
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
+        setMessages(prevMessages => [...prevMessages, newMessage]); // 첫 번째 추가
+
         const loadingMessage = {
             id: messages.length + 1,
             text: <div className="lds-default">
@@ -280,11 +322,26 @@ const ChatPage = () => {
     /////////////////////////////////버튼 생성 후 /////////////////////////////////////
 
     useEffect(() => {
+        scrollToBottom();
+    }, [messages]);  // messages 배열이 변경될 때마다 scrollToBottom 함수를 호출
+
+    useEffect(() => {
         if (chatList.length > 0) {
             const lastChat = chatList[chatList.length - 1];
             handleButtonClicked(lastChat);
         }
     }, [chatList.length]);
+
+    useEffect(() => {
+        if (selectedChatId) {
+            scrollToBottom();
+        }
+    }, [selectedChatId]);  // selectedChatId가 변경될 때마다 scrollToBottom 함수를 호출
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [isPlusButtonClicked]);  // messages 배열이 변경될 때마다 scrollToBottom 함수를 호출
+
 
     ////////////////////////////PDF 관련 부분///////////////////////////////////////////
 
@@ -391,6 +448,8 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             const fetchedType = await getMyType(selectedChatId);
             const results = await postPinMessage(msg.backid, fetchedType);
 
+            // const results = await postPinMessage(msg.backid);
+            console.log(results);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -400,6 +459,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
 
         try {
             const results = await delPinMessages(msg.backid);
+            console.log(results);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -465,36 +525,31 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel"
-                 style={{width: isFolded ? '0%' : '20%', display: isFolded ? 'none' : 'flex'}}>
+                 style={{width: isFolded ? '0px' : '250px', display: isFolded ? 'none' : 'flex'}}>
                 <Link to="/main" className="home-btn">
-                    <span className="material-symbols-outlined" style={{fontSize: '40px'}}>home</span>
+                    <span className="material-symbols-outlined" style={{ fontSize: '40px' }}>home</span>
                 </Link>
                 <button className="newchat-btn" onClick={() => setShowSelectPage(true)}
                         disabled={isLoading || showSelectPage}>New Chat
                     {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
                 </button>
-                <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
+                <div className="chat-room-list" style={{flexGrow: 0.94, overflowY: 'auto'}}>
                     {chatList.slice(0).reverse().map((chat, index) => (
                         <div className="chat-room" key={index}>
-                            <button
-                                className="chatroom-button"
-                                onClick={() => {
-                                    if (showSelectPage) {
-                                        alert('보험을 선택하거나 뒤로가기 버튼을 눌러주세요.');
-                                    } else {
-                                        handleButtonClicked(chat);
-                                    }
-                                }}
-                                disabled={isLoading}
-                                style={{width: '100%', height: '100%', cursor: 'pointer'}}
+                            <button className="chatroom-button"
+                                    onClick={() => {
+                                        if (showSelectPage) {
+                                            alert('보험을 선택하거나 뒤로가기 버튼을 눌러주세요.');
+                                        } else {
+                                            handleButtonClicked(chat);
+                                        }
+                                    }}
+                                    disabled={isLoading}
+                                    style={{width: '100%', height: '100%', cursor: 'pointer' }}
                             >
-                                <span
-                                    className="btninbtn"
-                                    onClick={(e) => handleChatRoomClick(e, chat)}
-                                >
-                                    =
+                                <span className="btninbtn" onClick={(e) => handleChatRoomClick(e, chat)}>
+                                    <span className="material-symbols-outlined">info</span>
                                 </span>
-
                                 {chat.title}
                             </button>
                         </div>
@@ -520,22 +575,19 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             ) : (
                 <>
                     <Fragment>
-                        <div style={{width: "20px"}}>
-                            <button className="foldbtn" style={{width: "100%", height: "100%", border: 'none'}}
-                                    onClick={handleFoldButtonClick}>
-                                {isFolded ? '펴기' : '접기'}
+                        <div className = "fold-container">
+                            <button className="foldbtn" onClick={handleFoldButtonClick}>
+                                {isFolded ?
+                                    <span className="material-symbols-outlined"> chevron_right </span>
+                                    : <span className="material-symbols-outlined"> chevron_left </span>}
                             </button>
                         </div>
                         <div ref={middlePanelRef} className="chat-panel"
-                             style={{
-                                 width: isFolded ? '80%' : '40%',
-                                 pointerEvents: isPdfViewerDisabled ? 'none' : 'auto'
-                             }}>
+                             style={{width: isFolded ? '80%' : '40%', pointerEvents: isPdfViewerDisabled ? 'none' : 'auto'}}>
                             {showPdfViewer && <PdfViewer pdfUrl={pdfUrl}/>}
                         </div>
-                        <div ref={dividerRef} className="divider" onMouseMove={handleMouseMove}
-                             onMouseDown={handleMouseDown}></div>
-                        <div ref={rightPanelRef} className="chat-panel right" style={{width: isFolded ? '80%' : '40%'}}>
+                        <div ref={dividerRef} className="divider"  onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}></div>
+                        <div ref={rightPanelRef} className="chat-panel-right" style={{width: isFolded ? '80%' : '40%'}}>
                             <div className="chat-banner">
                                 AI Chatbot
                                 <span className="material-icons help-button">help_outline</span>
@@ -555,7 +607,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                     <div key={index}
                                          className={`chat-message ${msg.sender}  ${msg.id === 1 || msg.id === 2 ? 'special-message' : ''}`}>
                                         {msg.text}
-                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received" && msg.backid != 3 && (
+                                        {msg.id !== 1 && msg.id !== 2 && msg.sender === "received"  && msg.backid != 3 && (
                                             <button
                                                 className={`pin-button ${msg.pinned ? 'pinned' : ''}`}
                                                 onClick={() => handlePinClick(msg)}
@@ -612,9 +664,12 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                             )}
 
                             <form className="chat-input-container" onSubmit={handleFormSubmit}>
-                                <div className="plus-button">
+                                <div>
                                     <button className="p-button" onClick={handlePlusButtonClick} disabled={isLoading}>
-                                        {isPlusButtonClicked ? '➖' : '➕'}
+                                        {isPlusButtonClicked ?
+                                            <span className="material-symbols-outlined"> remove </span> :
+                                            <span className="material-symbols-outlined"> add </span>
+                                        }
                                     </button>
                                 </div>
                                 <textarea
@@ -642,12 +697,14 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                 </button>
                             </form>
                         </div>
-
                     </Fragment>
-                    <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
+                    <div className={`modal-backdrop ${modalOpen ? '' : 'hidden'}`} onClick={handleCloseModal}>
+                        <div className="modal-content-edit" onClick={e => e.stopPropagation()}> {/* Prevents click inside the modal from closing it */}
+                            <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
+                        </div>
+                    </div>
                 </>
             )}
-
         </div>
     );
 };

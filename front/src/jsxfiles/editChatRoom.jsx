@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { delChatRoom } from "../api/delChatRoom";
 import {editChatRoom} from "../api/editChatRoom";
 import {getUserChatRooms} from "../api/getChatRoom";
+import '../cssfiles/editChatRoom.css';
+
 
 const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
     const [editingMode, setEditingMode] = useState(null);
@@ -71,39 +73,41 @@ const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
         <>
             {isOpen && (
                 <div className="modal">
-                    <div className="modal-content">
-                        <button onClick={handleClose}>&times;</button>
-                        <h2>{actionTitle} {editingMode === 'delete' ? '삭제하기' : editingMode === 'editName' ? '제목 수정' : 'Edit Page'}</h2>
-                        <div>
-                            {editingMode ? (
-                                <>
-                                    {editingMode === 'delete' ? (
-                                        <>
-                                            <p>정말로 삭제하시겠습니까?</p>
+                    <div className="modal-content-edit">
+                        <button className="edit-close-btn" onClick={handleClose}>&times;</button>
+                        <h2>{actionTitle} {editingMode === 'delete' ? '삭제하기' : editingMode === 'editName' ? '제목을 바꿔보세요!' : ''}</h2>
+                        {editingMode ? (
+                            <>
+                                {editingMode === 'delete' ? (
+                                    <>
+                                        <p>정말로 삭제하시겠습니까?</p>
+                                        <div className="modal-actions">
                                             <button onClick={handleConfirmClick}>예</button>
                                             <button onClick={handleClose}>아니오</button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <input
-                                                type="text"
-                                                placeholder="내용을 입력하세요"
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                onClick={(e) => e.stopPropagation()}
-                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <input className="input-edit"
+                                            type="text"
+                                            placeholder="내용을 입력하세요"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            onClick={(e) => e.stopPropagation()}
+                                        />
+                                        <div className="modal-actions">
                                             <button onClick={handleEditClick}>수정하기</button>
                                             <button onClick={handleClose}>취소</button>
-                                        </>
-                                    )}
-                                </>
-                            ) : (
-                                <>
-                                    <button onClick={handleDeleteClick}>삭제하기</button>
-                                    <button onClick={handleEditNameClick}>이름 수정</button>
-                                </>
-                            )}
-                        </div>
+                                        </div>
+                                    </>
+                                )}
+                            </>
+                        ) : (
+                            <div className="modal-actions">
+                                <button onClick={handleDeleteClick}>삭제하기</button>
+                                <button onClick={handleEditNameClick}>이름 수정</button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

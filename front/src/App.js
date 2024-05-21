@@ -34,6 +34,7 @@ function App() {
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/pinpage" element={<PinPage />} />
+                <Route path="/chatroom/:id" element={<ChatPage />} /> // 채팅방 ID에 따른 라우트 추가
                 <Route path="/select" element={<SelectPage />} />
                 {/*</Route>*/}
             </Routes>

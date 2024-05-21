@@ -2,8 +2,8 @@ package com.hansung.InsuranceProject.service;
 
 import com.hansung.InsuranceProject.constant.MessageType;
 import com.hansung.InsuranceProject.entity.ChatRoom;
-import com.hansung.InsuranceProject.entity.FileInformation;
 import com.hansung.InsuranceProject.entity.Message;
+import com.hansung.InsuranceProject.entity.FileInformation;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class QuestionRecommendationService {
     }
 
     @Transactional
-    public List<String> getRecommendations(Long chatRoomId){
+    public List<String> getRecommendations(Long chatRoomId) {
         List<String> recommendations = new ArrayList<>();
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
         Message message = messageRepository.findFirstByChatRoomAndMessageTypeOrderByCreatedDateDesc(chatRoom, MessageType.PERSON);
@@ -36,6 +36,7 @@ public class QuestionRecommendationService {
                 recommendations.add(null);
             }
         } else {
+            // 메시지가 null이 아니면 해당 메시지의 예측값 가져오기
             String prediction = message.getPrediction();
 
             List<Message> sameFileTypeMessages = messageRepository.findByChatRoomFileInformationFileTypeOrderByRandom(fileType);

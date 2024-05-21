@@ -25,8 +25,13 @@ public class PinnedAnswer {
     @Column(name = "fetched_type")
     private String fetchedType;
 
-    public PinnedAnswer(Message message, String fetchedType){
+    @Column(name = "chatRoomId")
+    private Long chatRoomId;
+
+
+    public PinnedAnswer(Message message, String fetchedType, Long chatRoomId){
         this.message = message;
         this.fetchedType = fetchedType;
+        this.chatRoomId = chatRoomId;
     }
 }
