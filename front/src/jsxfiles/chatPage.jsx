@@ -17,41 +17,72 @@ import EditChatModal from "./editChatRoom";
 
 
 const ChatPage = () => {
+    //페이지를 이동하는 데 사용 navigate 함수 초기화
     const navigate = useNavigate();
+    //다음 질문 추천 페이지
     const [currentPage, setCurrentPage] = useState(1);
+    //현재 웹 앱의 URL을 나타내는 현재 위치 객체에 접근할 수 있게 함
     const location = useLocation();
+    // 현재 페이지의 URL 정보를 가져와서 그 안에 있는 상태 정보에서 PDF 파일 경로를 추출
     const pdfPathFromSelectPage = location.state?.pdfPath;
+    //다음 질문 추천 페이지 버튼
     const [isPlusButtonClicked, setIsPlusButtonClicked] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
+    //pdf뷰어 띄우기
     const [showPdfViewer, setShowPdfViewer] = useState(false);
+    //파일 URL
     const [pdfUrl, setPdfUrl] = useState("");
-    const [showSelectPage, setShowSelectPage] = useState(false); // Change to control SelectPage visibility
+    //보험 선택 페이지 띄우기
+    const [showSelectPage, setShowSelectPage] = useState(false);
     const [chatList, setChatList] = useState([]);
+    //경계선 드래그
     const [dragging, setDragging] = useState(false);
+    //마우스 위치
     const [positionX, setPositionX] = useState(null);
+    //분할선을 나타내는 요소에 대한 참조
     const dividerRef = useRef(null);
+    //화면 중앙에 위치한 pdf 패널에 대한 참조
     const middlePanelRef = useRef(null);
+    //화면 우측에 위치한 채팅 패널에 대한 참조
     const rightPanelRef = useRef(null);
+    //채팅 메시지가 표시되는 영역에 대한 참조
     const chatMessagesRef = useRef(null);
+    //메시지를 입력하는 입력창에 대한 참조
     const messageInputRef = useRef(null);
+    //클릭된 채팅방 아이디
     const [selectedChatId, setSelectedChatId] = useState(null);
+    //많이 한 질문
     const [formattedText, setFormattedText] = useState("");
+    //채팅방 이름 수정 및 삭제 페이지
     const [EditchatRoom, setEditchatRoom] = useState("");
+    //이름 수정 입력
     const [name, setName] = useState("");
+    //로딩중
     const [isLoading, setIsLoading] = useState(false);
+    //기본 메세지
     const [defaultMessages,setDefaultMessages] = useState([
         { id: 1, text: "안녕하세요! 챗봇입니다.", sender: "received", backid:1 },
         { id: 2, text: "", sender: "received", backid:1}
     ]);
+    //메세지 목록
     const [messages, setMessages] = useState(defaultMessages);
+    //핀된 메세지 목록
     const [pinnedMessages, setPinnedMessages] = useState([]);
+    //많이 한 질문 통신 확인
     const [fnum, setFnum] = useState(0);
+    //pdf뷰어 클릭 불가
     const [isPdfViewerDisabled, setIsPdfViewerDisabled] = useState(false);
+    //사이드바 접기
     const [isFolded, setIsFolded] = useState(false);
+    //다음 질문 추천
     const [sReco, setSReco] = useState(null);
+    //수정할 채팅방 아이디
     const [actionId, setactionId] = useState(null);
+    //수정할 채팅방 제목
     const [actionTitle, setactionTitle] = useState(null);
+    //채팅방 수정 모달창
     const [modalOpen, setModalOpen] = useState(false);
+    //다음 질문 추천 페이지 수 설정
     const totalPages = (() => {
         if (sReco !== null && sReco !== undefined) {
             if (sReco.first !== null && sReco.second !== null && sReco.third !== null) {
@@ -71,8 +102,8 @@ const ChatPage = () => {
 
     const fetchChatRooms = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const chatRooms = await getUserChatRooms(token);
+            const chatRooms = await getUserChatRooms();
+            //채팅방들 목록 매핑 후 설정
             if (chatRooms && chatRooms.length > 0) {
                 const updatedChatList = chatRooms.map(chatRoom => ({
                     id: chatRoom.chatRoomId,
@@ -88,13 +119,15 @@ const ChatPage = () => {
             alert('채팅방 목록을 불러오는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
         }
     };
+    //컴포넌트가 처음 렌더링될 때 fetchChatRooms 함수 호출
     useEffect(() => {
         fetchChatRooms();
     }, []);
 
+    //채팅방 목록 업데이트
     const updateChatList = async () => {
         try {
-            const updatedChatRooms = await getUserChatRooms(/* 필요한 인자 */);
+            const updatedChatRooms = await getUserChatRooms();
             setChatList(updatedChatRooms);
         } catch (error) {
             console.error('채팅방 목록을 업데이트하는 중 오류가 발생했습니다:', error.message);
@@ -102,12 +135,12 @@ const ChatPage = () => {
         }
     };
 
-
+// 아이디 2인 기본 메세지에 많이 한 질문 리스트 설정
     useEffect(() => {
         if (formattedText) {
             const messageWithId2Index = messages.findIndex(msg => msg.id === 2);
-
             if (messageWithId2Index !== -1) {
+                //id가 2인 메시지가 존재한다면, 해당 메시지의 텍스트를 formattedText로 업데이트
                 setMessages(prevMessages => prevMessages.map((msg, index) => {
                     if (index === messageWithId2Index) {
                         return { ...msg, text: formattedText };
@@ -115,6 +148,7 @@ const ChatPage = () => {
                     return msg;
                 }));
             } else {
+                //id가 2인 메시지가 존재하지 않는다면, 새로운 메시지 객체를 생성하여 messages 배열에 추가
                 const newMessage = {
                     id: 2,
                     text: formattedText,
@@ -125,6 +159,7 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newMessage]);
             }
         }
+        //fnum 상태가 변경될 때마다 반복
     }, [fnum]);
 
 
@@ -169,29 +204,36 @@ const ChatPage = () => {
         }
     };
 
+    //마우스 버튼이 눌렸다가 떼어질 때의 이벤트를 감지하여 PDF 뷰어를 비활성화
     useEffect(() => {
+        //PDF 뷰어를 활성화
         const handleMouseUp = () => {
             setIsPdfViewerDisabled(false);
         };
 
+        //'mouseup' 이벤트에 handleMouseUp 함수를 연결
         document.addEventListener('mouseup', handleMouseUp);
 
+        //컴포넌트가 언마운트될 때 실행되는 클린업 함수를 정의
         return () => {
             document.removeEventListener('mouseup', handleMouseUp);
         };
     }, []);
     ///////////////////////////////메세지 보내기//////////////////////////////////////////////
+
+    //메세지 전송 버튼 클릭 시
     const handleFormSubmit = (e) => {
         e.preventDefault(); // 폼 제출 기본 동작 방지
         handleSendMessage(); // 메시지 전송 함수 호출
     };
 
+    //스크롤 내리기 (빠르게)
     const scrollToBottom = () => {
         if (chatMessagesRef.current) {
             chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
         }
     };
-
+    //스크롤 내리기 (천천히)
     const scrollToBottom2 = () => {
         if (chatMessagesRef.current) {
             const scrollHeight = chatMessagesRef.current.scrollHeight;
@@ -212,21 +254,26 @@ const ChatPage = () => {
     };
 
     const handleSendMessage = async () => {
+        //현재 채팅방과 메세지 입력창 내용
         const messageText = messageInputRef.current.value;
         const chatroomId = selectedChatId;
+        //로딩중이라면 취소
         if (isLoading) {
             return;
         }
+        //다음 질문 추천 페이지 닫기
         setIsPlusButtonClicked(false);
-
+        //로딩중 표시
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
-
+        //공백 시
         if (!messageText.trim()) {
             return;
         }
+        //질문 화면에 표시
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
         setMessages(prevMessages => [...prevMessages, newMessage]);
+        //로딩중일 때 표시
         const loadingMessage = {
             id: messages.length + 1,
             text: <div className="lds-default">
@@ -248,11 +295,12 @@ const ChatPage = () => {
         };
         setMessages(prevMessages => [...prevMessages, loadingMessage]);
         scrollToBottom();
+        //답변 받고 화면에 표시
         const success = await postChatContent(messageText, chatroomId);
         if (!success) {
             console.error('Failed to send message to the backend');
         } else {
-
+            //답변 받기 성공 시
             if (success) {
                 let senderValue = "received";
                 if (success.messageType === "PERSON") {
@@ -263,6 +311,7 @@ const ChatPage = () => {
                 scrollToBottom2();
                 setMessages(prevMessages => [...prevMessages, newResponse]);
             } else {
+                //답변 받기 실패 시
                 let senderValue = "received";
                 const newResponse = { id: messages.length + 2, text: 'Failed to get chat response from the backend', sender: senderValue };
                 setMessages(prevMessages => [...prevMessages, newResponse]);
@@ -271,8 +320,9 @@ const ChatPage = () => {
 
 
         }
-
+        //메세지 입력창 비우기
         messageInputRef.current.value = '';
+        //로딩 중 취소
         setIsLoading(false);
 
     };
@@ -295,22 +345,24 @@ const ChatPage = () => {
         }
     }, [pdfPathFromSelectPage]);
 
-
+    //해당 채팅방 클릭 함수
     const handleButtonClicked = async (chat) => {
         const { id, pdfUrl } = chat;
+        //이미 클릭되었거나 로딩중일 시
         if (selectedChatId === id && !isLoading) {
             return;
         }
-
+        //현재 채팅방 아이디 세팅, 다음질문 추천 페이지 닫기, 로딩중 표시
         setSelectedChatId(id);
         setIsPlusButtonClicked(false);
         setIsLoading(true);
 
         try {
             messageInputRef.current.value = 'LOADING Please wait...';
-
+            //pdf띄우기
             setShowPdfViewer(true);
             setPdfUrl(pdfUrl);
+            //많이 한 질문 추천 세팅
             const fReco = await getfReco(id);
             const formattedText = `사용자들이 많이 검색한 질문유형은 <${fReco.prediction ?? " "}>(이)에요!
 <${fReco.prediction ?? " "}> 유형에서 질문을 추천해 드릴게요!
@@ -322,7 +374,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             setFnum(prevFnum => prevFnum === 0 ? 1 : 0);
             setMessages(defaultMessages);
             setFormattedText(formattedText);
-
+            //과거 채팅 목록 불러오기
             const results = await sendChatRoomClick(id);
             results.forEach(result => {
                 let senderValue = result.messageType === "PERSON" ? "sent" : "received";
@@ -376,7 +428,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     const isPinned = (msg) => {
         return msg.pinned;
     };
-
+    //핀 확인에 표시
     const pinMessage = (msg) => {
         setPinnedMessages([...pinnedMessages, msg]);
     };
@@ -386,11 +438,10 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     };
 
     const handlePinMessage = async (msg) => {
-
         try {
+            //채팅방 타입 가져옴
             const fetchedType = await getMyType(selectedChatId);
             const results = await postPinMessage(msg.backid, fetchedType);
-
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
         }
@@ -471,7 +522,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                 </Link>
                 <button className="newchat-btn" onClick={() => setShowSelectPage(true)}
                         disabled={isLoading || showSelectPage}>New Chat
-                    {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
                 </button>
                 <div className="chat-room-list" style={{flexGrow: 1, overflowY: 'auto'}}>
                     {chatList.slice(0).reverse().map((chat, index) => (
