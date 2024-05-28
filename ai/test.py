@@ -126,7 +126,7 @@ def answer_question(question, file_path):
         return "파일을 로드하는 동안 오류가 발생했습니다."
 
     # LLM 에이전트 생성
-    llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
     # LLM에이전트가 사용할 수 있도록 retriever 라는 툴로 만들기
     retriever = vectorstore.as_retriever()
