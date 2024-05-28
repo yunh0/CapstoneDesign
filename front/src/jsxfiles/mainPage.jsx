@@ -102,7 +102,9 @@ const MainPage = () => {
                                     INSURANCE COUNSELING
                                 </div>
                                 <div className="message-introduction">
-                                    Welcome! Find insurance contracts you need and consult with our AI chatbot in real-time in one place. Select a contract and start a conversation in your personal chat room with AI to address all your questions. Your questions are our top priority.                                </div>
+                                    반갑습니다! 필요한 보험 계약을 찾고 한 곳에서 실시간으로 AI 챗봇과 상담하세요. 계약을 선택하고 AI와 개인 채팅방에서 대화를 시작하여 모든 질문에 답변해 드립니다. 여러분의 질문이 우리의 최우선입니다.
+                                    <p>Welcome! Find insurance contracts you need and consult with our AI chatbot in real-time in one place. Select a contract and start a conversation in your personal chat room with AI to address all your questions. Your questions are our top priority.</p>
+                                </div>
                                 <div className="chat-link-container">
                                     <button onClick={() => handlePageChange('select')} className="chat-link">
                                         SELECT INSURANCE
@@ -130,9 +132,63 @@ const MainPage = () => {
 
                         <div className="spare-panel-2nd" ref={refs[1]}>
                             <div>
+                                <div className= "spare-panel-2nd-container">
+                                    <div className="spare-panel-2nd-title">
+                                        <p>검증된 AI 챗봇, 무엇이든 물어보험</p>
+                                    </div>
+                                    <div className="spare-panel-2nd-explanation">
+                                        <p>다가가기 어려운 보험, 이제 끝!</p>
+                                        <p>이제 똑똑한 챗봇과 편하게 알아보아요</p>
+                                    </div>
+                                </div>
                                 <div className="white-box-container">
                                     <div className = "white-box">
-
+                                        <div className= "box-info">
+                                            <div className = "box-title-container">
+                                                <p className = "box-title">Faithfulness</p>
+                                                <p className = "box-title-kor">충실도</p>
+                                            </div>
+                                            <div className = "box-percentage">85%</div>
+                                        </div>
+                                        <div className= "box-explanation">
+                                            모델의 응답이 원본 문서의 내용을 얼마나 충실하게 반영하는지를 측정합니다.
+                                        </div>
+                                    </div>
+                                    <div className = "white-box">
+                                        <div className= "box-info">
+                                            <div className = "box-title-container">
+                                                <p className = "box-title">Answer Relevancy</p>
+                                                <p className = "box-title-kor">답변 관련성</p>
+                                            </div>
+                                            <div className = "box-percentage">95%</div>
+                                        </div>
+                                        <div className= "box-explanation">
+                                            모델의 응답이 사용자 질문과 얼마나 관련이 있는지를 측정합니다.
+                                        </div>
+                                    </div>
+                                    <div className = "white-box">
+                                        <div className= "box-info">
+                                            <div className = "box-title-container">
+                                                <p className = "box-title">Context Recall</p>
+                                                <p className = "box-title-kor">문맥 회수율</p>
+                                            </div>
+                                            <div className = "box-percentage">91%</div>
+                                        </div>
+                                        <div className= "box-explanation">
+                                            모델이 응답을 생성하는 데 사용한 문맥이 전체 문서의 문맥과 얼마나 잘 일치하는지를 측정합니다.
+                                        </div>
+                                    </div>
+                                    <div className = "white-box">
+                                        <div className= "box-info">
+                                            <div className = "box-title-container">
+                                                <p className = "box-title">Context Precision</p>
+                                                <p className = "box-title-kor">문맥 정확도</p>
+                                            </div>
+                                            <div className = "box-percentage">74%</div>
+                                        </div>
+                                    <div className= "box-explanation">
+                                            모델이 응답을 생성하는 데 사용한 문맥이 실제로 질문과 얼마나 관련이 있는지를 측정합니다.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
