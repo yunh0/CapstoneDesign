@@ -107,7 +107,7 @@ def pre_load_vectorstores():
         # "https://storage.googleapis.com/capstone_1971166_bucket/%EB%A9%94%EB%A6%AC%EC%B8%A0%EB%8B%A4%EC%9D%B4%EB%A0%89%ED%8A%B8%20%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B3%B4%ED%97%98(%EC%97%85%EB%AC%B4%EC%9A%A9).pdf",
         # "https://storage.googleapis.com/capstone_1971166_bucket/Hicar%20%EA%B0%9C%EC%9D%B8%EC%9A%A9%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B3%B4%ED%97%98.pdf",
         # "https://storage.googleapis.com/capstone_1971166_bucket/Hicar%20%EB%8B%A4%EC%9D%B4%EB%A0%89%ED%8A%B8%20%EA%B0%9C%EC%9D%B8%EC%9A%A9%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B3%B4%ED%97%98.pdf",
-        # "https://storage.googleapis.com/capstone_1971166_bucket/Hicar%20%EC%98%81%EC%97%85%EC%9A%A9%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B3%B4%ED%97%98.pdf",
+        "https://storage.googleapis.com/capstone_1971166_bucket/Hicar%20%EC%98%81%EC%97%85%EC%9A%A9%EC%9E%90%EB%8F%99%EC%B0%A8%EB%B3%B4%ED%97%98.pdf",
         ]
 
     # 파일 경로들에 대한 벡터스토어 미리 생성
@@ -125,7 +125,7 @@ def answer_question(question, file_path):
     if vectorstore is None:
         return "파일을 로드하는 동안 오류가 발생했습니다."
 
-    # LLM 에이전트 생성(gpt-4o모델 사용)
+    # LLM 에이전트 생성
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
 
     # LLM에이전트가 사용할 수 있도록 retriever 라는 툴로 만들기
@@ -236,13 +236,16 @@ def question_prediction(question):
     print("=" * 40)
     return intent_name
 
-# 애플리케이션 실행 시 40개의 파일을 미리 임베딩하여 벡터스토어에 저장
+
 
 # 애플리케이션 실행
 if __name__ == '__main__':
+    # 애플리케이션 실행 시 40개의 파일을 미리 임베딩하여 벡터스토어에 저장
     pre_load_vectorstores()
+
     # 애플리케이션 실행
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)  # use_reloader=False 추가
+
 
 
 
