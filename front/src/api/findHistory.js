@@ -1,4 +1,4 @@
-export const postFind = async (content) => {
+export const postFind = async (content, type) => {
     const API_URL = process.env.REACT_APP_API_URL;
     const path = `/api/user/message/search`;
 
@@ -10,7 +10,7 @@ export const postFind = async (content) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ content }),
+            body: JSON.stringify({ content, type}),
         });
         if (!response.ok) throw new Error('Failed to send message to the backend');
         //console.log(response.json())

@@ -30,6 +30,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query("SELECT m FROM Message m WHERE m.chatRoom.chatRoomId = :chatRoomId AND m.messageId > :messageId ORDER BY m.messageId ASC")
     List<Message> findNextMessage(@Param("chatRoomId") Long chatRoomId, @Param("messageId") Long messageId);
 
+
+    @Query("SELECT m FROM Message m WHERE m.chatRoom.chatRoomId = :chatRoomId AND m.messageId < :messageId ORDER BY m.messageId ASC")
+    List<Message> findPreviousMessage(@Param("chatRoomId") Long chatRoomId, @Param("messageId") Long messageId);
+
     @Query(value = "SELECT m FROM Message m WHERE m.prediction = ?1 ORDER BY RAND()")
     List<Message> findTop3ByPredictionAndOrderByRandom(String prediction);
 

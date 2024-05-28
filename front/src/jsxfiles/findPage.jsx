@@ -6,12 +6,13 @@ const FindPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [expandedRow, setExpandedRow] = useState(null); // 아코디언 확장 상태 관리
+    const [searchType, setSearchType] = useState('question'); // 검색 유형 상태 ('question', 'answer', 'all')
 
     const handleSearch = async () => {
         try {
             // Reset the expanded row state before executing a new search
             setExpandedRow(null);
-            const response = await postFind(searchTerm);
+            const response = await postFind(searchTerm, searchType); // 검색 유형 인자 추가
             setSearchResult(response);
         } catch (error) {
             console.error('Error searching:', error);
@@ -20,6 +21,10 @@ const FindPage = () => {
 
     const handleInputChange = (event) => {
         setSearchTerm(event.target.value);
+    };
+
+    const handleSearchTypeChange = (event) => {
+        setSearchType(event.target.value);
     };
 
     const handleKeyPress = (event) => {
@@ -38,6 +43,10 @@ const FindPage = () => {
                 <h2>SEARCH</h2>
             </div>
             <div className="find-body">
+                <select className="search-type-select" value={searchType} onChange={handleSearchTypeChange}>
+                    <option value="question">질문</option>
+                    <option value="answer">답변</option>
+                </select>
                 <input
                     className="find-input"
                     type="text"

@@ -1,76 +1,60 @@
-import React, { Component } from "react";
-import * as THREE from "three";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { postLoginToken } from "../api/postLoginToken";
+import GoogleLogin from "../components/GoogleLogin"; // Make sure this component is implemented correctly.
 import '../cssfiles/startPage.css';
 
-class StartPage extends Component {
-    constructor(props) {
-        super(props);
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.renderer = new THREE.WebGLRenderer();
-        this.geometry = new THREE.SphereGeometry(1, 32, 32);
-        this.material = new THREE.MeshPhongMaterial({ color: 0x00ff00 }); // MeshPhongMaterial 사용
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.ref = React.createRef();
-    }
+const StartPage = () => {
+    const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false);
+    const [showGoogleLogin, setShowGoogleLogin] = useState(false); // Added this state for toggling login buttons
 
-    componentDidMount() {
-        this.initThree();
-        this.rotateElement();
-    }
-
-    initThree() {
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor(0xffffff); // 배경색을 흰색으로 설정
-        this.ref.current.appendChild(this.renderer.domElement);
-        this.camera.position.z = 5;
-        this.scene.add(this.mesh);
-        this.animate();
-    }
-
-    animate() {
-        requestAnimationFrame(() => this.animate());
-        this.mesh.rotation.x += 0.01;
-        this.mesh.rotation.y += 0.01;
-        this.renderer.render(this.scene, this.camera);
-    }
-
-    rotateElement() {
-        let startTime;
-        const duration = 1000; // 회전에 걸리는 시간 (10초)
-        const startAngle = 0; // 시작 각도
-        const endAngle = 360; // 종료 각도
-
-        const step = (timestamp) => {
-            if (!startTime) startTime = timestamp;
-            const progress = timestamp - startTime;
-
-            const angle = startAngle + ((endAngle - startAngle) * progress) / duration;
-            this.mesh.rotation.z = THREE.MathUtils.degToRad(angle);
-
-            if (progress < duration) {
-                window.requestAnimationFrame(step);
+    const onGoogleSignIn = async (res) => {
+        try {
+            const { credential } = res;
+            const result = await postLoginToken(credential);
+            setIsLogin(result); // Update login status based on the result
+            if (result) {
+                navigate('/main'); // Navigate to main page if login is successful
             }
-        };
+        } catch (error) {
+            console.error("Login failed: ", error);
+            // Implement error handling logic, such as showing a notification to the user
+        }
+    };
 
-        window.requestAnimationFrame(step);
-    }
+    const toggleLoginButton = () => {
+        setShowGoogleLogin(true); // Function to show the Google Login button
+    };
 
-    render() {
-        return (
-            <div className="start-page-container">
-                <div className="start-page-circle1" ref={this.ref}></div>
-                <div className="project-name-container">
-                    <div className="project-name">Insurance Counseling</div>
-                    <div className="auth-buttons-container">
-                        <Link to ='/rlogin' className="login-button">Log in</Link>
-                        <Link to ='/rsignup' className="signup-button">Sign up</Link>
-                    </div>
+    return (
+        <div className="start-page-container">
+            <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 600" xmlns="http://www.w3.org/2000/svg" className="transition duration-300 ease-in-out delay-150">
+                <defs>
+                    <linearGradient id="gradient" x1="50%" y1="100%" x2="50%" y2="0%">
+                        <stop offset="5%" stop-color="#0693e3"></stop>
+                        <stop offset="95%" stop-color="#8ed1fc"></stop>
+                    </linearGradient>
+                </defs>
+                <path d="M 0,700 L 0,262 C 117.19999999999999,293.8666666666667 234.39999999999998,325.7333333333333 422,293 C 609.6,260.2666666666667 867.5999999999999,162.93333333333334 1049,147 C 1230.4,131.06666666666666 1335.2,196.53333333333333 1440,262 L 1440,700 L 0,700 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="1" className="transition-all duration-300 ease-in-out delay-150 path-0"></path>
+            </svg>
+            <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 780" xmlns="http://www.w3.org/2000/svg" className="transition duration-300 ease-in-out delay-150"><defs><linearGradient id="gradient" x1="50%" y1="100%" x2="50%" y2="0%"><stop offset="5%" stop-color="#0693e3"></stop><stop offset="95%" stop-color="#8ed1fc"></stop></linearGradient></defs><path d="M 0,700 L 0,262 C 117.19999999999999,293.8666666666667 234.39999999999998,325.7333333333333 422,293 C 609.6,260.2666666666667 867.5999999999999,162.93333333333334 1049,147 C 1230.4,131.06666666666666 1335.2,196.53333333333333 1440,262 L 1440,700 L 0,700 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="1" className="transition-all duration-300 ease-in-out delay-150 path-0" transform="rotate(-180 720 350)"> </path></svg>
+            <div className="project-name-container">
+                <div className="project-name">Insurance Counseling</div>
+                <div className="auth-buttons-container">
+                    {!showGoogleLogin ? (
+                        <button className="login-button" onClick={toggleLoginButton}>
+                            Log in
+                        </button>
+                    ) : (
+                        <div className="google-login">
+                            <GoogleLogin onGoogleSignIn={onGoogleSignIn} text="로그인"/>
+                        </div>
+                    )}
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default StartPage;

@@ -27,7 +27,7 @@ public class SearchKeyWordController {
 
         SearchKeyWord searchKeyWord = searchKeyWordService.saveKeyWord(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
 
-        List<MessageDto> searchMessages = messageService.getSearchMessages(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
+        List<MessageDto> searchMessages = messageService.getSearchMessages(Long.valueOf(principal.getName()), searchMessageRequest.getContent(),searchMessageRequest.getType());
         return ResponseEntity.ok().body(searchMessages);
     }
 

@@ -51,40 +51,71 @@ public class MessageService {
     }
 
     @Transactional
-    public List<MessageDto> getSearchMessages(Long accountId, String keyWord){
+    public List<MessageDto> getSearchMessages(Long accountId, String keyWord,String type){
         Account account = accountRepository.findById(accountId).orElse(null);
         if (account == null) {
             return List.of();
         }
 
         List<ChatRoom> chatRooms = account.getChatRooms();
-
-        List<Message> allMessages = chatRooms.stream()
-                .map(ChatRoom::getMessages)
-                .flatMap(List::stream)
-                .filter(message -> message.getMessageType() == MessageType.PERSON)
-                .collect(Collectors.toList());
-
-        List<Message> questionMessages = allMessages.stream()
-                .filter(message -> message.getContent().contains(keyWord))
-                .collect(Collectors.toList());
-
         List<Message> filteredMessages = new ArrayList<>();
 
-        for (Message message : questionMessages) {
-            Long chatRoomId = message.getChatRoom().getChatRoomId();
-            Long messageId = message.getMessageId();
-            List<Message> nextMessages = messageRepository.findNextMessage(chatRoomId, messageId);
 
-            if (!nextMessages.isEmpty()) {
-                Message nextMessage = nextMessages.get(0);
+        if(type.toLowerCase().equals("question")) {
+            List<Message> personMessages = chatRooms.stream()
+                    .map(ChatRoom::getMessages)
+                    .flatMap(List::stream)
+                    .filter(message -> message.getMessageType() == MessageType.PERSON)
+                    .collect(Collectors.toList());
 
-                if (nextMessage.getMessageType() == MessageType.AI) {
-                    filteredMessages.add(message);
-                    filteredMessages.add(nextMessage);
+            List<Message> questionMessages = personMessages.stream()
+                    .filter(message -> message.getContent().contains(keyWord))
+                    .collect(Collectors.toList());
+
+            for (Message message : questionMessages) {
+                Long chatRoomId = message.getChatRoom().getChatRoomId();
+                Long messageId = message.getMessageId();
+                List<Message> nextMessages = messageRepository.findNextMessage(chatRoomId, messageId);
+
+                if (!nextMessages.isEmpty()) {
+                    Message nextMessage = nextMessages.get(0);
+
+                    if (nextMessage.getMessageType() == MessageType.AI) {
+                        filteredMessages.add(message);
+                        filteredMessages.add(nextMessage);
+                    }
+                }
+            }
+
+        } else if(type.toLowerCase().equals("answer")) {
+            List<Message> AIMessages = chatRooms.stream()
+                    .map(ChatRoom::getMessages)
+                    .flatMap(List::stream)
+                    .filter(message -> message.getMessageType() == MessageType.AI)
+                    .collect(Collectors.toList());
+
+            System.out.println("AIMessages: " + AIMessages);
+
+            List<Message> answerMessages = AIMessages.stream()
+                    .filter(message -> message.getContent().contains(keyWord))
+                    .collect(Collectors.toList());
+
+            for (Message message : answerMessages) {
+                Long chatRoomId = message.getChatRoom().getChatRoomId();
+                Long messageId = message.getMessageId();
+                List<Message> prevMessages = messageRepository.findPreviousMessage(chatRoomId, messageId);
+
+                if (!prevMessages.isEmpty()) {
+                    Message prevMessage = prevMessages.get(0);
+
+                    if (prevMessage.getMessageType() == MessageType.PERSON) {
+                        filteredMessages.add(prevMessage);
+                        filteredMessages.add(message);
+                    }
                 }
             }
         }
+
         return MessageDto.convertToDtoList(filteredMessages);
     }
 }

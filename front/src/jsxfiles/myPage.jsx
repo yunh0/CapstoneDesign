@@ -72,9 +72,9 @@ export default function MyPage({ isLogin }) {
                     <div className="mypage-search-box">
                         {keywordList.length > 0 ? (
                             keywordList.slice().reverse().map(keyWord => (
-                                <div key={keyWord.id} className="search-keyword">
+                                <div  className="search-keyword" key={keyWord.id}>
                                     {keyWord.content}
-                                    <button onClick={() => handleDeleteKeyword(keyWord.id)} className="delete-button">
+                                    <button className="delete-button" onClick={() => handleDeleteKeyword(keyWord.id)} >
                                         <span className="material-symbols-outlined">delete</span>
                                     </button>
                                 </div>

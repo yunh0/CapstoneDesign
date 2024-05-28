@@ -5,23 +5,6 @@
     flex-direction: column;
 
     background-color: #888888;
-    /*background-color: slategray;*/
-    /*background-color: #0A2353;*/
-
-    /*연하늘 ~ 상쾌 ~*/
-    /*background: linear-gradient(135deg, rgba(92, 160, 217, 0.8) 10%, rgba(129, 194, 240, 0.8) 40%, rgba(183, 224, 248, 0.8) 60%),*/
-    /*linear-gradient(60deg, rgba(129, 194, 240, 0.6) 10%, rgba(92, 160, 217, 0.6) 50%, rgb(204, 229, 255) 90%),*/
-    /*linear-gradient(360deg, rgba(204, 229, 255, 0.85) 30%, rgba(92, 160, 217, 0.7) 70%);*/
-
-    /*background: linear-gradient(135deg, rgba(0, 102, 204, 0.9) 10%, rgba(51, 153, 255, 0.9) 40%, rgba(122, 179, 236, 0.9) 60%),*/
-    /*linear-gradient(60deg, rgba(51, 153, 255, 0.7) 10%, rgb(152, 199, 255) 50%, rgb(0, 89, 255) 90%),*/
-    /*linear-gradient(360deg, rgba(10, 24, 166, 0.95) 30%, rgba(0, 102, 204, 0.8) 70%);*/
-
-    /*background:*/
-    /*        linear-gradient(120deg, rgba(13, 13, 39, 0.9) 0%, rgba(25, 20, 100, 0.85) 50%, rgba(5, 5, 30, 0.9) 100%),*/
-    /*        linear-gradient(240deg, rgba(10, 10, 45, 0.4) 10%, rgba(60, 50, 120, 0.6) 50%, rgba(20, 20, 70, 0.4) 90%),*/
-    /*        linear-gradient(360deg, rgba(15, 15, 55, 0.5) 20%, rgba(40, 35, 90, 0.65) 70%);*/
-
     background-blend-mode: screen;
 }
 
@@ -80,8 +63,21 @@
 
 .spare-panel {
     position: relative; /* Set position context for absolute children */
-    margin-top:10px;
     margin-left:240px;
+    min-height: 100vh;
+    margin-top:30px;
+}
+
+.spare-panel-2nd {
+    position: relative; /* Set position context for absolute children */
+    padding:50px;
+    margin-left:120px;
+    min-height: 100vh;
+}
+
+.spare-panel-3rd {
+    position: relative; /* Set position context for absolute children */
+    margin-left:120px;
     min-height: 100vh;
 }
 
@@ -94,7 +90,7 @@
     flex-direction: column;
     flex-grow: 1;  /* Takes up all remaining space */
     width:80%;
-    margin-top:250px;
+    margin-top:300px;
     margin-left:80px;
 }
 
@@ -102,6 +98,14 @@
     display:flex;
     flex-direction: row;
 }
+
+.white-box-container {
+    padding:50px;
+    display:flex;
+    flex-direction: row;
+    background-color: red;
+}
+
 .content-container{
     justify-content: center;
     align-items: flex-start;
@@ -111,7 +115,7 @@
     font-weight: bolder;
     font-size: 50px;
     letter-spacing: 2px; /* 글자 사이 간격을 1픽셀로 설정 */
-    animation: slideDown 2s ease-out forwards;
+    /*animation: slideDown 2s ease-out forwards;*/
 }
 
 .message-introduction {
@@ -122,6 +126,7 @@
     margin-top:20px;
     margin-bottom:50px;
     text-align:left;
+    /*animation: slideDown 2s ease-out forwards;*/
 }
 
 
@@ -137,14 +142,14 @@
     /*font-family: "Courier New";*/
     font-family: "NanumGothicCoding";
     /*font-weight:300;*/
-    animation: slideLeft 2s ease-out forwards; /* content-title 애니메이션이 1초 지속되므로, 1초 지연 */
+    /*animation: slideLeft 2s ease-out forwards; !* content-title 애니메이션이 1초 지속되므로, 1초 지연 *!*/
 }
 
 .phone-container {
     width: 330px; /* 전체 컨테이너 너비 */
     height: 500px; /* 전체 컨테이너 높이 */
-    margin-right:80px;
-    margin-top:120px;
+    margin-right:100px;
+    margin-top:130px;
     border-radius: 30px; /* 모서리 둥글게 */
     box-shadow: 0 4px 16px rgba(0,0,0,0.25); /* 그림자 추가 */
     background: transparent; /* 배경색 */
@@ -156,7 +161,7 @@
 }
 
 .phone-container-guide {
-    width: 330px; /* 전체 컨테이너 너비 */
+    width: 280px; /* 전체 컨테이너 너비 */
     height: 500px; /* 전체 컨테이너 높이 */
     margin-right:120px;
     margin-top:120px;
@@ -192,6 +197,8 @@
 }
 
 .screen-messages {
+    display:flex;
+    flex-direction:column;
     flex-grow: 1; /* 남은 공간 모두 사용 */
     font-size:14px;
     padding: 10px; /* 패딩 */
@@ -199,7 +206,7 @@
     background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
 }
 
-.message {
+.message-received{
     margin: 5px 0; /* 메시지 간격 */
     margin-left:7px;
     padding: 10px; /* 메시지 패딩 */
@@ -212,6 +219,49 @@
     align-self: flex-start; /* 왼쪽 정렬 */
 }
 
+.message-received p {
+    line-height: 1;
+    margin:5px 0;
+}
+
+.message-sent {
+    margin: 5px 0; /* 메시지 간격 */
+    margin-left:7px;
+    padding: 10px; /* 메시지 패딩 */
+    background: #e8e8e8; /* 메시지 배경색 */
+    color: black; /* 메시지 글자색 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    width: fit-content; /* 내용에 맞게 너비 조정 */
+    height: fit-content;
+    max-width: 80%; /* 최대 너비 */
+    align-self: flex-end;
+}
+
+.cancel span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding:3px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #ef2417;
+    color: white;
+    margin-top:6px;
+}
+
+.check_circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding:3px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #17e038;
+    color:white;
+    font-size:30px;
+}
 
 .message-input-container {
     display: flex;
@@ -253,7 +303,7 @@
     font-weight: bold;
     cursor: pointer;
     margin-left:0px;
-    animation: slideUp 2s ease-out forwards; /* message 애니메이션이 1초 지속되며, 1초 후 시작하므로 총 2초 후, 추가 0.5초 지연 */
+    /*animation: slideUp 2s ease-out forwards; !* message 애니메이션이 1초 지속되며, 1초 후 시작하므로 총 2초 후, 추가 0.5초 지연 *!*/
 }
 
 .chat-link:hover {
@@ -271,8 +321,9 @@
 
 .scroll-down button {
     border: none;
-    background-color: transparent;
-    color: white;
+    color: #888888;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
     cursor: pointer;
     font-size: 24px; /* Adjust font size as needed */
     display: flex;
@@ -295,16 +346,6 @@
     }
 }
 
-@keyframes slideLeft {
-    from {
-        transform: translateX(+400px); /* 시작 위치 */
-        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
-    }
-    to {
-        transform: translateX(0); /* 최종 위치 */
-        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
-    }
-}
 
 @keyframes slideUp {
     from {
@@ -326,4 +367,14 @@
         transform: translateX(0); /* 최종 위치 */
         opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
     }
+}
+
+.slide-animation {
+    animation: slideDown 3s ease-out forwards;
+}
+
+.white-box {
+    width: 150px;
+    height: 100px;
+    background-color: white;
 }
