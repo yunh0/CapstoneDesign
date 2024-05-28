@@ -10,7 +10,7 @@
 * [핵심 기능](#핵심-기능)
 * [기술 스택](#기술-스택)
 * [시스템 구조도](#시스템-구조도)
-* [주요 화면](#주요-화면)
+* [구현 영상](#구현-영상상)
 * [팀 정보](#팀-정보)
 ## 📍개요
 &nbsp;&nbsp;&nbsp;
@@ -50,33 +50,7 @@
       <td>Library & Framework</td>
       <td>
         <img alt="Spring Boot" src ="https://img.shields.io/badge/Spring Boot-6DB33F.svg?&style=for-the-badge&logo=Spring Boot&logoColor=white"/>
-        <img alt="Spring Security" src ="https://img.shields.io/badge/Spring Security-6DB33F.svg?&style=for-the-badge&logo=Spring Security&logoColor=white"/>
-        <img alt="React" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/>
-        <img alt="Flask" src ="https://img.shields.io/badge/Flask-000000.svg?&style=for-the-badge&logo=Flask&logoColor=white"/>
-        <img alt="TensorFlow" src ="https://img.shields.io/badge/TensorFlow-FF6F00.svg?&style=for-the-badge&logo=TensorFlow&logoColor=white"/>
-      </td>
-    </tr>
-    <tr>
-      <td>Database</td>
-      <td>
-        <img alt="MySQL" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/>
-        <img alt="Chroma" src ="https://img.shields.io/badge/Chroma-FC521F.svg?&style=for-the-badge&logo=Chroma&logoColor=white"/>
-      </td>
-    </tr>
-    <tr>
-      <td>Tool</td>
-      <td>
-        <img alt="IntelliJ IDEA" src ="https://img.shields.io/badge/IntelliJ IDEA-000000.svg?&style=for-the-badge&logo=IntelliJ IDEA&logoColor=white"/>
-        <img alt="PyCharm" src ="https://img.shields.io/badge/PyCharm-000000.svg?&style=for-the-badge&logo=PyCharm&logoColor=white"/>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-## 🖻시스템 구조도
-![11조_이미지_주요 적용 기술 및 구조](https://github.com/yunh0/CapstoneDesign/assets/114940378/0426c4c9-a48a-41b5-9f26-5ad16c6375c0)
-
-## 📸주요 화면
+        <img alt="Spring Security" src ="https://img.shields.io/badge/Spring Security-6DB33F.svg상
 ## 👩‍👩‍👧‍👦팀 정보
 <table>
   <tbody>
