@@ -22,11 +22,11 @@ export default function MyPage({ isLogin }) {
                 }));
                 setKeywordList(updatedKeywordsList);
             } else {
-                setKeywordList([]); // Ensure it's an empty array when no keywords are present
+                setKeywordList([]);
             }
         } catch (error) {
             console.error('Failed to load search keywords:', error.message);
-            setKeywordList([]); // Ensure list is cleared if there's an error
+            setKeywordList([]);
         }
     };
 
@@ -39,7 +39,6 @@ export default function MyPage({ isLogin }) {
         try {
             setKeywordList(currentKeywords => currentKeywords.filter(keyword => keyword.id !== id));
             await delKeyword(id);
-            // Update keyword list directly by filtering out the deleted keyword
         } catch (error) {
             console.error('Failed to delete keyword:', error);
         }
@@ -51,7 +50,7 @@ export default function MyPage({ isLogin }) {
             setInfo(newInfo);
         };
         initUserInfo();
-        fetchSearchKeyword(); // Refresh the list after deletion
+        fetchSearchKeyword();
     }, [isLogin]);
 
     return (
@@ -72,9 +71,9 @@ export default function MyPage({ isLogin }) {
                     <div className="mypage-search-box">
                         {keywordList.length > 0 ? (
                             keywordList.slice().reverse().map(keyWord => (
-                                <div key={keyWord.id} className="search-keyword">
+                                <div  className="search-keyword" key={keyWord.id}>
                                     {keyWord.content}
-                                    <button onClick={() => handleDeleteKeyword(keyWord.id)} className="delete-button">
+                                    <button className="delete-button" onClick={() => handleDeleteKeyword(keyWord.id)} >
                                         <span className="material-symbols-outlined">delete</span>
                                     </button>
                                 </div>

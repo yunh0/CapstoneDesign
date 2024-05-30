@@ -1,36 +1,30 @@
-.start-page-circle1 {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 33%;
-    width: 30%; /* 가로 반지름 */
-    height: 50%; /* 세로 반지름 */
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 0, 0, 0.06), rgba(0, 0, 255, 0.16) 90%);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 0; /* 배경이 컨테이너 위에 떠 있도록 z-index를 낮춤 */
+.start-page-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
-.start-page-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100vh;
-    background: linear-gradient(275deg, rgba(192, 192, 192, 0.9) 10%, rgba(135, 206, 235, 0.9) 40%, rgb(0, 88, 204) 60%),
-    linear-gradient(160deg, rgba(228, 135, 235, 0.7) 10%, rgba(0, 153, 255, 0.7) 50%, rgba(70, 130, 180, 0.7) 90%),
-    linear-gradient(360deg, rgba(70, 130, 180, 0.95) 30%, rgba(150, 60, 60, 0.8) 70%);
-    background-blend-mode: screen;
+svg {
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom:0;
+    width: 100%;
+    height: 100%;
 }
 
 .project-name-container {
     width:40%;
     height:100%;
     margin-right:0px;
-    animation: fadeInDown 1s ease-out; /* 애니메이션 효과 */
-    background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
-    backdrop-filter: blur(10px); /* 배경 블러 효과 */
+    animation: fadeInDown 1s ease-out;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: #fff;
@@ -48,14 +42,14 @@
 }
 
 .auth-buttons-container {
-    display:flex;
+    display: flex;
     flex-direction: row;
+    justify-content: center;
     margin-top:20px;
-    animation: fadeIn 1s ease-out; /* 애니메이션 효과 */
+    animation: fadeIn 1s ease-out;
 }
 
-.login-button,
-.signup-button {
+.login-button {
     width:200px;
     display: inline-block;
     padding: 10px 20px;
@@ -71,8 +65,7 @@
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-.login-button:hover,
-.signup-button:hover {
+.login-button:hover {
     background-color: #0056b3;
     border-color: #0056b3;
 }
@@ -82,7 +75,7 @@
     outline: none;
 }
 
-/* 애니메이션 키 프레임 */
+
 @keyframes fadeInDown {
     from {
         opacity: 0;

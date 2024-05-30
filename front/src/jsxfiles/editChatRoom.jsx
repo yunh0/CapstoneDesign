@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { delChatRoom } from "../api/delChatRoom";
 import {editChatRoom} from "../api/editChatRoom";
 import {getUserChatRooms} from "../api/getChatRoom";
 import '../cssfiles/editChatRoom.css';
+import {getMyType} from "../api/getMyType";
+import {getFileName} from "../api/getFileName";
 
 
 const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
     const [editingMode, setEditingMode] = useState(null);
     const [name, setName] = useState("");
     const [chatList, setChatList] = useState([]);
+    const [fetchedType, setFetchedType] = useState("");
+    const [fileName, setFileName] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+
 
     const updateChatList = async () => {
         try {
@@ -69,19 +75,42 @@ const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
         onClose();
     };
 
+    useEffect(() => {
+        const fetchType = async () => {
+            try {
+                const type = await getMyType(actionId);
+                setFetchedType(type);
+                const fileName = await getFileName(actionId);
+                setFileName(fileName);
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Failed to fetch type: ", error);
+                setIsLoading(false);
+            }
+        };
+
+        if (isOpen) {
+            fetchType();
+        }
+    }, [actionId, isOpen]);
     return (
         <>
             {isOpen && (
                 <div className="modal">
                     <div className="modal-content-edit">
                         <button className="edit-close-btn" onClick={handleClose}>&times;</button>
-                        <h2>{actionTitle} {editingMode === 'delete' ? '삭제하기' : editingMode === 'editName' ? '제목을 바꿔보세요!' : ''}</h2>
+                        <div className = "insurance-info">
+                            <p>채팅방 이름: <strong>{actionTitle}</strong> {editingMode === 'delete' ? '' : editingMode === 'editName' ? '제목을 바꿔보세요!' : ''}</p>
+                            <p>보험 종류: <strong>{fetchedType}</strong></p>
+                            <p>보험 이름: <strong>{fileName}</strong> </p>
+                        </div>
+
                         {editingMode ? (
                             <>
                                 {editingMode === 'delete' ? (
                                     <>
-                                        <p>정말로 삭제하시겠습니까?</p>
-                                        <div className="modal-actions">
+                                        <p className = "delete-sentence">정말 삭제하시겠습니까?</p>
+                                        <div className="modal-delete">
                                             <button onClick={handleConfirmClick}>예</button>
                                             <button onClick={handleClose}>아니오</button>
                                         </div>
@@ -95,17 +124,16 @@ const EditChatModal = ({ isOpen, onClose, actionId, actionTitle }) => {
                                             onChange={(e) => setName(e.target.value)}
                                             onClick={(e) => e.stopPropagation()}
                                         />
-                                        <div className="modal-actions">
+                                        <div className="modal-modify">
                                             <button onClick={handleEditClick}>수정하기</button>
-                                            <button onClick={handleClose}>취소</button>
                                         </div>
                                     </>
                                 )}
                             </>
                         ) : (
                             <div className="modal-actions">
-                                <button onClick={handleDeleteClick}>삭제하기</button>
-                                <button onClick={handleEditNameClick}>이름 수정</button>
+                                <button onClick={handleDeleteClick}>채팅방 삭제</button>
+                                <button onClick={handleEditNameClick}>제목 수정</button>
                             </div>
                         )}
                     </div>

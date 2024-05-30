@@ -5,13 +5,13 @@ import { postFind } from "../api/findHistory";
 const FindPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [expandedRow, setExpandedRow] = useState(null); // 아코디언 확장 상태 관리
+    const [expandedRow, setExpandedRow] = useState(null);
+    const [searchType, setSearchType] = useState('question');
 
     const handleSearch = async () => {
         try {
-            // Reset the expanded row state before executing a new search
             setExpandedRow(null);
-            const response = await postFind(searchTerm);
+            const response = await postFind(searchTerm, searchType);
             setSearchResult(response);
         } catch (error) {
             console.error('Error searching:', error);
@@ -22,6 +22,10 @@ const FindPage = () => {
         setSearchTerm(event.target.value);
     };
 
+    const handleSearchTypeChange = (event) => {
+        setSearchType(event.target.value);
+    };
+
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             handleSearch();
@@ -29,7 +33,7 @@ const FindPage = () => {
     };
 
     const toggleAccordion = (index) => {
-        setExpandedRow(expandedRow === index ? null : index); // 이미 확장된 행을 클릭하면 닫힘
+        setExpandedRow(expandedRow === index ? null : index);
     };
 
     return (
@@ -38,6 +42,10 @@ const FindPage = () => {
                 <h2>SEARCH</h2>
             </div>
             <div className="find-body">
+                <select className="search-type-select" value={searchType} onChange={handleSearchTypeChange}>
+                    <option value="question">질문</option>
+                    <option value="answer">답변</option>
+                </select>
                 <input
                     className="find-input"
                     type="text"
@@ -81,7 +89,6 @@ const FindPage = () => {
                             </React.Fragment>
                         )
                     ))}
-
                     </tbody>
                 </table>
             )}

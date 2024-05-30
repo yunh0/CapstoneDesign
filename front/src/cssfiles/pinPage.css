@@ -8,19 +8,19 @@
 }
 
 .pin-page {
-    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     min-height: 100vh;
-    overflow: hidden; /* 필요할 때만 스크롤바 표시 */
     font-family: var(--body-font);
-    margin:50px;
-    margin-left:100px;
-    margin-bottom:0px;
-    justify-content: center;
+    padding: 20px 100px 0 100px;
 }
 
 
+
 .pin-page-title {
-    font-size:30px;
+    font-size:35px;
     font-family: 'Roboto Condensed';
     color: var(--text-color);
     margin-left:10px;
@@ -28,59 +28,46 @@
     text-align: center;
 }
 
-/* Dropdown Select Styling */
 .dropdown-select {
-    width: 20%; /* 드롭다운 너비 전체 사용 */
-    padding: 12px 15px; /* 적당한 패딩으로 편안한 클릭 가능 영역 확보 */
-    font-size: 16px; /* 적당한 폰트 크기 */
-    font-family: 'Open Sans', sans-serif; /* 일관된 폰트 스타일 적용 */
-    border: 1px solid #ccc; /* 섬세한 테두리 */
-    border-radius: 5px; /* 모던한 라운드 테두리 */
-    content: '▼'; /* 드롭다운 아이콘 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
-    appearance: none; /* 기본 브라우저 스타일 제거 */
-    background-color: white; /* 밝은 배경색 */
-    color: #333; /* 기본 텍스트 색상 */
-    cursor: pointer; /* 클릭 가능한 요소임을 나타내는 커서 스타일 */
-    outline: none; /* 포커스 아웃라인 제거 */
-    position: relative; /* 드롭다운 화살표 포지셔닝을 위한 설정 */
+    padding: 12px 10px;
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    content: '▼';
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    margin-left:10px;
+    margin-bottom: 20px;
+    width: 300px;
 }
 
-/* 화살표 스타일 */
-.dropdown-select::after {
-    content: '▼'; /* 드롭다운 아이콘 */
-    font-size: 12px; /* 아이콘 크기 조정 */
-    position: absolute;
-    right: 15px;
-    top: calc(50% - 0.5em); /* 중앙 정렬 */
-    pointer-events: none; /* 클릭 이벤트 제외 */
-    color: #333; /* 아이콘 색상 */
-}
-
-/* 호버 및 포커스 효과 */
 .dropdown-select:hover {
-    border-color: #888; /* 호버 시 테두리 색상 변경 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강조 */
+    border-color: #888;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-select:focus {
-    border-color: #555; /* 포커스 시 테두리 색상 강조 */
+    border-color: #555;
 }
 
-/* 옵션 스타일 */
-option {
-    padding: 10px; /* 옵션의 패딩 */
-    background-color: white; /* 옵션 배경색 */
-    color: #333; /* 옵션 텍스트 색상 */
+.option {
+    padding: 10px;
+    background-color: white;
+    color: #333;
 }
 
 .contracts {
     display: flex;
-    justify-content: flex-start; /* 모든 항목 간에 균등한 공간을 제공 */
+    justify-content: center;
     flex-wrap: wrap;
-    margin: 20px;
-    gap: 10px; /* 항목 사이의 간격 설정 */
-    padding: 10px; /* 내부 패딩 추가 */
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
 }
 
 .contract-button {
@@ -112,12 +99,12 @@ option {
     top:-7px;
     font-size:20px;
     left: 2%;
-    color: #d35400; /* 기본 색상 */
+    color: #d35400;
 }
 
 .pinned-answer {
     width: 40%;
-    height: auto; /* Change from fixed height to auto to accommodate varying content sizes */
+    height: auto;
     overflow: hidden;
     font-family: "Apple SD Gothic Neo";
     font-size: 15px;
@@ -133,7 +120,7 @@ option {
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Adjusted for better alignment */
+    justify-content: flex-start;
     align-items: center;
 }
 

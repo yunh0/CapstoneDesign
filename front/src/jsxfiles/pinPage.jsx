@@ -12,7 +12,7 @@ const PinPage = () => {
 
     const handleClick = (fileName) => {
         setActiveContract(contracts[fileName]);
-        setExpandedId(null); // 선택된 타입이 바뀔 때 확장된 ID를 초기화
+        setExpandedId(null);
     };
 
     const trimText = (text, maxChars = 150) => {

@@ -4,25 +4,25 @@
     align-items: center;
     min-height: 100vh;
     font-family: 'Poppins', sans-serif;
-    margin:50px;
+    margin-right:50px;
     margin-left:70px;
-    margin-bottom: 0;
 }
 
 .mypage-header {
+    margin-top:25px;
     margin-bottom: 20px;
 }
 
 .mypage-greeting {
     color: #333;
     font-family: 'Roboto Condensed';
-    font-size:30px;
+    font-size:35px;
     margin-top:25px;
 }
 
 .mypage-content {
     width: 100%;
-    height: 500px;
+    height: 450px;
     max-width: 640px;
     background: white;
     border-radius: 12px;
@@ -47,6 +47,7 @@
     color: #34495E;
     font-weight: 500;
     font-family: "Apple SD Gothic Neo";
+    margin-left: 5px;
 }
 
 .mypage-info p {
@@ -68,7 +69,9 @@
 }
 
 .mypage-search-box {
-    height: 275px;
+    margin-left: 10px;
+    width:93%;
+    height: 230px;
     border: 2px solid #BDC3C7;
     border-radius: 8px;
     padding: 10px;

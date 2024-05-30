@@ -10,7 +10,6 @@ import {postPinMessage} from "../api/pinMessage";
 import {delPinMessages} from "../api/delPinMessages";
 import {getfReco} from "../api/getFirstRecommend";
 import {getsReco} from "../api/getSecondRecommend";
-import {getInsuranceType} from "../api/getInsuranceType";
 import {getMyType} from "../api/getMyType";
 import {postLogoutToken} from "../api/postLogoutToken";
 import EditChatModal from "./editChatRoom";
@@ -18,7 +17,7 @@ import EditChatModal from "./editChatRoom";
 
 
 const ChatPage = () => {
-    const { id } = useParams();  // This extracts the "id" param from the URL.
+    const { id } = useParams();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const location = useLocation();
@@ -27,7 +26,7 @@ const ChatPage = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [pdfUrl, setPdfUrl] = useState("");
-    const [showSelectPage, setShowSelectPage] = useState(false); // Change to control SelectPage visibility
+    const [showSelectPage, setShowSelectPage] = useState(false);
     const [chatList, setChatList] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [positionX, setPositionX] = useState(null);
@@ -68,9 +67,6 @@ const ChatPage = () => {
             return 0;
         }
     })();
-
-
-////////////////////////////채팅방 불러오기 및 설정////////////////////////////////////////////
 
     const fetchChatRooms = async () => {
         try {
@@ -118,7 +114,6 @@ const ChatPage = () => {
                     }));
                     setChatList(updatedChatList);
                 } else {
-                    // 필요한 처리를 추가하세요 (채팅방이 없는 경우)
                 }
             } catch (error) {
                 console.error('채팅방 목록을 불러오는 중 오류가 발생했습니다:', error.message);
@@ -130,7 +125,6 @@ const ChatPage = () => {
 
     useEffect(() => {
         if (chatList.length > 0 && id) {
-            // URL에서 가져온 id와 일치하는 채팅방을 자동 선택
             const selectedRoom = chatList.find(room => room.id.toString() === id);
             if (selectedRoom) {
                 handleButtonClicked(selectedRoom);
@@ -138,7 +132,7 @@ const ChatPage = () => {
                 console.log("No matching chat room found for the provided ID.");
             }
         }
-    }, [chatList, id]);  // chatList와 id가 변경될 때마다 실행됩니다.
+    }, [chatList, id]);
 
 
     useEffect(() => {
@@ -165,9 +159,6 @@ const ChatPage = () => {
         }
     }, [fnum]);
 
-
-    ////////////////////////////////////로그아웃///////////////////////////////////////////
-
     const handleLogout = async () => {
         const success = await postLogoutToken();
         if (success) {
@@ -177,8 +168,6 @@ const ChatPage = () => {
             console.error('로그아웃 요청 실패');
         }
     };
-
-    //////////////////////////////////경계선 이동/////////////////////////////////////////
 
     const handleMouseDown = (e) => {
         if (e.target === dividerRef.current) {
@@ -194,7 +183,6 @@ const ChatPage = () => {
     };
 
     const handleMouseMove = (e) => {
-
         if (dragging) {
             const dx = e.clientX - positionX;
             setPositionX(e.clientX);
@@ -218,10 +206,10 @@ const ChatPage = () => {
             document.removeEventListener('mouseup', handleMouseUp);
         };
     }, []);
-    ///////////////////////////////메세지 보내기//////////////////////////////////////////////
+
     const handleFormSubmit = (e) => {
-        e.preventDefault(); // 폼 제출 기본 동작 방지
-        handleSendMessage(); // 메시지 전송 함수 호출
+        e.preventDefault();
+        handleSendMessage();
     };
 
     const scrollToBottom = () => {
@@ -238,13 +226,12 @@ const ChatPage = () => {
             let scrollTop = chatMessagesRef.current.scrollTop;
 
             const scrollStep = () => {
-                scrollTop += 3; // 조절 가능한 값
+                scrollTop += 3;
                 chatMessagesRef.current.scrollTop = scrollTop;
                 if (scrollTop < maxScrollTop) {
                     requestAnimationFrame(scrollStep);
                 }
             };
-
             scrollStep();
         }
     };
@@ -261,13 +248,12 @@ const ChatPage = () => {
         setIsLoading(true);
         messageInputRef.current.value = 'Sending my question to chatbot...';
 
-        // 메시지가 비어 있는지 확인
         if (!messageText.trim()) {
-            return; // 메시지가 비어 있다면 아무것도 하지 않고 함수 종료
+            return;
         }
 
         const newMessage = { id: messages.length + 1, text: messageText, sender: "sent", backid: null };
-        setMessages(prevMessages => [...prevMessages, newMessage]); // 첫 번째 추가
+        setMessages(prevMessages => [...prevMessages, newMessage]);
 
         const loadingMessage = {
             id: messages.length + 1,
@@ -310,20 +296,15 @@ const ChatPage = () => {
                 setMessages(prevMessages => [...prevMessages, newResponse]);
                 console.error('Failed to get chat response from the backend');
             }
-
-
         }
-
         messageInputRef.current.value = '';
         setIsLoading(false);
-
     };
 
-    /////////////////////////////////버튼 생성 후 /////////////////////////////////////
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);  // messages 배열이 변경될 때마다 scrollToBottom 함수를 호출
+    }, [messages]);
 
     useEffect(() => {
         if (chatList.length > 0) {
@@ -336,14 +317,11 @@ const ChatPage = () => {
         if (selectedChatId) {
             scrollToBottom();
         }
-    }, [selectedChatId]);  // selectedChatId가 변경될 때마다 scrollToBottom 함수를 호출
+    }, [selectedChatId]);
 
     useEffect(() => {
         scrollToBottom();
-    }, [isPlusButtonClicked]);  // messages 배열이 변경될 때마다 scrollToBottom 함수를 호출
-
-
-    ////////////////////////////PDF 관련 부분///////////////////////////////////////////
+    }, [isPlusButtonClicked]);
 
     useEffect(() => {
         if (pdfPathFromSelectPage) {
@@ -352,13 +330,11 @@ const ChatPage = () => {
         }
     }, [pdfPathFromSelectPage]);
 
-
     const handleButtonClicked = async (chat) => {
         const { id, pdfUrl } = chat;
         if (selectedChatId === id && !isLoading) {
             return;
         }
-
         setSelectedChatId(id);
         setIsPlusButtonClicked(false);
         setIsLoading(true);
@@ -396,13 +372,10 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
 
     };
 
-    ///////////////////////////////사이드 바 접기 ////////////////////////////////////////
     const handleFoldButtonClick = () => {
         // 현재 상태의 반대로 변경
         setIsFolded(prevFolded => !prevFolded);
     };
-
-    /////////////////////////////// 핀 기능 ////////////////////////////////////////////
 
     const handlePinToggle = async (msg) => {
         if (isPinned(msg)) {
@@ -415,10 +388,8 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
     };
 
     const handlePinClick = async (msg) => {
-        // 핀 상태 토글 함수 호출
         await handlePinToggle(msg);
 
-        // 핀 상태 변경 후 메시지 리스트 업데이트
         const updatedMessages = messages.map(item => {
             if (item.backid === msg.backid) {
                 return { ...item, pinned: !item.pinned };
@@ -426,7 +397,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             return item;
         });
 
-        // 메시지 리스트 업데이트
         setMessages(updatedMessages);
     };
 
@@ -448,7 +418,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             const fetchedType = await getMyType(selectedChatId);
             const results = await postPinMessage(msg.backid, fetchedType);
 
-            // const results = await postPinMessage(msg.backid);
             console.log(results);
         } catch (error) {
             console.error('Error sending button click to the backend:', error.message);
@@ -464,8 +433,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
             console.error('Error sending button click to the backend:', error.message);
         }
     };
-
-    //////////////////////////////////// PLUS 버튼 ///////////////////////////////////////////
 
     const handlePlusButtonClick = async (e) => {
         e.preventDefault();
@@ -504,9 +471,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
         }
     };
 
-
-
-    ////////////////////////////////////채팅창 삭제 및 수정/////////////////////////////////////
     const handleChatRoomClick = (e,chat) => {
         e.stopPropagation();
         setEditchatRoom(chat.title)
@@ -519,9 +483,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
         setModalOpen(false);
     }
 
-    ////////////////////////////////////화면 UI///////////////////////////////////////////////
-
-
     return (
         <div className="chat-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
             <div className="chat-left-panel"
@@ -531,7 +492,6 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                 </Link>
                 <button className="newchat-btn" onClick={() => setShowSelectPage(true)}
                         disabled={isLoading || showSelectPage}>New Chat
-                    {/*<span className="material-symbols-outlined" style={{ fontSize: '30px', marginLeft:'5px' }}>edit_square</span>*/}
                 </button>
                 <div className="chat-room-list" style={{flexGrow: 0.94, overflowY: 'auto'}}>
                     {chatList.slice(0).reverse().map((chat, index) => (
@@ -545,8 +505,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                                         }
                                     }}
                                     disabled={isLoading}
-                                    style={{width: '100%', height: '100%', cursor: 'pointer' }}
-                            >
+                                    style={{width: '100%', height: '100%', cursor: 'pointer' }}>
                                 <span className="btninbtn" onClick={(e) => handleChatRoomClick(e, chat)}>
                                     <span className="material-symbols-outlined">info</span>
                                 </span>
@@ -567,8 +526,8 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                     <SelectPage
                         updateChatList={updateChatList}
                         onChatRoomCreated={() => {
-                            setShowSelectPage(false); // SelectPage 숨기기
-                            fetchChatRooms(); // 채팅방 목록 새로고침
+                            setShowSelectPage(false);
+                            fetchChatRooms();
                         }}
                     />
                 </div>
@@ -699,7 +658,7 @@ ${fReco.third ? `3. ${(fReco.third)}` : ''}`;
                         </div>
                     </Fragment>
                     <div className={`modal-backdrop ${modalOpen ? '' : 'hidden'}`} onClick={handleCloseModal}>
-                        <div className="modal-content-edit" onClick={e => e.stopPropagation()}> {/* Prevents click inside the modal from closing it */}
+                        <div className="modal-content-edit" onClick={e => e.stopPropagation()}> {}
                             <EditChatModal isOpen={modalOpen} onClose={handleCloseModal} actionId={actionId} actionTitle={actionTitle} />
                         </div>
                     </div>

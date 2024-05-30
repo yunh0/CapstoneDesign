@@ -13,13 +13,13 @@ const SelectPage = ({ onChatRoomCreated }) => {
     const navigate = useNavigate();
 
     const [insuranceData, setInsuranceData] = useState({
-        types: [], // Holds all insurance types
-        companies: {}, // Maps type to companies
-        terms: {}, // Maps company to terms under a type
+        types: [],
+        companies: {},
+        terms: {},
     });
 
     const [currentStep, setCurrentStep] = useState(1);
-    const [title, setTitle] = useState(''); // 채팅방 제목 상태 추가
+    const [title, setTitle] = useState('');
     const [insuranceType, setInsuranceType] = useState('');
     const [insuranceCompany, setInsuranceCompany] = useState('');
     const [insuranceTerms, setInsuranceTerms] = useState('');
@@ -53,7 +53,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
 
 
     const renderInsuranceCompanies = () => {
-        const companies = insuranceData.companies[insuranceType] || []; // Use the selected type
+        const companies = insuranceData.companies[insuranceType] || [];
         return companies.map((company, index) => (
             <button key={index} onClick={() => selectCompany(company)}>{company}</button>
         ));
@@ -69,7 +69,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
     };
 
     const goToNextStep = () => {
-        if (currentStep >= 4) { // 4단계에서 Next 버튼을 눌렀을 때 최종 확인 단계로 이동
+        if (currentStep >= 4) {
             setCurrentStep(5);
         } else {
             setCurrentStep(currentStep + 1);
@@ -96,7 +96,7 @@ const SelectPage = ({ onChatRoomCreated }) => {
 
     const selectType = async (type) => {
         setInsuranceType(type);
-        const companies = await getInsuranceCompany(type); // Pass the selected type
+        const companies = await getInsuranceCompany(type);
         if (companies) {
             setInsuranceData(prev => ({
                 ...prev,
@@ -108,7 +108,6 @@ const SelectPage = ({ onChatRoomCreated }) => {
 
     const selectCompany = async (company) => {
         setInsuranceCompany(company);
-        // Fetch terms based on type and company
         const terms = await getInsuranceTerms(insuranceType, company);
         setInsuranceData(prev => ({
             ...prev,
@@ -124,7 +123,6 @@ const SelectPage = ({ onChatRoomCreated }) => {
     };
 
     const modifySelection = () => {
-        // 선택 수정을 위해 단계를 리셋합니다.
         setCurrentStep(1);
         setTitle('');
         setConfirmationStep(false);
@@ -135,7 +133,6 @@ const SelectPage = ({ onChatRoomCreated }) => {
             const token = localStorage.getItem('token');
             const chatRooms = await getUserChatRooms(token);
             if (chatRooms && chatRooms.length > 0) {
-                // Map the fetched chat rooms to the structure expected by your state
                 const updatedChatList = chatRooms.map(chatRoom => ({
                     id: chatRoom.chatRoomId,
                     title: chatRoom.chatRoomName,
@@ -143,8 +140,6 @@ const SelectPage = ({ onChatRoomCreated }) => {
                 }));
                 setChatList(updatedChatList);
             } else {
-                // If no chat rooms are fetched, you might want to clear the current state
-                // or handle this case differently based on your application's needs.
                 setChatList([]);
             }
         } catch (error) {
@@ -156,9 +151,8 @@ const SelectPage = ({ onChatRoomCreated }) => {
         const success = await postInsuranceTerms(newChat);
         if (success) {
             console.log('Insurance terms posted successfully.');
-            // 채팅 목록 업데이트
-            updateChatList(); // 채팅방 목록을 업데이트하는 함수를 호출
-            onChatRoomCreated?.(); // 채팅방 생성 후 콜백 호출
+            updateChatList();
+            onChatRoomCreated?.();
             navigate('/chat', { state: { pdfPath } });
             console.log("pdf Path is " , pdfPath);
         } else {
