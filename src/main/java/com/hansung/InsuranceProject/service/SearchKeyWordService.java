@@ -6,10 +6,11 @@ import com.hansung.InsuranceProject.entity.SearchKeyWord;
 import com.hansung.InsuranceProject.repository.AccountRepository;
 import com.hansung.InsuranceProject.repository.SearchKeyWordRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service
 public class SearchKeyWordService {
 
@@ -21,7 +22,6 @@ public class SearchKeyWordService {
         this.accountRepository = accountRepository;
     }
 
-    @Transactional
     public SearchKeyWord saveKeyWord(Long accountId, String keyWord) {
         Account account = accountRepository.findById(accountId).orElse(null);
 
@@ -40,14 +40,12 @@ public class SearchKeyWordService {
         return null;
     }
 
-    @Transactional
     public List<SearchKeyWordDto> getSearchKeyWords(Long accountId){
         List<SearchKeyWord> keyWords = searchKeyWordRepository.findByAccount_Id(accountId);
 
         return SearchKeyWordDto.convertToDtoList(keyWords);
     }
 
-    @Transactional
     public boolean deleteSearchKeyword(Long keyWordId) {
         SearchKeyWord keyWord = searchKeyWordRepository.findByKeyWordId(keyWordId);
         if (keyWord != null) {

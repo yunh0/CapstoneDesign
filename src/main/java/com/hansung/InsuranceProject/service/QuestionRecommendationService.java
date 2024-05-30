@@ -7,11 +7,12 @@ import com.hansung.InsuranceProject.entity.FileInformation;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service
 public class QuestionRecommendationService {
 
@@ -23,7 +24,6 @@ public class QuestionRecommendationService {
         this.chatRoomRepository = chatRoomRepository;
     }
 
-    @Transactional
     public List<String> getRecommendations(Long chatRoomId) {
         List<String> recommendations = new ArrayList<>();
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);

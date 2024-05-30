@@ -27,7 +27,6 @@ public class SearchKeyWordController {
     @PostMapping("/user/message/search")
     public ResponseEntity<List<MessageDto>> getSearchMessages(@RequestBody SearchMessageRequest searchMessageRequest, Principal principal){
         SearchKeyWord searchKeyWord = searchKeyWordService.saveKeyWord(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
-        List<MessageDto> searchMessages = messageService.getSearchMessages(Long.valueOf(principal.getName()), searchMessageRequest.getContent());
 
         List<MessageDto> searchMessages = messageService.getSearchMessages(Long.valueOf(principal.getName()), searchMessageRequest.getContent(),searchMessageRequest.getType());
         return ResponseEntity.ok().body(searchMessages);

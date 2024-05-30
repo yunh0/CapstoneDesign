@@ -11,13 +11,14 @@ import com.hansung.InsuranceProject.dto.IdTokenRequestDto;
 import com.hansung.InsuranceProject.entity.Account;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 @Service
+@Transactional
 public class AccountService {
 
     private final AccountRepository accountRepository;
@@ -48,7 +49,6 @@ public class AccountService {
         return jwtUtils.createToken(account, false);
     }
 
-    @Transactional
     public Account createOrUpdateUser(Account account) {
         Account existingAccount = accountRepository.findByEmail(account.getEmail()).orElse(null);
         if (existingAccount == null) {

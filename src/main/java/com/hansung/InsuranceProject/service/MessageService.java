@@ -9,12 +9,13 @@ import com.hansung.InsuranceProject.repository.AccountRepository;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class MessageService {
 
@@ -28,7 +29,6 @@ public class MessageService {
         this.accountRepository = accountRepository;
     }
 
-    @Transactional
     public Message saveMessage(Long chatRoomId, MessageType messageType, String content, String prediction) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
         if (chatRoom != null) {
@@ -40,19 +40,16 @@ public class MessageService {
         return null;
     }
 
-    @Transactional
     public List<MessageDto> getChatRoomMessages(Long chatRoomId){
         List<Message> messages = messageRepository.findByChatRoom_chatRoomId(chatRoomId);
 
         return MessageDto.convertToDtoList(messages);
     }
 
-    @Transactional
     public void deleteMessagesByChatRoomId(Long chatRoomId) {
         messageRepository.deleteByChatRoom_ChatRoomId(chatRoomId);
     }
 
-    @Transactional
     public List<MessageDto> getSearchMessages(Long accountId, String keyWord,String type){
         Account account = accountRepository.findById(accountId).orElse(null);
         if (account == null) {

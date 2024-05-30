@@ -1,5 +1,6 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras import preprocessing
@@ -12,7 +13,7 @@ queries = data['질문'].tolist()
 intents = data['분류 클래스'].tolist()
 
 import sys
-sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')  # 모듈이 있는 상위 디렉토리를 추가합니다.
+sys.path.append('C:\\github\\CapstoneDesign\\ai\\utils')
 from Preprocess import Preprocess
 p = Preprocess(word2index_dic='C:\\github\\CapstoneDesign\\ai\\train_tools\\dict\\chatbot_dict.bin',
                 userdic='C:\\github\\CapstoneDesign\\ai\\utils\\user_dic.tsv')
@@ -25,8 +26,6 @@ for sentence in queries:
     seq = p.get_wordidx_sequence(keywords)
     sequences.append(seq)
 
-# 단어 인덱스 시퀀스 벡터 생성
-# 단어 시퀀스 벡터 크기
 sys.path.append('C:\\github\\CapstoneDesign\\ai\\config')
 from GlobalParams import MAX_SEQ_LEN
 padded_seqs = preprocessing.sequence.pad_sequences(sequences, maxlen=MAX_SEQ_LEN, padding='post')
@@ -76,7 +75,6 @@ conv3 = Conv1D(
     activation=tf.nn.relu)(dropout_emb)
 pool3 = GlobalMaxPool1D()(conv3)
 
-# 3, 4, 5-gram 이후 합치기
 concat = concatenate([pool1, pool2, pool3])
 
 hidden = Dense(128, activation=tf.nn.relu)(concat)

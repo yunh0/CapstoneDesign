@@ -1,5 +1,6 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import tensorflow as tf
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras import preprocessing
@@ -8,7 +9,6 @@ import sys
 # 의도 분류 모델
 class IntentModel:
     def __init__(self, model_name, preprocess):
-        # 의도 클래스별 레이블
         self.labels = {0: "보험 가입", 1: "보험 환급", 2: "보험 먼가", 3: "보험금", 4: "보험 해지", 5: "특별 약관", 6: "보험 기간", 7: "보험 보장",
                        8: "보험 청구", 9: "보험 연체", 10: "보험 내용", 11: "보험 갱신", 12: "보험 수령", 13: "보험 계약", 14: "보험 서류", 15: "보험 문의", 16: "보험 납부"}
 

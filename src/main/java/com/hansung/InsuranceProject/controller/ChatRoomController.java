@@ -2,7 +2,6 @@ package com.hansung.InsuranceProject.controller;
 
 import com.hansung.InsuranceProject.dto.ChatRoomDto;
 import com.hansung.InsuranceProject.dto.MessageDto;
-import com.hansung.InsuranceProject.dto.PinnedAnswerDto;
 import com.hansung.InsuranceProject.request.ChatRoomRequest;
 import com.hansung.InsuranceProject.entity.ChatRoom;
 import com.hansung.InsuranceProject.service.ChatRoomService;

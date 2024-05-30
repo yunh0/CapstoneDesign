@@ -8,12 +8,13 @@ import com.hansung.InsuranceProject.repository.AccountRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import com.hansung.InsuranceProject.repository.PinnedAnswerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class PinnedAnswerService {
 
@@ -27,7 +28,6 @@ public class PinnedAnswerService {
         this.accountRepository = accountRepository;
     }
 
-    @Transactional
     public PinnedAnswer savePinnedAnswer(Long messageId, String fetchedType){
         Message message = messageRepository.findById(messageId).orElse(null);
 
@@ -44,7 +44,6 @@ public class PinnedAnswerService {
         return null;
     }
 
-    @Transactional
     public boolean deletePinnedAnswer(Long messageId) {
         PinnedAnswer pinnedAnswer = pinnedAnswerRepository.findByMessage_MessageId(messageId).orElse(null);
         try {
@@ -57,7 +56,6 @@ public class PinnedAnswerService {
         }
     }
 
-    @Transactional
     public void deletePinnedAnswersByChatRoomId(Long chatRoomId) {
         List<PinnedAnswer> pinnedAnswers = pinnedAnswerRepository.findByMessage_ChatRoom_ChatRoomId(chatRoomId);
         pinnedAnswerRepository.deleteAll(pinnedAnswers);

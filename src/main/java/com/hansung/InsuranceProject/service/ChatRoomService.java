@@ -8,10 +8,11 @@ import com.hansung.InsuranceProject.repository.AccountRepository;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.FileInformationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service
 public class ChatRoomService {
 
@@ -25,7 +26,6 @@ public class ChatRoomService {
         this.fileInformationRepository = fileInformationRepository;
     }
 
-    @Transactional
     public ChatRoom createChatRoom(Long accountId, String chatRoomName, String fileName) {
         Account creator = accountRepository.findById(accountId).orElse(null);
         FileInformation file = fileInformationRepository.findByFileName(fileName).orElse(null);
@@ -63,12 +63,10 @@ public class ChatRoomService {
         return ChatRoomDto.convertToDtoList(chatRooms);
     }
 
-    @Transactional
     public void deleteChatRoom(Long chatRoomId){
         chatRoomRepository.deleteById(chatRoomId);
     }
 
-    @Transactional
     public void updateChatRoomName(Long chatRoomId, String newChatRoomName) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new RuntimeException("Chat room not found"));

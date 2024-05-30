@@ -6,10 +6,12 @@ import com.hansung.InsuranceProject.entity.Message;
 import com.hansung.InsuranceProject.repository.ChatRoomRepository;
 import com.hansung.InsuranceProject.repository.MessageRepository;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service
 public class MostAskedQuestionService {
 
@@ -21,7 +23,6 @@ public class MostAskedQuestionService {
         this.chatRoomRepository = chatRoomRepository;
     }
 
-    @Transactional
     public List<String> getMostQuestions(Long chatRoomId){
         List<String> mostQuestions = new ArrayList<>();
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);

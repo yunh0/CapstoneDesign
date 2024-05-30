@@ -2,9 +2,11 @@ package com.hansung.InsuranceProject.service;
 
 import com.hansung.InsuranceProject.repository.FileInformationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class FileService {
 

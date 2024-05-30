@@ -6,9 +6,8 @@ import lombok.Data;
 public class SearchMessageRequest {
 
     private String content;
-    private String type; // 추가된 필드
+    private String type;
 
-    // Getter와 Setter
     public String getContent() {
         return content;
     }
