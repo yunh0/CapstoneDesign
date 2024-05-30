@@ -108,6 +108,13 @@ public class ChatRoomController {
         return ResponseEntity.ok().body(fetchedType);
     }
 
+    @GetMapping("/user/chatroom/file/name/{selectedChatId}")
+    public ResponseEntity<String> getFileName(@PathVariable Long selectedChatId, Principal principal){
+        String fetchedName = chatRoomService.getInsuranceName(selectedChatId);
+        System.out.println("fetchedName: " + fetchedName);
+        return ResponseEntity.ok().body(fetchedName);
+    }
+
 
     private void sendFilePathToFlask(String filePath) {
         // Flask 서버 URL

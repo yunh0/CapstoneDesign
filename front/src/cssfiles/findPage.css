@@ -1,15 +1,13 @@
-/* findPage.css - Modern and Integrated Search Design */
-
 .find-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     margin-top: 0;
-    background-color: transparent; /* Lighter background for better readability */
+    background-color: transparent;
     min-height: 100vh;
     width: 100%;
-    border-radius: 8px; /* Added rounding to container */
+    border-radius: 8px;
 }
 
 .find-container h2 {
@@ -32,22 +30,21 @@
 
 .search-type-select {
     margin-right: 10px;
-    padding: 10px 12px 10px 12px; /* 패딩 조정, 화살표 영역을 위해 오른쪽 패딩 추가 */
+    padding: 10px 12px 10px 12px;
     height: 45px;
-    border-radius: 20px; /* 둥근 모양 강조 */
+    border-radius: 20px;
     font-size: 16px;
     font-family: 'Roboto Condensed', sans-serif;
-    background-color: rgba(0, 123, 255, 0.86); /* 배경색을 흰색으로 변경 */
+    background-color: rgba(0, 123, 255, 0.86);
     color: white;
-    appearance: none; /* 기본 스타일 제거 */
+    appearance: none;
     cursor: pointer;
     position: relative;
     outline: none;
     transition: all 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* 화살표 호버 효과: 배경색 및 테두리 색상 변경 */
 .search-type-select:hover {
     background-color: #007BFF;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
@@ -59,10 +56,10 @@
     font-size: 16px;
     border: 1px solid #a9a8a8;
     border-radius: 25px;
-    width: 40%; /* Increased width for more text */
+    width: 40%;
     transition: all 0.3s;
     position: relative;
-    background-color: #f8f8f8; /* Slightly off-white background */
+    background-color: #f8f8f8;
 }
 
 .find-input:focus {
@@ -73,7 +70,7 @@
 
 .find-button {
     position: absolute;
-    right: calc(26% - 34px); /* Adjusted for the increased input width */
+    right: calc(26% - 34px);
     padding: 10px;
     background-color: #007BFF;
     color: white;
@@ -90,7 +87,7 @@
 .find-button:hover, .find-button:focus {
     background-color: #0056b3;
     box-shadow: 0 5px 10px rgba(0, 86, 179, 0.3);
-    outline: none; /* Remove focus border */
+    outline: none;
 }
 
 .find-table {
@@ -111,15 +108,15 @@
 }
 
 .find-td {
-    background-color: #f1f1f1; /* 질문에 대한 배경색 변경 */
+    background-color: #f1f1f1;
     color: #333;
     padding: 12px 15px;
-    border-bottom: 2px dashed #ccc; /* 점선 테두리로 시각적 구분 */
-    font-weight: bold; /* 질문 글꼴 굵게 */
+    border-bottom: 2px dashed #ccc;
+    font-weight: bold;
 }
 
 .find-td-expanded {
-    background-color: #ffffff; /* 답변에 대한 배경색 변경 */
+    background-color: #ffffff;
     color: #555;
     padding: 12px 15px;
     border-bottom: 1px solid #eee;

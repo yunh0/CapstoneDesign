@@ -14,9 +14,9 @@ const MainPage = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [currentPage, setCurrentPage] = useState('welcome');
     const [chatList, setChatList] = useState([]);
-    const [isScrolledDown, setIsScrolledDown] = useState(false); // 스크롤 상태 관리
-    const refs = [useRef(null), useRef(null), useRef(null)];  // Multiple refs for different panels
-    const [currentRefIndex, setCurrentRefIndex] = useState(0);  // Current index of the ref array
+    const [isScrolledDown, setIsScrolledDown] = useState(false);
+    const refs = [useRef(null), useRef(null), useRef(null)];  // 각 패널에 쓰일 refs
+    const [currentRefIndex, setCurrentRefIndex] = useState(0);
 
     const handleLogout = async () => {
         const success = await postLogoutToken();
@@ -29,7 +29,7 @@ const MainPage = () => {
     };
     const handlePageChange = (pageName) => {
         setCurrentPage(pageName);
-        setCurrentRefIndex(0);  // Reset scroll position when page changes
+        setCurrentRefIndex(0);
     };
 
     const toggleScroll = () => {
@@ -54,7 +54,7 @@ const MainPage = () => {
         case 'mypage':
             content = <MyPage />;
             break;
-        case 'select': // 'select' 케이스를 추가합니다
+        case 'select':
             content = <SelectPage />;
             break;
         case 'chat':
@@ -102,8 +102,8 @@ const MainPage = () => {
                                     INSURANCE COUNSELING
                                 </div>
                                 <div className="message-introduction">
-                                    반갑습니다! 필요한 보험 계약을 찾고 한 곳에서 실시간으로 AI 챗봇과 상담하세요. 계약을 선택하고 AI와 개인 채팅방에서 대화를 시작하여 모든 질문에 답변해 드립니다. 여러분의 질문이 우리의 최우선입니다.
-                                    <p>Welcome! Find insurance contracts you need and consult with our AI chatbot in real-time in one place. Select a contract and start a conversation in your personal chat room with AI to address all your questions. Your questions are our top priority.</p>
+                                    어서 오세요! 필요한 보험을 찾아 실시간으로 AI 챗봇에게 궁금한 조항에 대해 물어보세요. 원하는 계약을 선택하고 채팅방에서 AI 챗봇과 보험 약관을 한 눈에 보면서 대화를 시작하세요! 당신의 모든 질문에 답변해 드립니다.
+                                    <p>Welcome! Find insurance contracts you need and consult with our AI chatbot in real-time in one place. Select a contract you want and start a conversation in your personal chat room with AI chatbot to address all your questions.</p>
                                 </div>
                                 <div className="chat-link-container">
                                     <button onClick={() => handlePageChange('select')} className="chat-link">
@@ -131,17 +131,18 @@ const MainPage = () => {
                         </div>
 
                         <div className="spare-panel-2nd" ref={refs[1]}>
-                            <div>
-                                <div className= "spare-panel-2nd-container">
+                            <div className ="spare-panel-2nd-container">
+                                    <div className= {`spare-panel-2nd-info ${currentRefIndex === 1 ? 'slide-animation' : ''}`}>
                                     <div className="spare-panel-2nd-title">
                                         <p>검증된 AI 챗봇, 무엇이든 물어보험</p>
                                     </div>
-                                    <div className="spare-panel-2nd-explanation">
+                                    <div className="spare-panel-2nd-intro">
                                         <p>다가가기 어려운 보험, 이제 끝!</p>
                                         <p>이제 똑똑한 챗봇과 편하게 알아보아요</p>
                                     </div>
                                 </div>
-                                <div className="white-box-container">
+
+                                <div className= {`white-box-container ${currentRefIndex === 1 ? 'slide-animation-3s' : ''}`}>
                                     <div className = "white-box">
                                         <div className= "box-info">
                                             <div className = "box-title-container">
@@ -186,16 +187,19 @@ const MainPage = () => {
                                             </div>
                                             <div className = "box-percentage">74%</div>
                                         </div>
-                                    <div className= "box-explanation">
+                                        <div className= "box-explanation">
                                             모델이 응답을 생성하는 데 사용한 문맥이 실제로 질문과 얼마나 관련이 있는지를 측정합니다.
                                         </div>
                                     </div>
+                                </div>
+                                <div className = "spare-panel-2nd-explanation">
+                                    * RAGAS 평가 기준, github에서 자세한 성능 평가 확인 가능
                                 </div>
                             </div>
                         </div>
 
                         <div className="spare-panel-3rd" ref={refs[2]}>
-                            <div>
+                            <div className="spare-panel-3rd-container">
                                 <div className="msgnphone-container">
                                     <div className={`phone-container-guide ${currentRefIndex === 2 ? 'slide-animation' : ''}`}>
                                         <div className="screen">
@@ -235,21 +239,28 @@ const MainPage = () => {
                                             </form>
                                         </div>
                                     </div>
+                                    <div className = "phone-chat-guide">
+                                        <div className = "chat-tip">TIP</div>
+                                        <div>만약, 챗봇의 대답이 너무 일반적이라면</div>
+                                        <div>왼쪽의 예시처럼 질문하는 것보다</div>
+                                        <div>오른쪽의 예시처럼 <strong>보험 이름</strong>이나 </div>
+                                        <div><strong>"이 보험에서"</strong> 라고 한 번 더 언급해 주세요! </div>
+                                        <div>그럼 더 정확한 답변을 받을 수 있을 거예요! </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div className="scroll-down">
                             <button onClick={toggleScroll}>
-                            <span className="material-symbols-outlined">
-                                {currentRefIndex < refs.length - 1 ? "arrow_downward" : "arrow_upward"}
-                            </span>
+                                <span className="material-symbols-outlined">
+                                    {currentRefIndex < refs.length - 1 ? "arrow_downward" : "arrow_upward"}
+                                </span>
                             </button>
                         </div>
                     </div>
                 )}
             </div>
-
         </div>
     );
 };

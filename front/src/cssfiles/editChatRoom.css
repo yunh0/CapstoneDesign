@@ -14,18 +14,20 @@
 
 .modal-content-edit {
     position: relative;
-    width: 50%;
+    width: 30%;
+    height:53%;
     max-width: 600px;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
+    justify-content: center;
 }
 
 .edit-close-btn {
     position: absolute;
-    top: 10px;
+    top: 8px;
     right: 10px;
     border: none;
     background-color: transparent;
@@ -33,23 +35,68 @@
     cursor: pointer;
 }
 
-.modal-actions {
+.insurance-info {
+    margin-top:100px;
+}
+
+.insurance-info p {
+    font-size:18px;
+    font-family: "Apple SD Gothic Neo";
+    line-height: 1.5;
+    max-width: 300px;
+    margin-left: 70px;
+}
+
+.modal-delete {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.modal-modify {
     margin-top: 20px;
     display: flex;
     justify-content: space-evenly;
 }
 
-.modal-actions button {
+.modal-actions {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.modal-delete button {
     padding: 15px 25px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size:15px;
+}
+
+.modal-actions button {
+    padding: 15px 25px;
+    margin-top:0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size:15px;
+}
+
+.modal-modify button {
+    padding: 15px 25px;
+    margin-top:0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size:15px;
 }
 
 .modal-actions button:hover {
-    background-color: #front
-    nf1f1f1;
+    background-color: #c5c4c4;
+}
+
+.delete-sentence {
+    font-size: 18px;
 }
 
 .input-edit {

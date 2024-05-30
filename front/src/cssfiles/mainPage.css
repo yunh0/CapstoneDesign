@@ -13,15 +13,15 @@
     flex-direction: column;
     align-items: center;
     padding: 10px 0;
-    margin-top: 15px; /* Adjust margin if necessary */
-    width: 250px; /* Fixed width for the left panel */
+    margin-top: 15px;
+    width: 250px;
 
-    height: calc(100vh - 60px); /* Adjust height to take full view height minus any top margin */
-    position: fixed; /* Keep the panel fixed at the side */
-    top: 5px; /* Distance from the top of the viewport */
-    left: 15px; /* Distance from the left of the viewport */
+    height: calc(100vh - 60px);
+    position: fixed;
+    top: 5px;
+    left: 15px;
     bottom:5px;
-    z-index: 100; /* Ensure it stays on top of other content */
+    z-index: 100; /**/
 
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -33,7 +33,6 @@
 
 .left-panel button,
 .left-panel a {
-    /*width: 80%;*/
     padding: 30px 0;
     margin: 10px 0;
     border: none;
@@ -47,29 +46,29 @@
 }
 
 .chat-btn {
-    font-size: 40px;  /* 아이콘의 크기 */
-    color: black;  /* 아이콘 색상 */
+    font-size: 40px;
+    color: black;
 }
 .left-panel button span {
-    font-size: 40px;  /* 아이콘의 크기 */
-    color: black;  /* 아이콘 색상 */
+    font-size: 40px;
+    color: black;
 }
 
 .left-panel button span:hover,
 .left-panel a:hover {
-    color: whitesmoke;  /* 아이콘 색상 */
-    color: #54a0ff;  /* 아이콘 색상 */
+    color: whitesmoke;
+    color: #54a0ff;
 }
 
 .spare-panel {
-    position: relative; /* Set position context for absolute children */
+    position: relative;
     margin-left:240px;
     min-height: 100vh;
     margin-top:30px;
 }
 
 .spare-panel-2nd{
-    position: relative; /* Set position context for absolute children */
+    position: relative;
     padding:50px;
     margin-top:100px;
     margin-left: 90px;
@@ -78,6 +77,11 @@
 }
 
 .spare-panel-2nd-container {
+    justify-content: end;
+    text-align: center;
+}
+
+.spare-panel-2nd-info {
     justify-content: center;
     text-align: center;
 }
@@ -91,43 +95,41 @@
 .spare-panel-2nd-title p{
     margin:0;
     padding:0;
-    font-size:37px;
+    font-size:34px;
     line-height: 1.2;
 }
 
-.spare-panel-2nd-explanation {
+.spare-panel-2nd-intro {
     margin-bottom:0;
 }
 
-.spare-panel-2nd-explanation p{
+.spare-panel-2nd-intro p{
     margin:0;
     padding:0;
-    font-size:25px;
+    font-size:22px;
 }
 
 .white-box-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;  /* 2열 설정 */
-    grid-template-rows: auto auto;   /* 자동으로 2행 설정, 각 행의 높이는 내용에 따라 조정 */
-    gap: 15px;  /* 그리드 사이의 간격 설정 */
-    width: 100%;  /* 컨테이너의 너비 설정, 필요에 따라 조정 */
-    margin-top:70px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 10px;
+    width: 100%;
+    margin-top:50px;
     margin-left:30px;
 }
 
 .white-box {
     width: 350px;
     height: 130px;
-    /*margin-left:10px;*/
-    margin-right: 10px;
     margin-bottom:20px;
     background-color: white;
-    border: 1px solid #ccc;   /* 박스 테두리 */
+    border: 1px solid #ccc;
     border-radius: 30px;
-    padding: 25px;            /* 내용과 테두리 사이의 패딩 */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);  /* 그림자 효과 */
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     justify-content: space-between;
-
+    text-align: left;
 }
 
 .box-info {
@@ -156,7 +158,7 @@
 }
 
 .box-title-kor {
-    margin-top:5px;
+    margin-top:6px;
     margin-right:20px;
     margin-bottom:0;
     padding:0;
@@ -174,20 +176,96 @@
     font-size: 17px;
     line-height: 1.5;
 }
+
+.spare-panel-2nd-explanation {
+    /*width:500px;*/
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    padding:10px;
+    border-radius: 2px;
+    text-align: center;
+    justify-content: center;
+    margin: 20px 200px 0 200px;
+    color: #444444;
+}
+
+.phone-chat-guide {
+    margin-top:100px;
+    margin-left:30px;
+    line-height: 1.7;
+    font-size: 16px;
+    font-family: "Apple SD Gothic Neo";
+    color: #333333;
+    text-align: center;
+    width:300px;
+    height: 300px;
+    border-radius: 1px;
+    transform: rotate(5deg);
+    transition: transform 0.3s ease-in-out;
+    padding: 15px;
+    box-shadow: 16px 16px 0 rgba(0,0,0,0.6);
+    background: khaki;
+    position: relative;
+    overflow: hidden;
+}
+.phone-chat-guide::before {
+    content: "";
+    position: absolute;
+    right: -1px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 45px 45px 0;
+    border-color: transparent transparent #d9c52d transparent;
+    transform: rotate(90deg);
+    transition: transform 0.3s ease-in-out;
+}
+.phone-chat-guide:hover::before {
+    transform: rotate(90deg);
+}
+
+
+.phone-chat-guide::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 45px;
+    height: 45px;
+    background: #333333;
+    border:1px solid #333333;
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    box-shadow: -2px 2px 2px rgba(0,0,0,0.1);
+}
+
+.phone-chat-guide:hover {
+    transform: rotate(0deg);
+}
+
+.chat-tip {
+    font-weight: bold;
+    margin-top:15px;
+    padding-bottom: 5px;
+    margin-bottom:20px;
+    font-size: 30px;
+    border-bottom:1.5px solid #333333;
+}
+
 .spare-panel-3rd {
-    position: relative; /* Set position context for absolute children */
+    position: relative;
     margin-left:120px;
     min-height: 100vh;
 }
 
-.select-lang {
+.spare-panel-3rd-container {
+    display:flex;
+    flex-direction: row;
 
 }
 
 .message-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;  /* Takes up all remaining space */
+    flex-grow: 1;
     width:80%;
     margin-top:230px;
     margin-left:80px;
@@ -206,8 +284,7 @@
     font-family: "Geneva";
     font-weight: bolder;
     font-size: 50px;
-    letter-spacing: 2px; /* 글자 사이 간격을 1픽셀로 설정 */
-    /*animation: slideDown 2s ease-out forwards;*/
+    letter-spacing: 2px;
 }
 
 .message-introduction {
@@ -218,7 +295,6 @@
     margin-top:20px;
     margin-bottom:50px;
     text-align:left;
-    /*animation: slideDown 2s ease-out forwards;*/
 }
 
 
@@ -228,87 +304,78 @@
     margin-left:50px;
 }
 
-.content-message p {
-    font-size: 20px;
-    line-height: 1.2;
-    /*font-family: "Courier New";*/
-    font-family: "NanumGothicCoding";
-    /*font-weight:300;*/
-    /*animation: slideLeft 2s ease-out forwards; !* content-title 애니메이션이 1초 지속되므로, 1초 지연 *!*/
-}
 
 .phone-container {
-    width: 330px; /* 전체 컨테이너 너비 */
-    height: 500px; /* 전체 컨테이너 높이 */
+    width: 330px;
+    height: 500px;
     margin-right:100px;
     margin-top:170px;
-    border-radius: 30px; /* 모서리 둥글게 */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25); /* 그림자 추가 */
-    background: transparent; /* 배경색 */
+    border-radius: 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    background: transparent;
     display: flex;
     flex-direction: row;
-    position: relative; /* 포지셔닝을 위해 */
-    overflow: hidden; /* 내부 요소가 범위를 넘어서지 않도록 */
-    border: 3px solid rgba(255, 255, 255, 0.7); /* 경계선 추가 및 투명도 적용 */
+    position: relative;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.7);
 }
 
 .phone-container-guide {
-    width: 280px; /* 전체 컨테이너 너비 */
-    height: 500px; /* 전체 컨테이너 높이 */
-    margin-right:120px;
-    margin-top:120px;
-    border-radius: 30px; /* 모서리 둥글게 */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25); /* 그림자 추가 */
-    background: transparent; /* 배경색 */
+    width: 280px;
+    height: 500px;
+    margin-right:50px;
+    margin-top:180px;
+    border-radius: 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    background: transparent;
     display: flex;
     flex-direction: row;
-    position: relative; /* 포지셔닝을 위해 */
-    overflow: hidden; /* 내부 요소가 범위를 넘어서지 않도록 */
-    border: 3px solid rgba(255, 255, 255, 0.7); /* 경계선 추가 및 투명도 적용 */
+    position: relative;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.7);
 }
 
 .screen {
-    width: 100%; /* 스크린 너비 */
-    height: 100%; /* 스크린 높이 */
-    background: transparent; /* 스크린 배경색 */
+    width: 100%;
+    height: 100%;
+    background: transparent;
     display: flex;
     flex-direction: column;
 }
 
 .status-bar {
-    height: 25px; /* 상태바 높이 */
-    background: rgba(255, 255, 255, 0.3); /* 투명도가 있는 흰색 배경 */
-    color: white; /* 텍스트 색상 */
+    height: 25px;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
     display: flex;
-    /*justify-content: space-between;*/
     justify-content: center;
     font-family: "Ubuntu";
-    font-size: 18px; /* 글씨 크기 */
-    padding: 15px; /* 상하 좌우 마진 추가 */
+    font-size: 18px;
+    padding: 15px;
     padding-top:20px;
 }
 
 .screen-messages {
     display:flex;
     flex-direction:column;
-    flex-grow: 1; /* 남은 공간 모두 사용 */
+    flex-grow: 1;
     font-size:14px;
-    padding: 10px; /* 패딩 */
-    overflow-y: auto; /* 스크롤 */
-    background: rgba(255, 255, 255, 0.2); /* 투명도가 있는 흰색 배경 */
+    padding: 10px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .message-received{
-    margin: 5px 0; /* 메시지 간격 */
+    margin: 5px 0;
     margin-left:7px;
-    padding: 10px; /* 메시지 패딩 */
-    background: #007BFF; /* 메시지 배경색 */
-    color: white; /* 메시지 글자색 */
-    border-radius: 10px; /* 모서리 둥글게 */
-    width: fit-content; /* 내용에 맞게 너비 조정 */
+    padding: 10px;
+    background: #007BFF;
+    color: white;
+    border-radius: 10px;
+    width: fit-content;
     height: fit-content;
-    max-width: 80%; /* 최대 너비 */
-    align-self: flex-start; /* 왼쪽 정렬 */
+    max-width: 80%;
+    align-self: flex-start;
 }
 
 .message-received p {
@@ -317,15 +384,15 @@
 }
 
 .message-sent {
-    margin: 5px 0; /* 메시지 간격 */
+    margin: 5px 0;
     margin-left:7px;
-    padding: 10px; /* 메시지 패딩 */
-    background: #e8e8e8; /* 메시지 배경색 */
-    color: black; /* 메시지 글자색 */
-    border-radius: 10px; /* 모서리 둥글게 */
-    width: fit-content; /* 내용에 맞게 너비 조정 */
+    padding: 10px;
+    background: #e8e8e8;
+    color: black;
+    border-radius: 10px;
+    width: fit-content;
     height: fit-content;
-    max-width: 80%; /* 최대 너비 */
+    max-width: 80%;
     align-self: flex-end;
 }
 
@@ -357,31 +424,31 @@
 
 .message-input-container {
     display: flex;
-    padding: 10px; /* 패딩 */
-    background: rgba(255, 255, 255, 0.2); /* 투명도 있는 배경 */
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .message-input {
-    flex-grow: 1; /* 입력 필드가 가능한 모든 공간을 차지하도록 설정 */
-    border: none; /* 테두리 제거 */
-    padding: 10px; /* 내부 패딩 */
-    border-radius: 20px; /* 둥근 모서리 */
-    margin-right: 10px; /* 오른쪽 마진 */
-    outline: none; /* 클릭 시 테두리 제거 */
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    outline: none;
 }
 
 .send-btn {
-    padding: 10px 15px; /* 버튼 패딩 */
-    background-color: #007BFF; /* 버튼 배경색 */
-    color: white; /* 버튼 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 20px; /* 둥근 모서리 */
-    cursor: pointer; /* 포인터 모양 변경 */
-    outline: none; /* 클릭 시 테두리 제거 */
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
 }
 
 .send-button:hover {
-    background-color: #0056b3; /* 호버 시 배경색 변경 */
+    background-color: #0056b3;
 }
 
 .chat-link {
@@ -395,7 +462,6 @@
     font-weight: bold;
     cursor: pointer;
     margin-left:0px;
-    /*animation: slideUp 2s ease-out forwards; !* message 애니메이션이 1초 지속되며, 1초 후 시작하므로 총 2초 후, 추가 0.5초 지연 *!*/
 }
 
 .chat-link:hover {
@@ -406,9 +472,9 @@
 
 .scroll-down {
     position: fixed;
-    right: 20px;   /* Adjust this value to increase or decrease distance from the right edge */
-    bottom: 20px;  /* Adjust this value to increase or decrease distance from the bottom edge */
-    z-index: 1000; /* Ensures the button stays on top of other content */
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
 }
 
 .scroll-down button {
@@ -417,50 +483,54 @@
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     cursor: pointer;
-    font-size: 24px; /* Adjust font size as needed */
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;  /* Adjust width as needed */
-    height: 50px; /* Adjust height as needed */
-    border-radius: 50%; /* Gives the button a rounded shape */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Optional: adds shadow for better visibility */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 @keyframes slideDown {
     from {
-        transform: translateY(-200px); /* 시작 위치 */
-        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+        transform: translateY(-200px);
+        opacity: 0;
     }
     to {
-        transform: translateY(0); /* 최종 위치 */
-        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
 
 @keyframes slideUp {
     from {
-        transform: translateY(+300px); /* 시작 위치 */
-        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+        transform: translateY(+300px);
+        opacity: 0;
     }
     to {
-        transform: translateY(0); /* 최종 위치 */
-        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
 @keyframes slideRight {
     from {
-        transform: translateX(-200px); /* 시작 위치 */
-        opacity: 0; /* 시작할 때 요소를 투명하게 설정 */
+        transform: translateX(-200px);
+        opacity: 0;
     }
     to {
-        transform: translateX(0); /* 최종 위치 */
-        opacity: 1; /* 최종적으로 요소를 불투명하게 설정 */
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 
 .slide-animation {
+    animation: slideDown 2s ease-out forwards;
+}
+
+.slide-animation-3s {
     animation: slideDown 3s ease-out forwards;
 }

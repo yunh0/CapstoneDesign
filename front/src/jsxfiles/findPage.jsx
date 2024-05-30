@@ -5,14 +5,13 @@ import { postFind } from "../api/findHistory";
 const FindPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [expandedRow, setExpandedRow] = useState(null); // 아코디언 확장 상태 관리
-    const [searchType, setSearchType] = useState('question'); // 검색 유형 상태 ('question', 'answer', 'all')
+    const [expandedRow, setExpandedRow] = useState(null);
+    const [searchType, setSearchType] = useState('question');
 
     const handleSearch = async () => {
         try {
-            // Reset the expanded row state before executing a new search
             setExpandedRow(null);
-            const response = await postFind(searchTerm, searchType); // 검색 유형 인자 추가
+            const response = await postFind(searchTerm, searchType);
             setSearchResult(response);
         } catch (error) {
             console.error('Error searching:', error);
@@ -34,7 +33,7 @@ const FindPage = () => {
     };
 
     const toggleAccordion = (index) => {
-        setExpandedRow(expandedRow === index ? null : index); // 이미 확장된 행을 클릭하면 닫힘
+        setExpandedRow(expandedRow === index ? null : index);
     };
 
     return (
@@ -90,7 +89,6 @@ const FindPage = () => {
                             </React.Fragment>
                         )
                     ))}
-
                     </tbody>
                 </table>
             )}
