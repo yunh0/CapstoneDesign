@@ -75,13 +75,13 @@
 </table>
 
 ## ✨성능 평가
-![ragas평가](https://github.com/yunh0/CapstoneDesign/assets/100749388/9b849c55-cee5-48cb-b6d9-061e62169c77)
+![ragas평가](https://github.com/yunh0/CapstoneDesign/assets/100749388/da5c847b-3887-44bc-aa1f-374b7b09abc3)
 
 * 용어 설명
   * question : 질문
   * answer : 질문에 해당하는 <b>생성된</b> 답변 
   * ground_truth : 질문에 대한 <b>예상</b> 답변
-  <br>
+* 성능평가지표
   * faithfulness 충실도 : 모델의 응답이 원본 문서의 내용을 얼마나 충실하게 반영하는지를 측정합니다.
   * answer relevancy 답변 관련성 : 모델의 응답이 사용자 질문과 얼마나 관련이 있는지를 측정합니다.
   * context recall 문맥 회수율 : 모델이 응답을 생성하는 데 사용한 문맥이 전체 문서의 문맥과 얼마나 잘 일치하는지를 측정합니다.
