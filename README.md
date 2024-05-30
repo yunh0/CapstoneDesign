@@ -75,6 +75,11 @@
 </table>
 
 ## ✨성능 평가
+![ragas평가](https://github.com/yunh0/CapstoneDesign/assets/100749388/709fa97b-1878-4ee3-9bda-c790b1822c5d)
+* 용어 설명
+  * question : 질문
+  * answer : 질문에 해당하는 <b>생성된</b> 답변 
+  * ground_truth : 질문에 대한 <b>예상</b> 답변 
 
 ## 🖻시스템 구조도
 ![11조_이미지_주요 적용 기술 및 구조](https://github.com/yunh0/CapstoneDesign/assets/114940378/0426c4c9-a48a-41b5-9f26-5ad16c6375c0)
