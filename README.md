@@ -80,7 +80,12 @@
 * 용어 설명
   * question : 질문
   * answer : 질문에 해당하는 <b>생성된</b> 답변 
-  * ground_truth : 질문에 대한 <b>예상</b> 답변 
+  * ground_truth : 질문에 대한 <b>예상</b> 답변
+
+  * faithfulness 충실도 : 모델의 응답이 원본 문서의 내용을 얼마나 충실하게 반영하는지를 측정합니다.
+  * answer relevancy 답변 관련성 : 모델의 응답이 사용자 질문과 얼마나 관련이 있는지를 측정합니다.
+  * context recall 문맥 회수율 : 모델이 응답을 생성하는 데 사용한 문맥이 전체 문서의 문맥과 얼마나 잘 일치하는지를 측정합니다.
+  * context precision 문맥 정확도 : 모델이 응답을 생성하는 데 사용한 문맥이 실제로 질문과 얼마나 관련이 있는지를 측정합니다.
 
 ## 🖻시스템 구조도
 ![11조_이미지_주요 적용 기술 및 구조](https://github.com/yunh0/CapstoneDesign/assets/114940378/0426c4c9-a48a-41b5-9f26-5ad16c6375c0)
