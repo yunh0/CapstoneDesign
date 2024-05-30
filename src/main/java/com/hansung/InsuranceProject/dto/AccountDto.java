@@ -1,6 +1,6 @@
 package com.hansung.InsuranceProject.dto;
 
-import com.hansung.InsuranceProject.user.Account;
+import com.hansung.InsuranceProject.entity.Account;
 import lombok.*;
 
 @Getter

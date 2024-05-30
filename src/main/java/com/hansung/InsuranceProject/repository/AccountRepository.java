@@ -1,6 +1,6 @@
 package com.hansung.InsuranceProject.repository;
 
-import com.hansung.InsuranceProject.user.Account;
+import com.hansung.InsuranceProject.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

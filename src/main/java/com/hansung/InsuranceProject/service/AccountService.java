@@ -8,16 +8,17 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.hansung.InsuranceProject.config.JWTUtils;
 import com.hansung.InsuranceProject.repository.AccountRepository;
 import com.hansung.InsuranceProject.dto.IdTokenRequestDto;
-import com.hansung.InsuranceProject.user.Account;
+import com.hansung.InsuranceProject.entity.Account;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 @Service
+@Transactional
 public class AccountService {
 
     private final AccountRepository accountRepository;
@@ -44,10 +45,10 @@ public class AccountService {
             throw new IllegalArgumentException();
         }
         account = createOrUpdateUser(account);
+
         return jwtUtils.createToken(account, false);
     }
 
-    @Transactional
     public Account createOrUpdateUser(Account account) {
         Account existingAccount = accountRepository.findByEmail(account.getEmail()).orElse(null);
         if (existingAccount == null) {
@@ -55,10 +56,12 @@ public class AccountService {
             accountRepository.save(account);
             return account;
         }
+
         existingAccount.setFirstName(account.getFirstName());
         existingAccount.setLastName(account.getLastName());
         existingAccount.setPictureUrl(account.getPictureUrl());
         accountRepository.save(existingAccount);
+
         return existingAccount;
     }
 
@@ -69,6 +72,7 @@ public class AccountService {
                 return null;
             }
             GoogleIdToken.Payload payload = idTokenObj.getPayload();
+
             String firstName = (String) payload.get("given_name");
             String lastName = (String) payload.get("family_name");
             String email = payload.getEmail();

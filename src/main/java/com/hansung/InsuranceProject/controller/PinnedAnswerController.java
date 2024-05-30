@@ -1,0 +1,44 @@
+package com.hansung.InsuranceProject.controller;
+
+import com.hansung.InsuranceProject.dto.PinnedAnswerDto;
+import com.hansung.InsuranceProject.entity.PinnedAnswer;
+import com.hansung.InsuranceProject.service.PinnedAnswerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class PinnedAnswerController {
+
+    @Autowired
+    private PinnedAnswerService pinnedAnswerService;
+
+    @PostMapping("/savePin/{messageId}/{fetchedType}")
+    public void savePinnedAnswer(@PathVariable Long messageId, @PathVariable String fetchedType){
+        PinnedAnswer pinnedAnswer = pinnedAnswerService.savePinnedAnswer(messageId, fetchedType);
+    }
+
+    @GetMapping("/getPin")
+    public ResponseEntity<List<PinnedAnswerDto>> getPinnedAnswer(Principal principal){
+        List<PinnedAnswerDto> pinnedAnswers = pinnedAnswerService.getPinnedAnswers(principal);
+        System.out.println("pinned Answers : " + pinnedAnswers);
+
+        return ResponseEntity.ok().body(pinnedAnswers);
+    }
+
+    @PostMapping("deletePin/{messageId}")
+    public ResponseEntity deletePinnedAnswer(@PathVariable Long messageId){
+        boolean deleted = pinnedAnswerService.deletePinnedAnswer(messageId);
+
+        if (deleted) {
+            return ResponseEntity.ok().body("success");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail");
+        }
+    }
+}

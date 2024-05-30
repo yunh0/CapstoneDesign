@@ -1,0 +1,143 @@
+:root {
+    --main-bg-color: #f4f4f8;
+    --button-bg-color: #007BFF;
+    --button-hover-color: #0051ff;
+    --text-color: #333;
+    --title-font: 'Roboto', sans-serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
+.pin-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    font-family: var(--body-font);
+    padding: 20px 100px 0 100px;
+}
+
+
+
+.pin-page-title {
+    font-size:35px;
+    font-family: 'Roboto Condensed';
+    color: var(--text-color);
+    margin-left:10px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.dropdown-select {
+    padding: 12px 10px;
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    content: '▼';
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    margin-left:10px;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.dropdown-select:hover {
+    border-color: #888;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-select:focus {
+    border-color: #555;
+}
+
+.option {
+    padding: 10px;
+    background-color: white;
+    color: #333;
+}
+
+.contracts {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.contract-button {
+    background-color: var(--button-bg-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: "Apple SD Gothic Neo";
+}
+
+.contract-button:hover {
+    background-color: var(--button-hover-color);
+}
+
+.gallery-view {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: transparent;
+}
+
+.pin-icon {
+    position: absolute;
+    top:-7px;
+    font-size:20px;
+    left: 2%;
+    color: #d35400;
+}
+
+.pinned-answer {
+    width: 40%;
+    height: auto;
+    overflow: hidden;
+    font-family: "Apple SD Gothic Neo";
+    font-size: 15px;
+    line-height: 20px;
+    background:white;
+    border: 1px solid #ccc;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.pinned-answer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.goChatRoomButton {
+    background-color: var(--button-bg-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: "Apple SD Gothic Neo";
+}
