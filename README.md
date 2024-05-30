@@ -75,7 +75,8 @@
 </table>
 
 ## ✨성능 평가
-![ragas평가](https://github.com/yunh0/CapstoneDesign/assets/100749388/709fa97b-1878-4ee3-9bda-c790b1822c5d)
+![ragas평가](https://github.com/yunh0/CapstoneDesign/assets/100749388/9b849c55-cee5-48cb-b6d9-061e62169c77)
+
 * 용어 설명
   * question : 질문
   * answer : 질문에 해당하는 <b>생성된</b> 답변 
