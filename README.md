@@ -91,6 +91,8 @@
 ![11조_이미지_주요 적용 기술 및 구조](https://github.com/yunh0/CapstoneDesign/assets/114940378/0426c4c9-a48a-41b5-9f26-5ad16c6375c0)
 
 ## 📸구현 영상
+* https://youtu.be/MiSZ8lu8ebc
+
 ## 👩‍👩‍👧‍👦팀 정보
 <table>
   <tbody>
